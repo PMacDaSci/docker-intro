@@ -1,25 +1,20 @@
 
 ## Introduction
 
-This session aims to introduce the use of Docker containers with the goal of using them to effect reproducible computational environments. Such environments are useful for ensuring reproducible research outputs, for example.
+This hands-on workshop introduces Docker as a tool for creating reproducible and portable computational environments. Participants will learn how to build, manage, and share containerised applications, with a focus on practical workflows relevant to research computing. The sessions will cover core Docker concepts, working with images and containers, writing Docker files, managing data within containers, and best practices for reproducibility. By the end of the workshop, participants will be able to create and run their own Docker containers for research workflows.
 
-The practical work in this lesson is primarily aimed at using Docker on your own laptop. Beyond your laptop, software container technologies such as Docker can also be used in the cloud and on high performance computing (HPC) systems. Some of the material in this lesson will be applicable to those environments too.
+This workshop is primarily aimed at using Docker on your own laptop, though the skills covered are applicable to cloud and HPC environments as well.
 
 ## Learning Objectives
 
 By the end of this workshop, you will know how to:
 
-- Have an understanding of what Docker containers are, why they are useful
-  and the common terminology used
-- Have a working Docker installation on your local system to allow you to
-  use containers
-- Understand how to use existing Docker containers for common tasks
-- Be able to build your own Docker containers by understanding both the role
-  of a `Dockerfile` in building containers, and the syntax used in `Dockerfile`s
+- Understand what Docker containers are, why they are useful, and the common terminology used
+- Have a working Docker installation on your local system
+- Know how to use existing Docker containers for common tasks
+- Be able to build your own Docker containers using a Dockerfile
 - Understand how to manage Docker containers on your local system
-- Appreciate issues around reproducibility in software, understand how
-  containers can address some of these issues and what the limits to
-  reproducibility using containers are
+- Appreciate reproducibility challenges in software and how containers can address them
 
 
 ## Credits and Acknowledgement
