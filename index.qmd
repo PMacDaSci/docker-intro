@@ -31,7 +31,7 @@ By the end of this workshop, you will know how to:
 - You should have basic familiarity with using a command shell, and the lesson text will at times request that you "open a shell window", with an assumption that you know what this means.
   - Under Linux or macOS it is assumed that you will access a `bash` shell (usually the default), using your Terminal application.
   - Under Windows, Powershell and Git Bash should allow you to use the Unix instructions. We will also try to give command variants for Windows `cmd.exe`.
-- The lessons will sometimes request that you use a text editor to create or edit files in particular directories. It is assumed that you either have an editor that you know how to use that runs within the working directory of your shell window (e.g. `nano`), or that if you use a graphical editor, that you can use it to read and write files into the working directory of your shell.
+- The lessons will sometimes request that you use a text editor to create or edit files in particular directories. It is assumed that you either have an editor that you know how to use that runs within the working directory of your shell window (e.g. `nano`), or that if you use a graphical editor, that you can use it to read and write files into the working directory of your shell. We recommend [Visual Studio Code (VS Code)](https://code.visualstudio.com/download) as an IDE and text editor for this workshop.
 
 ### Website accounts to create
 
@@ -52,7 +52,12 @@ In most cases, you will need to have administrator rights on the computer in ord
 
 Please try to install the appropriate software from the list below depending on the operating system that your computer is running. Do let the workshop organisers know as early as possible if you are unable to install Docker using these instructions, as there may be other options available.
 
-#### Microsoft Windows
+```{=html}
+<details>
+<summary style="font-weight: 600;" >
+Microsoft Windows
+</summary>
+```
 
 **You must have admin rights to run Docker!** Some parts of the lesson will work without running as admin but if you are unable to `Run as administrator` on your machine some elements of this workshop might not work as described.
 
@@ -61,6 +66,7 @@ Ideally, you will be able to install the Docker Desktop software, following the 
 Note that the above installation instructions highlight a minimum version or "build" that is required to be able to install Docker on your Windows 10 system. See [Which version of Windows operating system am I running?](https://support.microsoft.com/en-us/windows/which-version-of-windows-operating-system-am-i-running-628bec99-476a-2c13-5296-9dd081cdd808) for details of how to find out which version/build of Windows 10 you have.
 
 If you are unable to follow the above instructions to install Docker Desktop on your Windows system, the final release of the deprecated Docker Toolbox version of Docker for Windows can be downloaded from the [releases page of the Docker Toolbox GitHub repository](https://github.com/docker/toolbox/releases). (Download the `.exe` file for the Windows installer). *Please note that this final release of Docker Toolbox includes an old version of Docker and you are strongly advised not to attempt to use this for any production use. It will, however, enable you to follow along with the lesson material.*
+
 
 ::: {.callout-warning}
 
@@ -88,7 +94,12 @@ This should suppress the path translation functionality in Git Bash.
 
 :::
 
-#### Apple macOS
+</details>
+
+```{=html}
+<details>
+<summary style="font-weight: 600;" >Apple macOS</summary>
+```
 
 Ideally, you will be able to install the Docker Desktop software, following the
 [Docker website's documentation](https://docs.docker.com/docker-for-mac/install/).
@@ -103,7 +114,15 @@ The MacPorts Docker port should support older, as well as the most recent, opera
 versions (see the [port details](https://ports.macports.org/port/docker/details/)), but note that
 we have not recently tested the Docker installation process via MacPorts.
 
-#### Linux
+</details>
+
+```{=html}
+<details>
+<summary style="font-weight: 600;" >
+Linux
+</summary>
+```
+
 
 There are too many varieties of Linux to give precise instructions here, but hopefully you can locate documentation for getting Docker installed on your Linux distribution. It may already be installed. If it is not already installed on your system, the [Install Docker Engine](https://docs.docker.com/engine/install/) page provides an overview of supported Linux distributions and pointers to relevant installation information. Alternatively, see:
 
@@ -111,6 +130,8 @@ There are too many varieties of Linux to give precise instructions here, but hop
 - [Docker Engine on Debian](https://docs.docker.com/install/linux/docker-ce/debian/)
 - [Docker Engine on Fedora](https://docs.docker.com/install/linux/docker-ce/fedora/)
 - [Docker Engine on Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+
+</details>
 
 ### Verify Installation
 
