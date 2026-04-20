@@ -1,1 +1,1 @@
-Sitemap: git@github-work:Sanduni-P/docker-intro.git/sitemap.xml
+Sitemap: https://PMacDaSci.github.io/docker-intro/sitemap.xml

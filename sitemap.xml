@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>git@github-work:Sanduni-P/docker-intro.git/index.html</loc>
-    <lastmod>2025-12-03T01:03:22.530Z</lastmod>
+    <loc>https://PMacDaSci.github.io/docker-intro/index.html</loc>
+    <lastmod>2026-04-20T00:41:22.874Z</lastmod>
   </url>
   <url>
-    <loc>git@github-work:Sanduni-P/docker-intro.git/episodes/08-docker-image-examples.html</loc>
-    <lastmod>2025-12-03T00:38:56.965Z</lastmod>
+    <loc>https://PMacDaSci.github.io/docker-intro/episodes/08-docker-image-examples.html</loc>
+    <lastmod>2026-04-20T00:34:26.360Z</lastmod>
   </url>
   <url>
-    <loc>git@github-work:Sanduni-P/docker-intro.git/episodes/04-managing-containers.html</loc>
-    <lastmod>2025-12-03T00:26:33.689Z</lastmod>
+    <loc>https://PMacDaSci.github.io/docker-intro/episodes/04-managing-containers.html</loc>
+    <lastmod>2026-04-20T00:34:26.359Z</lastmod>
   </url>
   <url>
-    <loc>git@github-work:Sanduni-P/docker-intro.git/episodes/03-running-containers.html</loc>
-    <lastmod>2025-12-03T00:25:00.981Z</lastmod>
+    <loc>https://PMacDaSci.github.io/docker-intro/episodes/03-running-containers.html</loc>
+    <lastmod>2026-04-20T00:34:26.359Z</lastmod>
   </url>
   <url>
-    <loc>git@github-work:Sanduni-P/docker-intro.git/episodes/01-introduction.html</loc>
-    <lastmod>2025-12-03T00:16:19.559Z</lastmod>
+    <loc>https://PMacDaSci.github.io/docker-intro/episodes/01-introduction.html</loc>
+    <lastmod>2026-04-20T00:34:26.359Z</lastmod>
   </url>
   <url>
-    <loc>git@github-work:Sanduni-P/docker-intro.git/episodes/09-reproduciblity.html</loc>
-    <lastmod>2025-12-03T00:26:06.620Z</lastmod>
+    <loc>https://PMacDaSci.github.io/docker-intro/episodes/09-reproduciblity.html</loc>
+    <lastmod>2026-04-20T00:34:26.360Z</lastmod>
   </url>
   <url>
-    <loc>git@github-work:Sanduni-P/docker-intro.git/episodes/05-docker-hub.html</loc>
-    <lastmod>2025-12-03T00:26:54.156Z</lastmod>
+    <loc>https://PMacDaSci.github.io/docker-intro/episodes/05-docker-hub.html</loc>
+    <lastmod>2026-04-20T00:34:26.359Z</lastmod>
   </url>
   <url>
-    <loc>git@github-work:Sanduni-P/docker-intro.git/episodes/07-advanced-containers.html</loc>
-    <lastmod>2025-12-03T00:27:52.179Z</lastmod>
+    <loc>https://PMacDaSci.github.io/docker-intro/episodes/07-advanced-containers.html</loc>
+    <lastmod>2026-04-20T00:34:26.359Z</lastmod>
   </url>
   <url>
-    <loc>git@github-work:Sanduni-P/docker-intro.git/episodes/06-creating-container-images.html</loc>
-    <lastmod>2025-12-03T00:58:36.467Z</lastmod>
+    <loc>https://PMacDaSci.github.io/docker-intro/episodes/06-creating-container-images.html</loc>
+    <lastmod>2026-04-20T00:34:26.359Z</lastmod>
   </url>
   <url>
-    <loc>git@github-work:Sanduni-P/docker-intro.git/episodes/02-meet-docker.html</loc>
-    <lastmod>2025-12-03T00:24:27.023Z</lastmod>
+    <loc>https://PMacDaSci.github.io/docker-intro/episodes/02-meet-docker.html</loc>
+    <lastmod>2026-04-20T00:34:26.359Z</lastmod>
   </url>
 </urlset>

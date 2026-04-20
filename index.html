@@ -4927,19 +4927,19 @@ padding-top: 4px !important;
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>This session aims to introduce the use of Docker containers with the goal of using them to effect reproducible computational environments. Such environments are useful for ensuring reproducible research outputs, for example.</p>
-<p>The practical work in this lesson is primarily aimed at using Docker on your own laptop. Beyond your laptop, software container technologies such as Docker can also be used in the cloud and on high performance computing (HPC) systems. Some of the material in this lesson will be applicable to those environments too.</p>
+<p>This hands-on workshop introduces Docker as a tool for creating reproducible and portable computational environments. Participants will learn how to build, manage, and share containerised applications, with a focus on practical workflows relevant to research computing. The sessions will cover core Docker concepts, working with images and containers, writing <code>Dockerfile</code>s, managing data within containers, and best practices for reproducibility. By the end of the workshop, participants will be able to create and run their own Docker containers for research workflows.</p>
+<p>This workshop is primarily aimed at using Docker on your own laptop, though the skills covered are applicable to cloud and HPC environments as well.</p>
 </section>
 <section id="learning-objectives" class="level2">
 <h2 class="anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
 <p>By the end of this workshop, you will know how to:</p>
 <ul>
-<li>Have an understanding of what Docker containers are, why they are useful and the common terminology used</li>
-<li>Have a working Docker installation on your local system to allow you to use containers</li>
-<li>Understand how to use existing Docker containers for common tasks</li>
-<li>Be able to build your own Docker containers by understanding both the role of a <code>Dockerfile</code> in building containers, and the syntax used in <code>Dockerfile</code>s</li>
+<li>Understand what Docker containers are, why they are useful, and the common terminology used</li>
+<li>Have a working Docker installation on your local system</li>
+<li>Know how to use existing Docker containers for common tasks</li>
+<li>Be able to build your own Docker containers using a <code>Dockerfile</code></li>
 <li>Understand how to manage Docker containers on your local system</li>
-<li>Appreciate issues around reproducibility in software, understand how containers can address some of these issues and what the limits to reproducibility using containers are</li>
+<li>Appreciate reproducibility challenges in software and how containers can address them</li>
 </ul>
 </section>
 <section id="course-outline" class="level2">
@@ -5084,7 +5084,7 @@ How can I use container images to make my research more reproducible?<br>How do 
 <li>Under Linux or macOS it is assumed that you will access a <code>bash</code> shell (usually the default), using your Terminal application.</li>
 <li>Under Windows, Powershell and Git Bash should allow you to use the Unix instructions. We will also try to give command variants for Windows <code>cmd.exe</code>.</li>
 </ul></li>
-<li>The lessons will sometimes request that you use a text editor to create or edit files in particular directories. It is assumed that you either have an editor that you know how to use that runs within the working directory of your shell window (e.g. <code>nano</code>), or that if you use a graphical editor, that you can use it to read and write files into the working directory of your shell.</li>
+<li>The lessons will sometimes request that you use a text editor to create or edit files in particular directories. It is assumed that you either have an editor that you know how to use that runs within the working directory of your shell window (e.g. <code>nano</code>), or that if you use a graphical editor, that you can use it to read and write files into the working directory of your shell. We recommend <a href="https://code.visualstudio.com/download">Visual Studio Code (VS Code)</a> as an IDE and text editor for this workshop.</li>
 </ul>
 <section id="website-accounts-to-create" class="level3">
 <h3 class="anchored" data-anchor-id="website-accounts-to-create">Website accounts to create</h3>
@@ -5102,8 +5102,10 @@ How can I use container images to make my research more reproducible?<br>How do 
 <p>Docker’s installation experience has steadily improved, however situations will arise in which installing Docker on your computer may not be straightforward unless you have a large amount of technical experience. Workshops try to have helpers on hand that have worked their way through the install process, but do be prepared for some troubleshooting.</p>
 <p>In most cases, you will need to have administrator rights on the computer in order to install the Docker software. If you are using a computer managed by your organisation and do not have administrator rights, you <em>may</em> be able to get your organisation’s IT staff to install Docker for you. Alternatively your IT support staff <em>may</em> be able to give you remote access to a server that can run Docker commands.</p>
 <p>Please try to install the appropriate software from the list below depending on the operating system that your computer is running. Do let the workshop organisers know as early as possible if you are unable to install Docker using these instructions, as there may be other options available.</p>
-<section id="microsoft-windows" class="level4">
-<h4 class="anchored" data-anchor-id="microsoft-windows">Microsoft Windows</h4>
+<details>
+<summary style="font-weight: 600;">
+Microsoft Windows
+</summary>
 <p><strong>You must have admin rights to run Docker!</strong> Some parts of the lesson will work without running as admin but if you are unable to <code>Run as administrator</code> on your machine some elements of this workshop might not work as described.</p>
 <p>Ideally, you will be able to install the Docker Desktop software, following the <a href="https://docs.docker.com/docker-for-windows/install/">Docker website’s documentation</a>. Note that the instructions for installing Docker Desktop on Windows 10 Home Edition are different from other versions of Windows 10.</p>
 <p>Note that the above installation instructions highlight a minimum version or “build” that is required to be able to install Docker on your Windows 10 system. See <a href="https://support.microsoft.com/en-us/windows/which-version-of-windows-operating-system-am-i-running-628bec99-476a-2c13-5296-9dd081cdd808">Which version of Windows operating system am I running?</a> for details of how to find out which version/build of Windows 10 you have.</p>
@@ -5125,14 +5127,16 @@ Warning: Git Bash
 <p>This should suppress the path translation functionality in Git Bash.</p>
 </div>
 </div>
-</section>
-<section id="apple-macos" class="level4">
-<h4 class="anchored" data-anchor-id="apple-macos">Apple macOS</h4>
+</details>
+<details>
+<summary style="font-weight: 600;">Apple macOS</summary>
 <p>Ideally, you will be able to install the Docker Desktop software, following the <a href="https://docs.docker.com/docker-for-mac/install/">Docker website’s documentation</a>. The current version of the Docker Desktop software requires macOS version 10.14 (Mojave) or later.</p>
 <p>If you already use Homebrew or MacPorts to manage your software, and would prefer to use those tools rather than Docker’s installer, you can do so. For Homebrew, you can run the command <code>brew install --cask docker</code>. Note that you still need to run the Docker graphical user interface once to complete the initial setup, after which time the command line functionality of Docker will become available. The Homebrew install of Docker also requires a minimum macOS version of 10.14. The MacPorts Docker port should support older, as well as the most recent, operating system versions (see the <a href="https://ports.macports.org/port/docker/details/">port details</a>), but note that we have not recently tested the Docker installation process via MacPorts.</p>
-</section>
-<section id="linux" class="level4">
-<h4 class="anchored" data-anchor-id="linux">Linux</h4>
+</details>
+<details>
+<summary style="font-weight: 600;">
+Linux
+</summary>
 <p>There are too many varieties of Linux to give precise instructions here, but hopefully you can locate documentation for getting Docker installed on your Linux distribution. It may already be installed. If it is not already installed on your system, the <a href="https://docs.docker.com/engine/install/">Install Docker Engine</a> page provides an overview of supported Linux distributions and pointers to relevant installation information. Alternatively, see:</p>
 <ul>
 <li><a href="https://docs.docker.com/install/linux/docker-ce/centos/">Docker Engine on CentOS</a></li>
@@ -5140,7 +5144,7 @@ Warning: Git Bash
 <li><a href="https://docs.docker.com/install/linux/docker-ce/fedora/">Docker Engine on Fedora</a></li>
 <li><a href="https://docs.docker.com/install/linux/docker-ce/ubuntu/">Docker Engine on Ubuntu</a></li>
 </ul>
-</section>
+</details>
 </section>
 <section id="verify-installation" class="level3">
 <h3 class="anchored" data-anchor-id="verify-installation">Verify Installation</h3>
@@ -5306,7 +5310,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("git@github-work:Sanduni-P\/docker-intro\.git");
+      var filterRegex = new RegExp("https:\/\/PMacDaSci\.github\.io\/docker-intro\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
