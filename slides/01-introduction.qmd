@@ -1,0 +1,149 @@
+# Episode 1: Introducing Containers {.nonincremental}
+
+::: {.callout-tip icon="false" .nonincremental}
+## Questions
+
+- What are containers, and why might they be useful to me?
+:::
+
+::: {.callout-tip icon="false" .nonincremental}
+## Objectives
+
+- Show how software depending on other software leads to configuration management problems.
+- Identify the problems that software installation can pose for research.
+- Explain the advantages of containerization.
+- Explain how using containers can solve software configuration problems
+:::
+
+---
+
+## Scientific Software Challenges
+
+::: {.callout-note .challenge-callout icon="false"}
+
+## What's Your Experience?
+
+- Think about software frustrations in your research workflow.
+- Compare with a neighbour and list common pain points.
+- Focus on installation, versions, portability, and reproducibility.
+
+:::
+
+---
+
+## Scientific Software Challenges
+
+### Common Symptoms:
+
+- software is unavailable on your preferred OS;
+- installation pulls in many nested dependencies;
+- only some version combinations work;
+- colleagues get different results on different systems;
+- reproducing an older setup becomes difficult.
+
+### Why This Happens:
+
+- research software depends on many layers;
+- one missing or incompatible piece can break the stack;
+- this situation is often called **dependency hell**.
+
+::: {.callout-note}
+
+## What Is a Software *Dependency*?
+
+- A dependency is software that another tool needs in order to work.
+- Example: an application may depend on a library to talk to a database.
+
+:::
+
+
+
+---
+
+## Why This Matters for Research
+
+- you may be unable to use a required tool at all;
+- results become harder to reproduce with confidence;
+- moving work to new systems or collaborators becomes difficult;
+- others may be unable to validate or extend your work.
+
+Containers help by packaging software, dependencies, and access to resources in a more consistent, reproducible way.
+
+## What Is a Container?
+
+Think of a container as a self-contained working environment inside your existing computer:
+
+- isolated from your main software setup;
+- cheaper and lighter than a separate machine;
+- portable across systems with the same container engine.
+
+More concretely, Docker Inc use the following definition of a container:
+
+> A container is a standard unit of software that packages up code and all its dependencies so the application runs reliably from one computing environment to another.
+
+<https://www.docker.com/resources/what-container/>
+
+The shipping-container analogy is useful:
+
+- containers keep related things together;
+- they standardize transport and reuse;
+- the same container can be run on any compatible host system.
+
+
+---
+
+## Virtualization
+
+::: {.callout-note}
+
+## Virtualization
+
+Virtualization means running an isolated computing environment on a main (**host**) computer.
+
+- Containers are an example of virtualization
+- **Virtual machines (VMs)** include a full operating system and are heavier.
+- **Containers** are lighter and usually share the host's Linux kernel.
+- Containers still provide an isolated filesystem and runtime for applications.
+
+:::
+
+
+## What Is Docker?
+
+[Docker](https://www.docker.com/) is a platform for building and running containers.
+
+
+## Container Images
+
+Key distinction:
+
+- a **container image** is the recipe or template;
+- a **container** is the running instance created from that image;
+- images persist, containers are usually transient.
+
+The cookie-cutter analogy works well: one cutter creates many cookies of the same shape.
+
+![](../episodes/fig/containers-cookie-cutter.png){alt='An image comparing using a cookie cutter to the container workflow'}
+
+## Putting the Pieces Together
+
+Containers help because the environment becomes explicit, portable, and easier to recreate.
+
+### Benefits:
+
+- **documentation** -- there is a clear record of what software and software dependencies were used, from bottom to top.
+- **portability** -- the container can be used on any computer that has Docker installed -- it doesn't matter whether the computer is Mac, Windows or Linux-based.
+- **reproducibility** -- you can use the exact same software and environment on your computer and on other resources (like a large-scale computing cluster).
+- **configurability** -- containers can be sized to take advantage of more resources (memory, CPU, etc.) on large systems (clusters) or less, depending on the circumstances.
+
+## Use Cases for Containers
+
+- Run a specific tool locally without a difficult install.
+- Test software while avoiding dependency hell.
+- Build an image from a `Dockerfile` for a defined research setup.
+- Share that image with collaborators or on cloud and HPC systems.
+- Archive images so you can rerun work with the same software later.
+
+
+
+

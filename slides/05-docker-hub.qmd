@@ -1,0 +1,195 @@
+# Episode 5: Finding Containers on Docker Hub {.nonincremental}
+
+::: {.callout-tip icon="false" .nonincremental}
+## Questions
+
+- What is the Docker Hub, and why is it useful?
+:::
+
+::: {.callout-tip icon="false" .nonincremental}
+## Objectives
+
+- Understand the importance of container registries such as Docker Hub, quay.io, etc.
+- Explore the Docker Hub webpage for a popular Docker container image.
+- Find the list of tags for a particular Docker container image.
+- Identify the three components of a container image's identifier.
+:::
+
+---
+
+
+## Introducing the Docker Hub
+
+Docker Hub is an online registry of container images.
+
+- Many images are public.
+- Many are maintained by software developers.
+- Some are official/endorsed images with stronger trust signals.
+- Trusted images are more likely to be maintained, stable, and secure.
+
+
+::: {.callout-note}
+
+## Docker Can Be Used Without Connecting to Docker Hub
+
+- Docker Hub is convenient, but not required.
+- Some organizations use private or offline container infrastructure instead.
+
+:::
+
+## Exploring an Example Docker Hub Page
+
+Use the official Python image page as an example:
+[https://hub.docker.com/\_/python](https://hub.docker.com/_/python)
+
+What to look for on a Docker Hub page:
+
+- Top-left: image name, short description, popularity, endorsements.
+- Top-right: pull command.
+- Main body sections typically include:
+
+    - Which tags (i.e., container image versions) are supported;
+    - Summary information about where to get help, which computer architectures are supported, etc.;
+    - A longer description of the container image;
+    - Examples of how to use the container image; and
+    - The license that applies.
+
+The "How to use this image" section is usually the best starting point.
+
+## Exploring Container Image Versions
+
+A single Docker Hub repository can provide many image versions.
+
+- Versions are represented by **tags**.
+- Use `:` to specify a tag:
+
+```text
+CONTAINER_IMAGE_NAME:TAG
+```
+
+To download Python 3.8 container image:
+
+```bash
+docker image pull python:3.8
+```
+
+To download Python 3.6 container image:
+
+```bash
+docker image pull python:3.6
+```
+
+If no tag is provided, Docker uses the default tag - `latest`.
+
+---
+
+## Images from Others
+
+Not all images are maintained by Docker.
+
+- Many are published by individuals or organizations.
+- Your own uploaded images follow this same model.
+- Examples include [ContinuumIO](https://hub.docker.com/u/continuumio) (who develop the Anaconda Python environment) and [rocker](https://hub.docker.com/u/rocker) (group that builds community R container images).
+
+Common naming pattern for owner-managed images:
+
+```text
+OWNER/CONTAINER_IMAGE_NAME:TAG
+```
+
+::: {.callout-note}
+
+## Repositories
+
+- A Docker Hub page represents a **repository**.
+- A **tag** selects a specific version from that repository.
+
+So a more precise naming pattern is:
+
+```text
+OWNER/REPOSITORY:TAG
+```
+
+:::
+
+
+---
+
+## Challenge
+
+::: {.callout-note .challenge-callout icon="false" }
+
+## What's in a Name?
+
+How would I download the Docker container image produced by the `rocker` group that
+has version 3.6.1 of R and the tidyverse installed?
+
+Note: the container image described in this exercise is large and won't be used
+later in this lesson, so you don't actually need to pull the container image --
+constructing the correct `docker pull` command is sufficient.
+
+:::
+
+
+---
+
+## Finding Container Images
+
+::: {.callout-note .solution-callout icon="false"  collapse="true"}
+
+## Solution
+
+First, search for `rocker` in Docker Hub. Then look for their `tidyverse` container image.
+You can look at the list of tags, or just guess that the tag is `3.6.1`. Altogether,
+that means that the name of the container image we want to download is:
+
+```bash
+docker image pull rocker/tidyverse:3.6.1
+```
+
+:::
+
+
+## Finding Container Images on Docker Hub
+
+Docker Hub offers many image choices.
+
+- Each image can provide a ready-to-use software environment.
+- Find images via Docker Hub search or software project pages.
+- Evaluate image quality before use.
+
+Useful trust indicators:
+
+- The container image is updated regularly.
+- The container image associated with a well established company, community, or other group that is well-known.
+- There is a Dockerfile or other listing of what has been installed to the container image.
+- The container image page has documentation on how to use the container image.
+
+Avoid images that are stale, poorly documented, or from unclear sources.
+
+- They are harder to trust.
+- They reduce reproducibility and reliability for research workflows.
+
+
+---
+
+## Challenge
+
+::: {.callout-note .challenge-callout icon="false" }
+
+## What Container Image Is Right for You?
+
+Find a Docker container image that's relevant to you. Take into account the suggestions
+above of what to look for as you evaluate options. If you're unsuccessful in your search,
+or don't know what to look for, you can use the R or Python container image we've
+already seen.
+
+Once you find a container image, use the skills from the previous episode to download
+the container image and explore it.
+
+
+:::
+
+
+
+

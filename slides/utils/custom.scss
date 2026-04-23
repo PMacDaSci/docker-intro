@@ -1,0 +1,54 @@
+
+/*-- scss:defaults --*/
+
+$presentation-heading-color: #4A97D1;
+$presentation-font-size-root: 40px !default;
+
+.reveal .subtitle {
+    font-size: 1.8em;
+    color: #54AAB7;
+}
+
+.reveal .title {
+    font-size: 2.0em;
+}
+
+/*-- scss:rules --*/
+.reveal section h1 {
+  color: #3439A3;
+  font-size: 1.8em !important;
+
+}
+
+.reveal section h2 {
+  color: #296DD4;
+    font-size: 1.4em !important;
+}
+
+.reveal section h3 {
+  color: #4996D3;
+  font-size: 1.2em !important;
+}
+
+.reveal section h4 {
+  color: #4492B4;
+}
+
+.reveal section h5 {
+  color: #72B57D;
+}
+
+
+/* Keyboard element styling */
+kbd {
+  background-color: #f0f0f0 !important;
+  border: 1px solid #ccc !important;
+  border-radius: 3px !important;
+  padding: 2px 6px !important;
+  font-size: 0.9em !important;
+  font-family: monospace !important;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2) !important;
+  display: inline-block !important;
+  white-space: nowrap !important;
+}
+

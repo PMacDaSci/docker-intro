@@ -1,0 +1,378 @@
+# Episode 3: Exploring and Running Containers {.nonincremental}
+
+::: {.callout-tip icon="false" .nonincremental}
+## Questions
+
+- How do I interact with Docker containers and container images on my computer?
+:::
+
+::: {.callout-tip icon="false" .nonincremental}
+## Objectives
+
+- Use the correct command to see which Docker container images are on your computer.
+- Be able to download new Docker container images.
+- Demonstrate how to start an instance of a container from a container image.
+- Describe at least two ways to execute commands inside a running Docker container.
+:::
+
+---
+
+## Container Terminology
+
+::: {.callout-note}
+
+## Reminder of Terminology: Container Images and Containers
+
+- A *container image* is the reusable template.
+- A *container* is a running instance created from that image.
+
+:::
+
+## Downloading Docker Images
+
+Start with a simple example image from Docker Hub: `hello-world`.
+
+Use `docker image` commands to work with container images on your machine.
+Check what images are already available ("ls" is short for "list"):
+
+```bash
+docker image ls
+```
+
+On a fresh Docker install, this list is usually empty.
+
+Pull the `hello-world` image from Docker Hub:
+
+```bash
+docker image pull hello-world
+```
+
+Expected output:
+
+```output
+Using default tag: latest
+latest: Pulling from library/hello-world
+1b930d010525: Pull complete
+Digest: sha256:f9dfddf63636d84ef479d645ab5885156ae030f611a56f3a7ac7f2fdd86d7e4e
+Status: Downloaded newer image for hello-world:latest
+docker.io/library/hello-world:latest
+```
+
+::: {.callout-note}
+
+## Docker Hub
+
+- `hello-world` comes from Docker Hub.
+- Docker Hub is an online registry for sharing container images.
+- We cover it in more detail later.
+
+:::
+
+
+---
+
+## Exercise: Check on Your Images
+
+::: {.callout-note .challenge-callout icon="false"}
+
+## Exercise: Check on Your Images
+
+What command would you use to see if the `hello-world` Docker container image had downloaded
+successfully and was on your computer?
+Give it a try before checking the solution.
+
+:::
+
+
+---
+
+## Verifying Downloaded Images
+
+::: {.callout-note .solution-callout icon="false" collapse="true"}
+
+## Solution
+
+To see if the `hello-world` container image is now on your computer, run:
+
+```bash
+docker image ls
+```
+
+:::
+
+- The downloaded `hello-world` image is not saved in your current folder.
+- Running `ls` will not show container images.
+- Docker stores images in its own internal storage location.
+- Use `docker image` commands to list and manage images on your computer.
+
+## Running the `hello-world` Container
+
+Use `docker container run` to create and run a container from an image.
+
+- Syntax: `docker container run IMAGE_NAME`
+- Your current working directory does not matter for this example.
+
+```bash
+docker container run hello-world
+```
+
+```output
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ `docker run -it ubuntu bash`
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+```
+
+## Running the `hello-world` Container
+
+`docker container run` does three things:
+
+1. Starts a **running container** from the chosen image. Think of this as the “alive” or “inflated” version of the container.
+2. Executes the image's **default command**. This could be as simple as printing a message (as above) or running a whole analysis pipeline!
+3. Once the default action is complete, the container **stops running (or exits)**. The container image is still there, but nothing is actively running.
+
+For `hello-world`, the default command prints this diagnostic message and exits.
+
+
+
+::: {.callout-note}
+
+## Using `docker container run` to Get the Image
+
+- You can skip `docker image pull`.
+- If the image is missing, `docker container run` will pull it automatically and then run it.
+
+
+:::
+
+## Running a Container with a Chosen Command
+
+Want to do more than the default container action?
+
+- Use a different image to explore more `docker container run` patterns.
+- The previous output suggested `ubuntu`.
+- Here we use `alpine` instead because it downloads faster.
+
+
+::: {.callout-note .challenge-callout icon="false"}
+
+## Run the Alpine Docker Container
+
+Try downloading the `alpine` container image and using it to run a container. You can do it in
+two steps, or one. What are they?
+
+:::
+
+## Run the Alpine Docker Container
+
+What happened when you ran the Alpine Docker container?
+
+```bash
+docker container run alpine
+```
+
+What to expect:
+
+- First run: Docker may pull `alpine` if it is not already local.
+- Later runs: you may see little or no output.
+- Reason: `alpine` is minimal and usually expects you to provide a command.
+
+Try running an explicit command:
+
+```bash
+docker container run alpine cat /etc/os-release
+```
+
+You should see Alpine OS details from `/etc/os-release` (version and related metadata).
+
+
+---
+
+## Challenge
+
+::: {.callout-note .challenge-callout icon="false" }
+
+## Hello World, Part 2
+
+Can you run a copy of the `alpine` container and make it print a "hello world" message?
+
+Give it a try before checking the solution.
+
+:::
+
+
+---
+
+## Solution
+
+::: {.callout-note .solution-callout icon="false"  collapse="true"}
+
+## Solution
+
+Use the same command as above, but with the `echo` command to print a message.
+
+```bash
+docker container run alpine echo 'Hello World'
+```
+
+:::
+
+We can provide commands at the end of the `docker container run`
+command and they will execute inside the running container.
+
+## Running Containers Interactively
+
+To run interactively, 
+
+- add the interactive flags `-i` and `-t` (usually combined as `-it`)
+- provide a shell (`bash`, `sh`, etc.) as the command
+- For `alpine`, use `sh` because `bash` is not included.
+
+```bash
+docker container run -it alpine sh
+```
+
+::: {.callout-note}
+
+## Technically...
+
+- `-i` keeps standard input open.
+- `-t` allocates a text terminal (pseudo-TTY).
+- In practice, `-it` is the usual combination for interactive shells.
+
+:::
+
+## Running Containers Interactively
+
+Your prompt should change to look like this:
+
+```bash
+/ #
+```
+
+You're now inside the running container! Try these commands:
+
+- `pwd`
+- `ls`
+- `whoami`
+- `echo $PATH`
+- `cat /etc/os-release`
+
+- These commands run inside the container, not on your host computer.
+- The output describes the container environment.
+- When finished, exit the container with `exit`.
+
+```bash
+/ # exit
+```
+
+
+---
+
+## Challenge
+
+::: {.callout-note .challenge-callout icon="false" }
+
+## Practice Makes Perfect
+
+Can you find out the version of Ubuntu installed on the `ubuntu` container image?
+(Hint: You can use the same command as used to find the version of alpine.)
+
+Can you also find the `apt-get` program? What does it do? (Hint: try passing `--help`
+to almost any command will give you more information.)
+
+:::
+
+
+---
+
+## Solution
+
+::: {.callout-note .solution-callout icon="false"  collapse="true"}
+
+## Solution 1 -- Interactive
+
+Run an interactive ubuntu container -- you can use `docker image pull` first, or just
+run it with this command:
+
+```bash
+docker container run -it ubuntu sh
+```
+
+OR you can get the bash shell instead
+
+```bash
+docker container run -it ubuntu bash
+```
+
+Then try, running these commands
+
+```bash
+/# cat /etc/os-release
+/# apt-get --help
+```
+
+Exit when you're done.
+
+```bash
+/# exit
+```
+
+:::
+
+
+
+::: {.callout-note .solution-callout icon="false"  collapse="true"}
+
+## Solution 2 -- Run Commands
+
+Run a ubuntu container, first with a command to read out the Linux version:
+
+```bash
+docker container run ubuntu cat /etc/os-release
+```
+
+Then run a container with a command to print out the apt-get help:
+
+```bash
+docker container run ubuntu apt-get --help
+```
+
+:::
+
+
+---
+
+::: {.callout-tip}
+
+## Even More Options
+
+`docker container run` supports many options beyond `-it`.
+Here are two common ones:
+
+- `--rm`: remove the container automatically when it stops.
+   - Cleans up stopped containers.
+   - Does not remove pulled images.
+
+- `--name=`: assign a custom container name.
+   - Easier to identify and reuse specific containers.
+
+:::
+
+

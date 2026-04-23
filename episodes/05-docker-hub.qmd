@@ -66,7 +66,7 @@ based on the version of the software inside.  These
 versions are indicated by "tags". When referring to the specific version of a container image
 by its tag, you use a colon, `:`, like this:
 
-```
+```text
 CONTAINER_IMAGE_NAME:TAG
 ```
 
@@ -93,7 +93,7 @@ groups like [rocker](https://hub.docker.com/u/rocker), a group that builds commu
 
 The name for these group- or individually-managed container images have this format:
 
-```
+```text
 OWNER/CONTAINER_IMAGE_NAME:TAG
 ```
 
@@ -106,7 +106,7 @@ The tag indicates the specific version of the container image that you'd like
 to use from a particular repository. So a slightly more accurate version of
 the above example is:
 
-```
+```text
 OWNER/REPOSITORY:TAG
 ```
 

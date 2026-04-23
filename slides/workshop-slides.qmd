@@ -1,0 +1,84 @@
+---
+title: "Introduction to Docker"
+author: "Sanduni Rajapaksa"
+format:
+  revealjs:
+    theme: [default, utils/custom.scss]
+    css: utils/custom.css
+    slide-number: true
+    chalkboard: false
+    incremental: false
+    transition: fade
+    background-transition: fade
+    toc: false
+    center: false
+    smaller: true
+    preview-links: true
+    overview: true
+    controls: true
+    progress: true
+    scrollable: true
+    code-overflow: wrap
+    fig-align: center
+    width: 1440
+    height: 810
+execute:
+  echo: true
+---
+
+## Introduction to Docker {.nonincremental}
+
+### Workshop Overview
+
+- Build a practical understanding of Docker containers and images.
+- Learn to run, inspect, and manage containers from the command line.
+- Create your own container images with Dockerfiles.
+- Apply container workflows to research reproducibility.
+
+### Why This Workshop?
+
+- Portable environments across macOS, Linux, and Windows.
+- Reduced setup friction and fewer dependency conflicts.
+- Better collaboration and reproducibility for computational work.
+
+## Prerequisites
+
+- Basic familiarity with using a command shell.
+- Ability to create and edit files with a text editor.
+- Docker installed and running on your machine.
+- A Docker Hub account for image pull/push exercises.
+
+## Workshop Structure
+
+- Episode 1: Introducing Containers
+- Episode 2: Introducing the Docker Command Line
+- Episode 3: Exploring and Running Containers
+- Episode 4: Cleaning Up Containers
+- Episode 5: Finding Containers on Docker Hub
+- Episode 6: Creating Your Own Container Images
+- Episode 7: Creating More Complex Container Images
+- Episode 8: Examples of Using Container Images in Practice
+- Episode 9: Containers in Research Workflows: Reproducibility and Granularity
+
+{{< include 01-introduction.qmd >}}
+
+{{< include 02-meet-docker.qmd >}}
+
+{{< include 03-running-containers.qmd >}}
+
+{{< include 04-managing-containers.qmd >}}
+
+{{< include 05-docker-hub.qmd >}}
+
+{{< include 06-creating-container-images.qmd >}}
+
+{{< include 07-advanced-containers.qmd >}}
+
+{{< include 08-docker-image-examples.qmd >}}
+
+{{< include 09-reproduciblity.qmd >}}
+
+
+## Thank You
+
+Questions and discussion.

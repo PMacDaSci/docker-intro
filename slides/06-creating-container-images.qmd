@@ -1,0 +1,379 @@
+# Episode 6: Creating Your Own Container Images {.nonincremental}
+
+::: {.callout-tip icon="false" .nonincremental}
+## Questions
+
+- How can I make my own Docker container images?
+- How do I document the 'recipe' for a Docker container image?
+:::
+
+::: {.callout-tip icon="false" .nonincremental}
+## Objectives
+
+- "Explain the purpose of a `Dockerfile` and show some simple examples."
+- "Demonstrate how to build a Docker container image from a `Dockerfile`."
+- Compare the steps of creating a container image interactively versus a `Dockerfile`.
+- Create an installation strategy for a container image.
+- "Demonstrate how to upload ('push') your container images to the Docker Hub."
+- Describe the significance of the Docker Hub naming scheme.
+:::
+
+---
+
+## Why Create Your Own Container Images
+
+There are lots of reasons why you might want to create your **own** Docker container image.
+
+- You can't find a container image with all the tools you need on Docker Hub.
+- You want to have a container image to "archive" all the specific software versions you ran for a project.
+- You want to share your workflow with someone else.
+
+## Interactive Installation
+
+Before building a reproducible image, test installation steps interactively.
+
+- Start an interactive container from `alpine`:
+
+```bash
+docker container run -it alpine sh
+```
+
+`alpine` is minimal, so tools like `python3` are not preinstalled.
+
+```bash
+/# python3
+```
+
+```output
+sh: python3: not found
+```
+
+Install Python using Alpine's package manager (`apk`):
+
+```bash
+/# apk add --update python3 py3-pip python3-dev
+```
+
+Verify the install:
+
+```bash
+/# python3 --version
+```
+
+
+---
+
+## Challenge
+
+::: {.callout-note .challenge-callout icon="false" }
+
+## Searching for Help
+
+Can you find instructions for installing R on Alpine Linux? Do they work?
+
+:::
+
+
+---
+
+## Installing R on Alpine
+
+::: {.callout-note .solution-callout icon="false"  collapse="true"}
+
+## Solution
+
+A quick search should hopefully show that the way to install R on Alpine Linux is:
+
+```bash
+/# apk add R
+```
+
+:::
+
+When you exit, these interactive changes are not captured as a reproducible image.
+
+- There are commands that will "snapshot" the changes. Snapshot-style workflows are possible, but hard to reproduce.
+- Better approach: encode steps in a `Dockerfile` to create a container image.
+
+If you haven't already, exit out of the interactively running container.
+
+```bash
+/# exit
+```
+
+## Put Installation Instructions in a `Dockerfile`
+
+A `Dockerfile` is a plain-text recipe for building container images.
+
+Inspect the starter `Dockerfile`:
+
+```bash
+cd ~/Desktop/docker-intro/basic
+cat Dockerfile
+```
+
+```output
+FROM <EXISTING IMAGE>
+RUN <INSTALL CMDS FROM SHELL>
+CMD <CMD TO RUN BY DEFAULT>
+```
+
+What each instruction means:
+
+- `FROM`: which container image we’re starting with. It is the "base" container image we are going to start from.
+- `RUN`: installation commands we want to run. These are the same commands that we used interactively above.
+- `CMD`: the default command we want a container based on this container image to run, if no other command is provided. 
+  
+  - It is recommended
+  to provide `CMD` in *exec-form* (see the
+  [`CMD` section](https://docs.docker.com/engine/reference/builder/#cmd)
+  of the Dockerfile documentation for more details).
+  - It is written as a
+  list which contains the executable to run as its first element,
+  optionally followed by any arguments as subsequent elements. 
+  - The list
+  is enclosed in square brackets (`[]`) and its elements are
+  double-quoted (`"`) strings which are separated by commas. 
+  - For
+  example, `CMD ["ls", "-lF", "--color", "/etc"]` would translate
+  to `ls -lF --color /etc`.
+
+
+---
+
+::: {.callout-note}
+
+## *Shell-Form* and *Exec-Form* for CMD
+
+Another way to specify the parameter for the
+[`CMD` instruction](https://docs.docker.com/engine/reference/builder/#cmd)
+is the *shell-form*. Here you type the command as you would call it
+from the command line. Docker then silently runs this command in the
+image's standard shell.  `CMD cat /etc/passwd` is equivalent to `CMD ["/bin/sh", "-c", "cat /etc/passwd"]`. We recommend to prefer the
+more explicit *exec-form* because we will be able to create more
+flexible container image command options and make sure complex commands
+are unambiguous in this format.
+
+
+:::
+
+
+---
+
+## Challenge
+
+::: {.callout-note .challenge-callout icon="false" }
+
+## Exercise: Take a Guess
+
+Do you have any ideas about what we should use to fill in the sample Dockerfile
+to replicate the installation we did above?
+
+:::
+
+
+---
+
+## Solution
+
+::: {.callout-note .solution-callout icon="false"  collapse="true"}
+
+## Solution:
+
+Based on our experience above, edit the `Dockerfile` (in your text editor of choice)
+to look like this:
+
+```dockerfile
+FROM alpine
+RUN apk add --update python3 py3-pip python3-dev
+CMD ["python3", "--version"]
+```
+
+:::
+
+
+This Dockerfile does three things:
+
+- starts from Alpine Linux;
+- installs Python 3, pip package management tool, and Python header files;
+- sets default runtime command to print the Python 3 version.
+
+## Create a New Docker Image
+
+At this point, you only have a `Dockerfile`.
+Use `docker image build` to turn it into an image.
+
+`docker image build` needs two key inputs:
+
+- Dockerfile location (build context)
+- output image name (typically `USERNAME/CONTAINER_IMAGE_NAME`)
+
+Typical command format:
+
+```bash
+docker image build -t USERNAME/CONTAINER_IMAGE_NAME .
+```
+
+`-t` sets the output image name.
+Final `.` means: use current directory as build context.
+
+Example:
+
+```bash
+docker image build -t alice/alpine-python .
+```
+
+
+---
+
+## Build Context
+
+::: {.callout-note}
+
+## Build Context
+
+- The final argument to `docker image build` is a directory, not the Dockerfile itself.
+- That directory is the **build context**.
+- Docker expects the Dockerfile and any copied files to be available there.
+- Keep the build context small so Docker only loads what you actually need.
+
+
+:::
+
+
+---
+
+## Challenge
+
+::: {.callout-note .challenge-callout icon="false" }
+
+## Exercise: Review!
+
+1. Think back to earlier. What command can you run to check if your container image was created
+  successfully? (Hint: what command shows the container images on your computer?)
+
+2. We didn't specify a tag for our container image name. What tag did Docker automatically use?
+
+3. What command will run a container based on the container image you've created? What should happen by default
+  if you run such a container? Can you make it do something different, like print
+  "hello world"?
+
+:::
+
+
+---
+
+## Solution
+
+::: {.callout-note .solution-callout icon="false"  collapse="true"}
+
+## Solution
+
+1. To see your new image, run `docker image ls`. You should see the name of your new
+  container image under the "REPOSITORY" heading.
+
+2. In the output of `docker image ls`, you can see that Docker has automatically
+  used the `latest` tag for our new container image.
+
+3. We want to use `docker container run` to run a container based on a container image.
+
+The following command should run a container and print out our default message, the version
+of Python:
+
+```bash
+docker container run alice/alpine-python
+```
+
+To run a container based on our container image and print out "Hello world" instead:
+
+```bash
+docker container run alice/alpine-python echo "Hello World"
+```
+
+:::
+
+This is a major milestone:
+
+- you combined a Linux base image with your own setup;
+- the same container can run consistently across macOS, Windows, Linux, and cloud systems.
+
+## Boring but Important Notes About Installation
+
+Installation strategy matters. Use these guidelines:
+
+- **Start from the right base image**:
+  use official Python/R images where possible.
+- **Keep images lean**:
+  install only what you need.
+- **Use distro-appropriate package tools**:
+  Alpine `apk`, Ubuntu `apt/apt-get`, CentOS `yum`, etc.
+- **Reuse familiar installers**:
+  tools like `pip` or `install.packages()` can still be useful inside containers (if the basic scripting language is installed).
+- **Follow upstream docs**:
+  README/install guides often provide the best Linux setup path.
+
+A practical installation workflow:
+
+- Make a list of what you want to install.
+- Look for pre-existing container images.
+- Read through instructions for software you'll need to install.
+- Try installing everything interactively in your base container -- take notes!
+- From your interactive installation, create a `Dockerfile` and then try to build
+  the container image from that.
+
+## Share Your New Container Image on Docker Hub
+
+To publish publicly, push your image to Docker Hub.
+
+- If the name follows the Docker Hub pattern, use `docker image push`:
+
+```bash
+docker image push alice/alpine-python
+```
+
+Use your full image name.
+
+After pushing, confirm on [https://hub.docker.com](https://hub.docker.com) that the image appears in your account.
+
+
+
+::: {.callout-note}
+
+## Logging In
+
+- You must be logged in before pushing to Docker Hub.
+- If `docker image push` fails, run `docker login` first.
+- Then retry the push command.
+
+
+:::
+
+## What's in a Name? (Again)
+
+Locally, you can name images however you like.
+For sharing, use Docker Hub naming format:
+
+- `USERNAME/CONTAINER_IMAGE_NAME:TAG`
+
+For example, imagine someone
+named Alice has been working on a workflow container image and called it `workflow-test`
+on her own computer. She now wants to share it in her `alice` Docker Hub account
+with the name `workflow-complete` and a tag of `v1`.
+
+Use `docker image tag` to rename/re-tag images for publishing.
+
+Example:
+
+```bash
+docker image tag workflow-test alice/workflow-complete:v1
+```
+
+Then push the tagged image:
+
+- `docker image push alice/workflow-complete:v1`
+
+
+
+ 
+
+

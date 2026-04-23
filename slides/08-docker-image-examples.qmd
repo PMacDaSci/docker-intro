@@ -1,0 +1,344 @@
+# Episode 8: Examples of Using Container Images in Practice {.nonincremental}
+
+::: {.callout-tip icon="false" .nonincremental}
+## Questions
+
+- How can I use Docker for my own work?
+:::
+
+::: {.callout-tip icon="false" .nonincremental}
+## Objectives
+
+- Use existing container images and Docker in a research project.
+:::
+
+---
+
+## Practical Workflow Examples
+
+Practical workflow examples:
+
+- Example 1: automate website deployment with GitHub Actions.
+- Example 2: move container-based workflows onto HPC systems.
+
+## Repo Structure on Main Branch
+
+Containers can power cloud CI/CD workflows.
+
+- automate repetitive tasks;
+- keep build environments consistent;
+- deploy simple project websites automatically.
+
+### GitHub Actions
+
+GitHub Actions automates repetitive project tasks:
+
+- Testing if your software works correctly (Continuous Integration)
+- Building components for distribution to your users (Continuous Deployment)
+- Building documentation
+
+Why run this in the cloud?
+
+- Your software works on your computer, but you forgot to mention this one crucial package that
+  is required for correct operation.
+- Your software used to work, but since the last update something broke.
+- Someone else contributed to your package but didn't run the same version of the document
+  converter: the documentation looks different now.
+
+CI/CD helps by using a consistent, controlled environment.
+
+- GitHub Actions is configured with YAML workflow files.
+- Jobs run behind the scenes in container-based environments.
+- The example here uses a containerized Pandoc workflow to publish a simple site.
+
+### Building Content for Deployment via GitHub Pages with Pandoc
+
+Goal: publish a simple GitHub Pages site from `README.md`.
+
+- the README stays the single source of truth;
+- Pandoc converts it to HTML;
+- GitHub Actions rebuilds and republishes the page automatically.
+
+Pandoc performs the Markdown-to-HTML conversion.
+
+
+---
+
+## Why Pandoc?
+
+::: {.callout-note}
+
+## Why Pandoc?
+
+Pandoc is useful here because it supports:
+
+- Supports citations (from BibTeX or CSL database)
+- Rendered equations (using MathJax, optionally numbered)
+- Code highlighting
+- Highly customizable
+  
+
+:::
+
+Workflow:
+
+- start with a repository containing `README.md` on `main`;
+- convert it to `index.html` using Pandoc;
+- publish the built files to `gh-pages`.
+
+## GitHub Actions: Example Repository
+
+Example repository: [jhidding/readme-pages](https://github.com/jhidding/readme-pages)
+
+![](../episodes/fig/github-main-branch.png){alt='A GitHub project with a README' width="90%"}
+
+## Rendered GitHub Pages Output
+
+Pandoc converts the README into a simple static site.
+
+![](../episodes/fig/github-io-pages.png){alt='Rendered GitHub Pages' width="90%"}
+
+## `gh-pages` Branch Contents
+
+The `gh-pages` branch holds the published site.
+
+![](../episodes/fig/github-gh-pages-branch.png){alt='gh-pages branch of the project' width="90%"}
+
+## Why Only `index.html` and `.nojekyll`?
+
+Only `index.html` and `.nojekyll` are needed.
+
+- `.nojekyll` tells GitHub Pages to skip Jekyll processing.
+- Pages then serves the branch content directly.
+
+## Create a GitHub Project
+
+Create a GitHub project with a short `README.md`:
+
+- Log in to GitHub.
+- Create a new repository.
+- Clone it locally (GitHub shows the exact command).
+
+```bash
+git clone <your-repo-url>
+cd <repo-name>
+```
+
+## Verify Generated HTML Output
+
+Check the Pandoc container first:
+
+```bash
+docker container run pandoc/core --version
+```
+
+Convert `README.md` inside the container:
+
+```bash
+docker container run --mount type=bind,source=${PWD},target=/tmp pandoc/core /tmp/README.md
+```
+
+```output
+<h1 id="readme-pages">readme-pages</h1>
+<p>Example for generating GitHub.io pages from Readme with Pandoc.</p>
+```
+
+The mount exposes your repository as `/tmp` inside the container, so Pandoc can read and write files on your machine.
+
+To create a complete HTML document:
+
+- Add `--standalone` flag for full document structure
+- Redirect output to save as `index.html` in `build/` directory
+
+```bash
+mkdir -p build
+docker container run --mount type=bind,source=${PWD},target=/tmp pandoc/core /tmp/README.md --standalone --output=/tmp/build/index.html
+```
+
+```output
+[WARNING] This document format requires a nonempty <title> element.
+  Defaulting to 'README' as the title.
+  To specify a title, use 'title' in metadata or --metadata title="...".
+```
+
+To suppress the warning, add this header to `README.md` (Or pass `--metadata title="..."` on the command line): 
+
+```yaml
+---
+title: Hello, Pandoc
+---
+```
+
+
+## Using Pandoc to Create a Website
+
+Check the output with:
+
+```bash
+cat build/index.html
+```
+
+```output
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+... etc
+```
+
+Once the local flow works, automate it with GitHub Actions.
+
+## Create the Workflow and Trigger
+
+GitHub Actions can rebuild and publish on each commit.
+
+In GitHub, navigate to your project and create a new workflow:
+
+- Click **Actions** tab
+- Skip workflow templates  
+- Select **set up a workflow yourself**
+- Configure in YAML format
+
+Start with the workflow name:
+
+```yaml
+name: Deploy pages
+```
+
+Define trigger conditions, for example push to `main`:
+
+```yaml
+on:
+  push:
+    branches:
+      - main
+```
+
+## Define Build Job Steps
+
+Then define the job steps.
+
+```yaml
+jobs:
+  # a free machine-readable name for this job
+  deploy:
+    # Set permissions for this specific job to enable it to write to the gh-pages branch
+    permissions:
+      contents: write
+    # specify the base operating system
+    runs-on: ubuntu-latest
+    steps:
+      # fetch the contents of the repository
+      - name: Checkout repo content
+        uses: actions/checkout@v2
+      - name: Prepare build environment
+        run: |   # multiple Bash commands follow
+          mkdir -p build
+          touch build/.nojekyll
+```
+## Add Pandoc and Deploy Steps
+
+Add the containerized Pandoc step:
+
+```yaml
+      - name: Run pandoc
+        # Always specify a version!
+        uses: docker://pandoc/core:2.12
+        with:
+          args: >-  # multi-line argument
+            --standalone
+            --output=build/index.html
+            README.md
+      - name: Deploy on github pages
+        # Use a third-party plugin to upload the content
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages
+          folder: build
+```
+
+Key differences in GitHub Actions:
+
+- No `--mount` flag needed; files placed automatically in correct location
+- Last step uploads `build` directory to `gh-pages` branch
+
+**Enable GitHub Pages:**
+
+- In repository **Settings**, scroll to **GitHub Pages**
+- Select root folder of `gh-pages` branch
+- Deploy completes in seconds
+
+## Using Containers on an HPC Cluster
+
+Containers are also useful on shared research infrastructure:
+
+- build and test locally;
+- run at scale on a cluster later;
+- keep the software environment consistent across both places.
+
+
+**One catch:** many HPC systems do not allow Docker itself for security reasons. Instead, they often use Singularity, Apptainer, or Shifter, which can still consume Docker-built images.
+
+
+::: {.callout-tip}
+
+## Future Workshop: Apptainer Deep Dive
+
+Detailed Apptainer usage will be covered in the next workshop.
+
+:::
+
+Apptainer is similar to Docker, but typically uses `.sif` image files and is often better suited to shared HPC systems.
+
+### Apptainer vs Singularity
+
+- Apptainer is the actively maintained continuation used on many modern HPC systems.
+- Singularity appears in many existing tutorials and cluster docs.
+- In practice, commands are very similar, so older Singularity references are still useful.
+
+
+---
+
+## Apptainer Command Line Interface
+
+::: {.callout-note .challenge-callout icon="false" }
+
+## Apptainer Command Line Interface
+
+Like we did with Docker, try to work out what commands Apptainer has.
+Which one do you think is the equivalent of `docker run`?
+:::
+
+
+---
+
+## Solution
+
+::: {.callout-note .solution-callout icon="false"  collapse="true"}
+
+`apptainer run` behaves similarly to `docker run`, but as we will see, the arguments are somewhat different.
+:::
+
+### Running Docker Images with Apptainer
+
+Apptainer uses its own image format, so Docker images are typically pulled/converted first:
+
+```bash
+apptainer pull docker://alice/alpine-python
+```
+
+This creates `alpine_python.sif` in your working directory.
+Run it with:
+
+```bash
+apptainer run alpine_python.sif
+```
+
+### Apptainer Exec
+
+To run a custom command, use `apptainer exec`:
+
+```bash
+apptainer exec alpine_python.sif python -c 'print(1 + 1)'
+```
+

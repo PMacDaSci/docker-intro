@@ -1,0 +1,218 @@
+# Episode 9: Containers in Research Workflows: Reproducibility and Granularity {.nonincremental}
+
+::: {.callout-tip icon="false" .nonincremental}
+## Questions
+
+- How can I use container images to make my research more reproducible?
+- How do I incorporate containers into my research workflow?
+:::
+
+::: {.callout-tip icon="false" .nonincremental}
+## Objectives
+
+- Understand how container images can help make research more reproducible.
+- Understand what practical steps I can take to improve the reproducibility of my research using containers.
+:::
+
+---
+
+## Bringing It Together: The Reproducibility Focus
+
+So far, we focused mostly on Docker mechanics.
+This section focuses on reproducibility in research workflows.
+
+::: {.callout-note}
+
+## Work in Progress...
+
+- Reproducibility practices for containers are still evolving.
+- The principles here are useful now, but best practice will continue to change.
+
+:::
+
+## Reproducibility
+
+Reproducibility means:
+
+- someone else (or future you) can rerun your computational work later
+- results are as close as possible to the original
+- exact same hardware is not required
+
+Why this matters:
+
+- research outputs increasingly depend on software
+- software stacks are complex and dependency-heavy
+- others need to verify and build on published work
+
+---
+
+## Why Containers Help Reproducibility
+
+Containers are useful because they let you:
+
+- run the same workflow across Windows, macOS, and Linux
+- capture the exact software versions and dependencies
+- preserve older software environments for legacy workflows
+- optionally bundle key reference data with the environment
+- archive a reusable snapshot that others can inspect and rerun
+
+---
+
+## Sharing Images
+
+Docker Hub is useful for day-to-day sharing and collaboration.
+
+But it is not ideal for long-term research archiving because:
+
+- free accounts have a limit on how long a container image will be hosted if it is not updated
+- it does not support adding persistent identifiers to container images
+- it is easy to overwrite tagged container images with newer versions by mistake.
+
+---
+
+## Archiving and Persistently Identifying Container Images Using Zenodo
+
+For publications, archive images in an immutable, citable form.
+[Zenodo](https://zenodo.org/) is one option.
+
+Zenodo accepts tar archives.
+Export an image with `docker image save`:
+
+```bash
+docker image save alice/alpine-python:v1 -o alpine-python.tar
+```
+
+If needed, compress before upload:
+
+```bash
+gzip alpine-python.tar
+```
+
+Note: Zenodo has upload size limits (for example, 50 GB per upload at the time of writing), so compression (gzip/zip) may be required.
+
+---
+
+## Why Archive with Zenodo?
+
+After creating the archive, [deposit it on Zenodo](https://zenodo.org/deposit/) to:
+
+- create a long-term archive snapshot that others can download and reuse
+- mint a persistent DOI (*Digital Object Identifier*) for citation in publications
+- support attribution and credit for your computational work
+
+You will also provide metadata about the image and related work.
+
+Zenodo is one option; some institutions provide equivalent archive/DOI services.
+
+---
+
+## Reproducibility Good Practice
+
+- use images to capture the computational environment for your work
+- choose container granularity based on your workflow and domain norms
+- document what you did and why in both image docs and project docs
+- when publishing, archive the exact image and cite its DOI
+- use tags so older image versions remain accessible
+
+---
+
+## Reproducibility Good Practice (Important Caveat)
+
+- a built and archived image gives a durable software snapshot
+- a Dockerfile is lightweight and useful for rebuilding later
+- if you only keep a Dockerfile, pin versions explicitly
+- unpinned dependencies can change and break reproducibility over time
+
+---
+
+## Container Granularity
+
+An important design choice is container **granularity**.
+
+Two extremes are:
+
+- create one large image with all tools for the full workflow
+- create many small images, each for one command or workflow step
+
+Most real workflows use a middle ground between these extremes.
+
+
+---
+
+## Positives and Negatives
+
+::: {.callout-note .challenge-callout icon="false" }
+
+## Positives and Negatives
+
+What are the advantages and disadvantages of the two approaches to container granularity for research
+workflows described above? Think about this
+and write a few bullet points for advantages and disadvantages for each approach in the course Etherpad.
+
+:::
+
+
+---
+
+## Solution
+
+::: {.callout-note .solution-callout icon="false"  collapse="true"}
+
+## Solution
+
+This is not an exhaustive list but some of the advantages and disadvantages could be:
+
+### Single Large Container Image
+
+- Advantages:
+  - Simpler to document
+  - Full set of requirements packaged in one place
+  - Potentially easier to maintain (though could be opposite if working with large, distributed group)
+- Disadvantages:
+  - Could get very large in size, making it more difficult to distribute
+    - Could use [Docker multi-stage build](https://docs.docker.com/develop/develop-images/multistage-build) to reduce size
+  - May end up with same dependency issues within the container image from different software requirements
+  - Potentially more complex to test
+  - Less re-useable for different, but related, work
+
+### Multiple Smaller Container Images
+
+- Advantages:
+  - Individual components can be re-used for different, but related, work
+  - Individual parts are smaller in size making them easier to distribute
+  - Avoid dependency issues between different pieces of software
+  - Easier to test
+- Disadvantage:
+  - More difficult to document
+  - Potentially more difficult to maintain (though could be easier if working with large, distributed group)
+  - May end up with dependency issues between component container images if they get out of sync
+    
+    
+
+:::
+
+
+
+
+---
+
+## Container Workflow Challenges
+
+::: {.callout-note .challenge-callout icon="false" }
+
+## Next Steps with Containers
+
+Now that we're at the end of the lesson material, take a moment to reflect on
+what you've learned, how it applies to you, and what to do next.
+
+1. In your own notes, write down or diagram your understanding of Docker containers and container images:
+  concepts, commands, and how they work.
+2. In the workshop's shared notes document, write down how you think you might
+  use containers in your daily work. If there's something you want to try doing with
+  containers right away, what is a next step after this workshop to make that happen?
+
+:::
+
+ 
+
+
