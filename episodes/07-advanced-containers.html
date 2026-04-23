@@ -4906,7 +4906,7 @@ padding-top: 4px !important;
   <ul>
   <li><a href="#using-scripts-and-files-from-outside-the-container" id="toc-using-scripts-and-files-from-outside-the-container" class="nav-link active" data-scroll-target="#using-scripts-and-files-from-outside-the-container">Using scripts and files from outside the container</a></li>
   <li><a href="#including-your-scripts-and-data-within-a-container-image" id="toc-including-your-scripts-and-data-within-a-container-image" class="nav-link" data-scroll-target="#including-your-scripts-and-data-within-a-container-image">Including your scripts and data within a container image</a></li>
-  <li><a href="#more-fancy-dockerfile-options-optional-for-presentation-or-as-exercises" id="toc-more-fancy-dockerfile-options-optional-for-presentation-or-as-exercises" class="nav-link" data-scroll-target="#more-fancy-dockerfile-options-optional-for-presentation-or-as-exercises">More fancy <code>Dockerfile</code> options (optional, for presentation or as exercises)</a>
+  <li><a href="#more-fancy-dockerfile-options" id="toc-more-fancy-dockerfile-options" class="nav-link" data-scroll-target="#more-fancy-dockerfile-options">More fancy <code>Dockerfile</code> options</a>
   <ul class="collapse">
   <li><a href="#make-the-sum.py-script-run-automatically" id="toc-make-the-sum.py-script-run-automatically" class="nav-link" data-scroll-target="#make-the-sum.py-script-run-automatically">Make the <code>sum.py</code> script run automatically</a></li>
   <li><a href="#add-the-sum.py-script-to-the-path-so-you-can-run-it-directly" id="toc-add-the-sum.py-script-to-the-path-so-you-can-run-it-directly" class="nav-link" data-scroll-target="#add-the-sum.py-script-to-the-path-so-you-can-run-it-directly">Add the <code>sum.py</code> script to the <code>PATH</code> so you can run it directly:</a></li>
@@ -5057,7 +5057,7 @@ Other Commonly Used Docker Run Flags
 <div class="callout-body-container callout-body">
 <p>Docker run has many other useful flags to alter its function. A couple that are commonly used include <code>-w</code> and <code>-u</code>.</p>
 <p>The <code>--workdir</code>/<code>-w</code> flag sets the working directory a.k.a. runs the command being executed inside the directory specified. For example, the following code would run the <code>pwd</code> command in a container started from the latest ubuntu image in the <code>/home/alice</code> directory and print <code>/home/alice</code>. If the directory doesn’t exist in the image it will create it.</p>
-<pre><code>docker container run -w /home/alice/ ubuntu pwd</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run <span class="at">-w</span> /home/alice/ ubuntu pwd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The <code>--user</code>/<code>-u</code> flag lets you specify the username you would like to run the container as. This is helpful if you’d like to write files to a mounted folder and not write them as <code>root</code> but rather your own user identity and group. A common example of the <code>-u</code> flag is <code>--user $(id -u):$(id -g)</code> which will fetch the current user’s ID and group and run the container as that user.</p>
 </div>
 </div>
@@ -5168,7 +5168,7 @@ Solution
 <div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/yourname/Desktop/docker-intro/sum</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Let’s add a new line to the <code>Dockerfile</code> we’ve been using so far to create a copy of <code>sum.py</code>. We can do so by using the <code>COPY</code> keyword.</p>
-<pre><code>COPY sum.py /home</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> sum.py /home</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This line will cause Docker to copy the file from your computer into the container’s filesystem. Let’s build the container image like before, but give it a different name:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image build <span class="at">-t</span> alice/alpine-sum .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -5243,24 +5243,24 @@ Copying alternatives
 </div>
 <div class="callout-body-container callout-body">
 <p>Another trick for getting your own files into a container image is by using the <code>RUN</code> keyword and downloading the files from the internet. For example, if your code is in a GitHub repository, you could include this statement in your Dockerfile to download the latest version every time you build the container image:</p>
-<pre><code>RUN git clone https://github.com/alice/mycode</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="fu">git</span> clone https://github.com/alice/mycode</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Similarly, the <code>wget</code> command can be used to download any file publicly available on the internet:</p>
-<pre><code>RUN wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.10.0/ncbi-blast-2.10.0+-x64-linux.tar.gz</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="fu">wget</span> ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.10.0/ncbi-blast-2.10.0+-x64-linux.tar.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Note that the above <code>RUN</code> examples depend on commands (<code>git</code> and <code>wget</code> respectively) that must be available within your container: Linux distributions such as Alpine may require you to install such commands before using them within <code>RUN</code> statements.</p>
 </div>
 </div>
 </section>
-<section id="more-fancy-dockerfile-options-optional-for-presentation-or-as-exercises" class="level2">
-<h2 class="anchored" data-anchor-id="more-fancy-dockerfile-options-optional-for-presentation-or-as-exercises">More fancy <code>Dockerfile</code> options (optional, for presentation or as exercises)</h2>
+<section id="more-fancy-dockerfile-options" class="level2">
+<h2 class="anchored" data-anchor-id="more-fancy-dockerfile-options">More fancy <code>Dockerfile</code> options</h2>
 <p>We can expand on the example above to make our container image even more “automatic”. Here are some ideas:</p>
 <section id="make-the-sum.py-script-run-automatically" class="level3">
 <h3 class="anchored" data-anchor-id="make-the-sum.py-script-run-automatically">Make the <code>sum.py</code> script run automatically</h3>
-<pre><code>FROM alpine
-RUN apk add --update python3 py3-pip python3-dev
-COPY sum.py /home
-
-# Run the sum.py script as the default command
-CMD [&quot;python3&quot;, &quot;/home/sum.py&quot;]</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apk</span> add <span class="at">--update</span> python3 py3-pip python3-dev</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> sum.py /home</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the sum.py script as the default command</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">&quot;python3&quot;</span>, <span class="st">&quot;/home/sum.py&quot;</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Build and test it:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image build <span class="at">-t</span> alpine-sum:v1 .</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run alpine-sum:v1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -5272,18 +5272,18 @@ container_linux.go:349: starting container process caused &quot;exec:
 \&quot;10\&quot;: executable file not found in $PATH&quot;: unknown.</code></pre>
 <p>This is because the arguments <code>10 11 12</code> are interpreted as a <em>command</em> that replaces the default command given by <code>CMD [&quot;python3&quot;, &quot;/home/sum.py&quot;]</code> in the image.</p>
 <p>To achieve the goal of having a command that <em>always</em> runs when a container is run from the container image <em>and</em> can be passed the arguments given on the command line, use the keyword <code>ENTRYPOINT</code> in the <code>Dockerfile</code>.</p>
-<pre><code>FROM alpine
-
-RUN apk add --update python3 py3-pip python3-dev
-COPY sum.py /home
-
-# Run the sum.py script as the default command and
-# allow people to enter arguments for it
-ENTRYPOINT [&quot;python3&quot;, &quot;/home/sum.py&quot;]
-
-# Give default arguments, in case none are supplied on
-# the command-line
-CMD [&quot;10&quot;, &quot;11&quot;]</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apk</span> add <span class="at">--update</span> python3 py3-pip python3-dev</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> sum.py /home</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the sum.py script as the default command and</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># allow people to enter arguments for it</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ENTRYPOINT</span> [<span class="st">&quot;python3&quot;</span>, <span class="st">&quot;/home/sum.py&quot;</span>]</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Give default arguments, in case none are supplied on</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co"># the command-line</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">&quot;10&quot;</span>, <span class="st">&quot;11&quot;</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Build and test it:</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image build <span class="at">-t</span> alpine-sum:v2 .</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Most of the time you are interested in the sum of 10 and 11:</span></span>
@@ -5311,15 +5311,15 @@ Overriding the ENTRYPOINT
 </section>
 <section id="add-the-sum.py-script-to-the-path-so-you-can-run-it-directly" class="level3">
 <h3 class="anchored" data-anchor-id="add-the-sum.py-script-to-the-path-so-you-can-run-it-directly">Add the <code>sum.py</code> script to the <code>PATH</code> so you can run it directly:</h3>
-<pre><code>FROM alpine
-
-RUN apk add --update python3 py3-pip python3-dev
-
-COPY sum.py /home
-# set script permissions
-RUN chmod +x /home/sum.py
-# add /home folder to the PATH
-ENV PATH /home:$PATH</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apk</span> add <span class="at">--update</span> python3 py3-pip python3-dev</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> sum.py /home</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># set script permissions</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="fu">chmod</span> +x /home/sum.py</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co"># add /home folder to the PATH</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ENV</span> PATH /home:$PATH</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Build and test it:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image build <span class="at">-t</span> alpine-sum:v3 .</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run alpine-sum:v3 sum.py 1 2 3 4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

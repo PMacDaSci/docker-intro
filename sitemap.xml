@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://PMacDaSci.github.io/docker-intro/slides/02-meet-docker.html</loc>
+    <lastmod>2026-04-23T06:54:04.317Z</lastmod>
+  </url>
+  <url>
+    <loc>https://PMacDaSci.github.io/docker-intro/slides/06-creating-container-images.html</loc>
+    <lastmod>2026-04-23T06:54:49.332Z</lastmod>
+  </url>
+  <url>
+    <loc>https://PMacDaSci.github.io/docker-intro/slides/07-advanced-containers.html</loc>
+    <lastmod>2026-04-23T06:54:47.868Z</lastmod>
+  </url>
+  <url>
+    <loc>https://PMacDaSci.github.io/docker-intro/slides/workshop-slides.html</loc>
+    <lastmod>2026-04-23T06:46:00.453Z</lastmod>
+  </url>
+  <url>
+    <loc>https://PMacDaSci.github.io/docker-intro/slides/01-introduction.html</loc>
+    <lastmod>2026-04-23T06:53:58.301Z</lastmod>
+  </url>
+  <url>
     <loc>https://PMacDaSci.github.io/docker-intro/index.html</loc>
     <lastmod>2026-04-20T00:41:22.874Z</lastmod>
   </url>
   <url>
     <loc>https://PMacDaSci.github.io/docker-intro/episodes/08-docker-image-examples.html</loc>
-    <lastmod>2026-04-20T00:34:26.360Z</lastmod>
+    <lastmod>2026-04-23T06:25:39.405Z</lastmod>
   </url>
   <url>
     <loc>https://PMacDaSci.github.io/docker-intro/episodes/04-managing-containers.html</loc>
@@ -22,22 +42,42 @@
   </url>
   <url>
     <loc>https://PMacDaSci.github.io/docker-intro/episodes/09-reproduciblity.html</loc>
-    <lastmod>2026-04-20T00:34:26.360Z</lastmod>
+    <lastmod>2026-04-23T06:30:51.701Z</lastmod>
   </url>
   <url>
     <loc>https://PMacDaSci.github.io/docker-intro/episodes/05-docker-hub.html</loc>
-    <lastmod>2026-04-20T00:34:26.359Z</lastmod>
+    <lastmod>2026-04-23T05:56:58.848Z</lastmod>
   </url>
   <url>
     <loc>https://PMacDaSci.github.io/docker-intro/episodes/07-advanced-containers.html</loc>
-    <lastmod>2026-04-20T00:34:26.359Z</lastmod>
+    <lastmod>2026-04-23T06:05:18.188Z</lastmod>
   </url>
   <url>
     <loc>https://PMacDaSci.github.io/docker-intro/episodes/06-creating-container-images.html</loc>
-    <lastmod>2026-04-20T00:34:26.359Z</lastmod>
+    <lastmod>2026-04-23T05:57:12.810Z</lastmod>
   </url>
   <url>
     <loc>https://PMacDaSci.github.io/docker-intro/episodes/02-meet-docker.html</loc>
-    <lastmod>2026-04-20T00:34:26.359Z</lastmod>
+    <lastmod>2026-04-21T05:00:35.201Z</lastmod>
+  </url>
+  <url>
+    <loc>https://PMacDaSci.github.io/docker-intro/slides/09-reproduciblity.html</loc>
+    <lastmod>2026-04-23T06:53:26.184Z</lastmod>
+  </url>
+  <url>
+    <loc>https://PMacDaSci.github.io/docker-intro/slides/05-docker-hub.html</loc>
+    <lastmod>2026-04-23T06:56:21.416Z</lastmod>
+  </url>
+  <url>
+    <loc>https://PMacDaSci.github.io/docker-intro/slides/03-running-containers.html</loc>
+    <lastmod>2026-04-23T06:54:44.917Z</lastmod>
+  </url>
+  <url>
+    <loc>https://PMacDaSci.github.io/docker-intro/slides/04-managing-containers.html</loc>
+    <lastmod>2026-04-23T06:52:46.882Z</lastmod>
+  </url>
+  <url>
+    <loc>https://PMacDaSci.github.io/docker-intro/slides/08-docker-image-examples.html</loc>
+    <lastmod>2026-04-23T06:54:55.050Z</lastmod>
   </url>
 </urlset>

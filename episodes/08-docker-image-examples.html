@@ -4912,7 +4912,7 @@ padding-top: 4px !important;
   <li><a href="#using-containers-on-an-hpc-cluster" id="toc-using-containers-on-an-hpc-cluster" class="nav-link" data-scroll-target="#using-containers-on-an-hpc-cluster">Using Containers on an HPC Cluster</a>
   <ul class="collapse">
   <li><a href="#running-docker-containers" id="toc-running-docker-containers" class="nav-link" data-scroll-target="#running-docker-containers">Running Docker Containers</a></li>
-  <li><a href="#singularity-exec" id="toc-singularity-exec" class="nav-link" data-scroll-target="#singularity-exec">Singularity Exec</a></li>
+  <li><a href="#apptainer-exec" id="toc-apptainer-exec" class="nav-link" data-scroll-target="#apptainer-exec">Apptainer Exec</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -5058,9 +5058,9 @@ warranty, not even for merchantability or fitness for a particular purpose.</cod
   Defaulting to &#39;README&#39; as the title.
   To specify a title, use &#39;title&#39; in metadata or --metadata title=&quot;...&quot;.</code></pre>
 <p>To suppress the warning message we may add the following lines at the top of the <code>README.md</code> file:</p>
-<pre><code>---
-title: Hello, Pandoc
----</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> Hello, Pandoc</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Or add the mentioned <code>--metadata title=&quot;...&quot;</code> to the command line.</p>
 <p>Once we’ve made all of these changes, and produced the output we want, we can check it, using this command:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> build/index.html</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -5122,7 +5122,7 @@ title: Hello, Pandoc
 <section id="using-containers-on-an-hpc-cluster" class="level2">
 <h2 class="anchored" data-anchor-id="using-containers-on-an-hpc-cluster">Using Containers on an HPC Cluster</h2>
 <p>It is possible to run containers on shared computing systems run by a university or national computing center. As a researcher, you can build container images and test containers on your own computer and then run your full-scale computing work on a shared computing system like a high performance cluster or high throughput grid.</p>
-<p>The catch? Most university and national computing centers do not support <em>running</em> containers with Docker commands, and instead use a similar tool called Singularity or Shifter. However, both of these programs can be used to run containers based on Docker container images, so often people create their container image as a Docker container image, so they can run it using either of Docker or Singularity.</p>
+<p>The catch? Most university and national computing centers do not support <em>running</em> containers with Docker commands, and instead use a similar tool called Apptainer, Singularity or Shifter. However, both of these programs can be used to run containers based on Docker container images, so often people create their container image as a Docker container image, so they can run it using either of Docker, Singularity or Apptainer.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -5136,18 +5136,19 @@ Tip
 <p>You can find more detail about using Singularity in the <a href="https://carpentries-incubator.github.io/singularity-introduction/">singularity-introduction</a> Carpentries workshop.</p>
 </div>
 </div>
-<p>Singularity is a container engine, like Docker. However, unlike Docker, container images are stored as single files called <code>.sif</code> (Singularity Image Format). For a number of reasons, Singularity suits shared High Performance Computing (HPC) environments much better than Docker, so is valuable to learn if you work in these environments. A related tool called singularity is a fork of Singularity that generally has the same command line interface.</p>
+<p>Apptainer is a container engine, like Docker. However, unlike Docker, container images are typically stored as single files called <code>.sif</code> (Singularity Image Format). For a number of reasons, Apptainer suits shared High Performance Computing (HPC) environments much better than Docker, so is valuable to learn if you work in these environments.</p>
+<p>Apptainer and Singularity are closely related and largely command-compatible. The main practical difference for this workshop is naming: modern systems often provide <code>apptainer</code>, while older documentation and installations may still use <code>singularity</code> for similar commands.</p>
 <div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled" style="border-left: 4px solid #ffc107;">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Singularity Command Line Interface
+Apptainer Command Line Interface
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Like we did with Docker, try to work out what commands Singularity has. Which one do you think is the equivalent of <code>docker run</code>?</p>
+<p>Like we did with Docker, try to work out what commands Apptainer has. Which one do you think is the equivalent of <code>docker run</code>?</p>
 </div>
 </div>
 <div class="solution-callout callout callout-style-default callout-note no-icon callout-titled" style="border-left: 4px solid #ffc107;">
@@ -5162,20 +5163,20 @@ Note
 </div>
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><code>singularity run</code> behaves similarly to <code>docker run</code>, but as we will see, the arguments are somewhat different.</p>
+<p><code>apptainer run</code> behaves similarly to <code>docker run</code>, but as we will see, the arguments are somewhat different.</p>
 </div>
 </div>
 </div>
 <section id="running-docker-containers" class="level3">
 <h3 class="anchored" data-anchor-id="running-docker-containers">Running Docker Containers</h3>
-<p>Since Singularity containers have their own file format, if we have a Docker image we want to run, it first has to be converted. We can do this using <code>singularity pull</code>. For example, we can pull the container we previously pushed to Docker Hub:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">singularity</span> pull docker://alice/alpine-python</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This creates a file called <code>alpine_python.sif</code> in our working directory. To run this container, we then use <code>singularity run</code>:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">singularity</span> run alpine_python.sif</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Since Apptainer containers have their own file format, if we have a Docker image we want to run, it first has to be converted. We can do this using <code>apptainer pull</code>. For example, we can pull the container we previously pushed to Docker Hub:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> pull docker://alice/alpine-python</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This creates a file called <code>alpine_python.sif</code> in our working directory. To run this container, we then use <code>apptainer run</code>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> run alpine_python.sif</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="singularity-exec" class="level3">
-<h3 class="anchored" data-anchor-id="singularity-exec">Singularity Exec</h3>
-<p>If we want to modify the command run in the container, we have to use <code>singularity exec</code>. For example, to make Python add numbers like in our sum example, we could do:</p>
+<section id="apptainer-exec" class="level3">
+<h3 class="anchored" data-anchor-id="apptainer-exec">Apptainer Exec</h3>
+<p>If we want to modify the command run in the container, we have to use <code>apptainer exec</code>. For example, to make Python add numbers like in our sum example, we could do:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apptainer</span> exec alpine_python.sif python <span class="at">-c</span> <span class="st">&#39;print(1 + 1)&#39;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For more information, check these additional resources:</p>
 <ul>

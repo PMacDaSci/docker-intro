@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Containers in Research Workflows: Reproducibility and Granularity – Introduction to Docker</title>
+<title>reproduciblity – Introduction to Docker</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -4904,149 +4904,199 @@ padding-top: 4px !important;
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#reproducibility" id="toc-reproducibility" class="nav-link active" data-scroll-target="#reproducibility">Reproducibility</a></li>
-  <li><a href="#sharing-images" id="toc-sharing-images" class="nav-link" data-scroll-target="#sharing-images">Sharing images</a></li>
-  <li><a href="#archiving-and-persistently-identifying-container-images-using-zenodo" id="toc-archiving-and-persistently-identifying-container-images-using-zenodo" class="nav-link" data-scroll-target="#archiving-and-persistently-identifying-container-images-using-zenodo">Archiving and persistently identifying container images using Zenodo</a></li>
-  <li><a href="#reproducibility-good-practice" id="toc-reproducibility-good-practice" class="nav-link" data-scroll-target="#reproducibility-good-practice">Reproducibility good practice</a></li>
+  <li><a href="#episode-9-containers-in-research-workflows-reproducibility-and-granularity" id="toc-episode-9-containers-in-research-workflows-reproducibility-and-granularity" class="nav-link active" data-scroll-target="#episode-9-containers-in-research-workflows-reproducibility-and-granularity">Episode 9: Containers in Research Workflows: Reproducibility and Granularity</a>
+  <ul class="collapse">
+  <li><a href="#bringing-it-together-the-reproducibility-focus" id="toc-bringing-it-together-the-reproducibility-focus" class="nav-link" data-scroll-target="#bringing-it-together-the-reproducibility-focus">Bringing It Together: The Reproducibility Focus</a></li>
+  <li><a href="#reproducibility" id="toc-reproducibility" class="nav-link" data-scroll-target="#reproducibility">Reproducibility</a></li>
+  <li><a href="#why-containers-help-reproducibility" id="toc-why-containers-help-reproducibility" class="nav-link" data-scroll-target="#why-containers-help-reproducibility">Why Containers Help Reproducibility</a></li>
+  <li><a href="#sharing-images" id="toc-sharing-images" class="nav-link" data-scroll-target="#sharing-images">Sharing Images</a></li>
+  <li><a href="#archiving-and-persistently-identifying-container-images-using-zenodo" id="toc-archiving-and-persistently-identifying-container-images-using-zenodo" class="nav-link" data-scroll-target="#archiving-and-persistently-identifying-container-images-using-zenodo">Archiving and Persistently Identifying Container Images Using Zenodo</a></li>
+  <li><a href="#why-archive-with-zenodo" id="toc-why-archive-with-zenodo" class="nav-link" data-scroll-target="#why-archive-with-zenodo">Why Archive with Zenodo?</a></li>
+  <li><a href="#reproducibility-good-practice" id="toc-reproducibility-good-practice" class="nav-link" data-scroll-target="#reproducibility-good-practice">Reproducibility Good Practice</a></li>
+  <li><a href="#reproducibility-good-practice-important-caveat" id="toc-reproducibility-good-practice-important-caveat" class="nav-link" data-scroll-target="#reproducibility-good-practice-important-caveat">Reproducibility Good Practice (Important Caveat)</a></li>
   <li><a href="#container-granularity" id="toc-container-granularity" class="nav-link" data-scroll-target="#container-granularity">Container Granularity</a></li>
+  <li><a href="#positives-and-negatives" id="toc-positives-and-negatives" class="nav-link" data-scroll-target="#positives-and-negatives">Positives and Negatives</a></li>
+  <li><a href="#solution" id="toc-solution" class="nav-link" data-scroll-target="#solution">Solution</a></li>
+  <li><a href="#container-workflow-challenges" id="toc-container-workflow-challenges" class="nav-link" data-scroll-target="#container-workflow-challenges">Container Workflow Challenges</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Containers in Research Workflows: Reproducibility and Granularity</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
 
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<div class="callout callout-style-default callout-tip callout-titled">
+<section id="episode-9-containers-in-research-workflows-reproducibility-and-granularity" class="level1 nonincremental">
+<h1 class="nonincremental">Episode 9: Containers in Research Workflows: Reproducibility and Granularity</h1>
+<div class="nonincremental callout callout-style-default callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Overview
+Questions
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>Teaching:</strong> 20</li>
-<li><strong>Exercises:</strong> 5</li>
-<li><strong>Questions:</strong>
-<ul>
 <li>How can I use container images to make my research more reproducible?</li>
 <li>How do I incorporate containers into my research workflow?</li>
-</ul></li>
-<li><strong>Objectives:</strong>
-<ul>
-<li>Understand how container images can help make research more reproducible.</li>
-<li>Understand what practical steps I can take to improve the reproducibility of my research using containers.</li>
-</ul></li>
 </ul>
 </div>
 </div>
-<p>So far we have mostly covered the mechanics of using Docker with only passing reference to the reproducibility aspects. In this section, we discuss these aspects in more detail.</p>
+<div class="nonincremental callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Understand how container images can help make research more reproducible.</li>
+<li>Understand what practical steps I can take to improve the reproducibility of my research using containers.</li>
+</ul>
+</div>
+</div>
+<hr>
+<section id="bringing-it-together-the-reproducibility-focus" class="level2">
+<h2 class="anchored" data-anchor-id="bringing-it-together-the-reproducibility-focus">Bringing It Together: The Reproducibility Focus</h2>
+<p>So far, we focused mostly on Docker mechanics. This section focuses on reproducibility in research workflows.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Work in progress…
+Work in Progress…
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Note that reproducibility aspects of software and containers are an active area of research, discussion and development so are subject to many changes. We will present some ideas and approaches here but best practices will likely evolve in the near future.</p>
+<ul>
+<li>Reproducibility practices for containers are still evolving.</li>
+<li>The principles here are useful now, but best practice will continue to change.</li>
+</ul>
 </div>
 </div>
+</section>
 <section id="reproducibility" class="level2">
 <h2 class="anchored" data-anchor-id="reproducibility">Reproducibility</h2>
-<p>By <em>reproducibility</em> here we mean the ability of someone else (or your future self) being able to reproduce what you did computationally at a particular time (be this in research, analysis or something else) as closely as possible, even if they do not have access to exactly the same hardware resources that you had when you did the original work.</p>
-<p>What makes this especially important? With research being increasingly digital in nature, more and more of our research outputs are a result of the use of software and data processing or analysis. With complex software stacks or groups of dependencies often being required to run research software, we need approaches to ensure that we can make it as easy as possible to recreate an environment in which a given research process was undertaken. There many reasons why this matters, one example being someone wanting to reproduce the results of a publication in order to verify them and then build on that research.</p>
-<p>Some examples of why containers are an attractive technology to help with reproducibility include:</p>
+<p>Reproducibility means:</p>
 <ul>
-<li>The same computational work can be run seamlessly on different operating systems (e.g. Windows, macOS, Linux).</li>
-<li>You can save the exact process that you used for your computational work (rather than relying on potentially incomplete notes).</li>
-<li>You can save the exact versions of software and their dependencies in the container image.</li>
-<li>You can provide access to legacy versions of software and underlying dependencies which may not be generally available any more.</li>
-<li>Depending on their size, you can also potentially store a copy of key data within the container image.</li>
-<li>You can archive and share a container image as well as associating a persistent identifier with it, to allow other researchers to reproduce and build on your work.</li>
+<li>someone else (or future you) can rerun your computational work later</li>
+<li>results are as close as possible to the original</li>
+<li>exact same hardware is not required</li>
 </ul>
+<p>Why this matters:</p>
+<ul>
+<li>research outputs increasingly depend on software</li>
+<li>software stacks are complex and dependency-heavy</li>
+<li>others need to verify and build on published work</li>
+</ul>
+<hr>
+</section>
+<section id="why-containers-help-reproducibility" class="level2">
+<h2 class="anchored" data-anchor-id="why-containers-help-reproducibility">Why Containers Help Reproducibility</h2>
+<p>Containers are useful because they let you:</p>
+<ul>
+<li>run the same workflow across Windows, macOS, and Linux</li>
+<li>capture the exact software versions and dependencies</li>
+<li>preserve older software environments for legacy workflows</li>
+<li>optionally bundle key reference data with the environment</li>
+<li>archive a reusable snapshot that others can inspect and rerun</li>
+</ul>
+<hr>
 </section>
 <section id="sharing-images" class="level2">
-<h2 class="anchored" data-anchor-id="sharing-images">Sharing images</h2>
-<p>As we have already seen, the Docker Hub provides a platform for sharing container images publicly. Once you have uploaded a container image, you can point people to its public location and they can download and build upon it.</p>
-<p>This is fine for working collaboratively with container images on a day-to-day basis but the Docker Hub is not a good option for long-term archiving of container images in support of research and publications as:</p>
+<h2 class="anchored" data-anchor-id="sharing-images">Sharing Images</h2>
+<p>Docker Hub is useful for day-to-day sharing and collaboration.</p>
+<p>But it is not ideal for long-term research archiving because:</p>
 <ul>
 <li>free accounts have a limit on how long a container image will be hosted if it is not updated</li>
 <li>it does not support adding persistent identifiers to container images</li>
 <li>it is easy to overwrite tagged container images with newer versions by mistake.</li>
 </ul>
+<hr>
 </section>
 <section id="archiving-and-persistently-identifying-container-images-using-zenodo" class="level2">
-<h2 class="anchored" data-anchor-id="archiving-and-persistently-identifying-container-images-using-zenodo">Archiving and persistently identifying container images using Zenodo</h2>
-<p>When you publish your work or make it publicly available in some way it is good practice to make container images that you used for computational work available in an immutable, persistent way and to have an identifier that allows people to cite and give you credit for the work you have done. <a href="https://zenodo.org/">Zenodo</a> is one service that provides this functionality.</p>
-<p>Zenodo supports the upload of <em>tar</em> archives and we can capture our Docker container images as tar archives using the <code>docker image save</code> command. For example, to export the container image we created earlier in this lesson:</p>
+<h2 class="anchored" data-anchor-id="archiving-and-persistently-identifying-container-images-using-zenodo">Archiving and Persistently Identifying Container Images Using Zenodo</h2>
+<p>For publications, archive images in an immutable, citable form. <a href="https://zenodo.org/">Zenodo</a> is one option.</p>
+<p>Zenodo accepts tar archives. Export an image with <code>docker image save</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image save alice/alpine-python:v1 <span class="at">-o</span> alpine-python.tar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>These tar container images can become quite large and Zenodo supports uploads up to 50GB so you may need to compress your archive to make it fit on Zenodo using a tool such as gzip (or zip):</p>
+<p>If needed, compress before upload:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> alpine-python.tar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Once you have your archive, you can <a href="https://zenodo.org/deposit/">deposit it on Zenodo</a> and this will:</p>
+<p>Note: Zenodo has upload size limits (for example, 50 GB per upload at the time of writing), so compression (gzip/zip) may be required.</p>
+<hr>
+</section>
+<section id="why-archive-with-zenodo" class="level2">
+<h2 class="anchored" data-anchor-id="why-archive-with-zenodo">Why Archive with Zenodo?</h2>
+<p>After creating the archive, <a href="https://zenodo.org/deposit/">deposit it on Zenodo</a> to:</p>
 <ul>
-<li>Create a long-term archive snapshot of your Docker container image which people (including your future self) can download and reuse or reproduce your work.</li>
-<li>Create a persistent DOI (<em>Digital Object Identifier</em>) that you can cite in any publications or outputs to enable reproducibility and recognition of your work.</li>
+<li>create a long-term archive snapshot that others can download and reuse</li>
+<li>mint a persistent DOI (<em>Digital Object Identifier</em>) for citation in publications</li>
+<li>support attribution and credit for your computational work</li>
 </ul>
-<p>In addition to the archive file itself, the deposit process will ask you to provide some basic metadata to classify the container image and the associated work.</p>
-<p>Note that Zenodo is not the only option for archiving and generating persistent DOIs for container images. There are other services out there – for example, some organizations may provide their own, equivalent, service.</p>
+<p>You will also provide metadata about the image and related work.</p>
+<p>Zenodo is one option; some institutions provide equivalent archive/DOI services.</p>
+<hr>
 </section>
 <section id="reproducibility-good-practice" class="level2">
-<h2 class="anchored" data-anchor-id="reproducibility-good-practice">Reproducibility good practice</h2>
+<h2 class="anchored" data-anchor-id="reproducibility-good-practice">Reproducibility Good Practice</h2>
 <ul>
-<li>Make use of container images to capture the computational environment required for your work.</li>
-<li>Decide on the appropriate granularity for the container images you will use for your computational work – this will be different for each project/area. Take note of accepted practice from contemporary work in the same area. What are the right building blocks for individual container images in your work?</li>
-<li>Document what you have done and why – this can be put in comments in the <code>Dockerfile</code> and the use of the container image described in associated documentation and/or publications. Make sure that references are made in both directions so that the container image and the documentation are appropriately linked.</li>
-<li>When you publish work (in whatever way) use an archiving and DOI service such as Zenodo to make sure your container image is captured as it was used for the work and that it is assigned a persistent DOI to allow it to be cited and referenced properly.</li>
-<li>Make use of tags when naming your container images, this ensures that if you update the image in future, previous versions can be retained within a container repository to be easily accessed, if this is required.</li>
-<li>A built and archived container image can ensure a persistently bundled set of software and dependecies. However, a <code>Dockerfile</code> provides a lightweight means of storing a container definition that can be used to re-create a container image at a later time. If you’re taking this approach, ensure that you specify software package and dependency versions within your <code>Dockerfile</code> rather than just specifying package names which will generally install the most up-to-date version of a package. This may be incompatible with other elements of your software stack. Also note that storing only a <code>Dockerfile</code> presents reproducibility challenges because required versions of packages may not be available indefinitely, potentially meaning that you’re unable to reproduce the required environment and, hence, the research results.</li>
+<li>use images to capture the computational environment for your work</li>
+<li>choose container granularity based on your workflow and domain norms</li>
+<li>document what you did and why in both image docs and project docs</li>
+<li>when publishing, archive the exact image and cite its DOI</li>
+<li>use tags so older image versions remain accessible</li>
 </ul>
+<hr>
+</section>
+<section id="reproducibility-good-practice-important-caveat" class="level2">
+<h2 class="anchored" data-anchor-id="reproducibility-good-practice-important-caveat">Reproducibility Good Practice (Important Caveat)</h2>
+<ul>
+<li>a built and archived image gives a durable software snapshot</li>
+<li>a Dockerfile is lightweight and useful for rebuilding later</li>
+<li>if you only keep a Dockerfile, pin versions explicitly</li>
+<li>unpinned dependencies can change and break reproducibility over time</li>
+</ul>
+<hr>
 </section>
 <section id="container-granularity" class="level2">
 <h2 class="anchored" data-anchor-id="container-granularity">Container Granularity</h2>
-<p>As mentioned above, one of the decisions you may need to make when containerising your research workflows is what level of <em>granularity</em> you wish to employ. The two extremes of this decision could be characterized as:</p>
+<p>An important design choice is container <strong>granularity</strong>.</p>
+<p>Two extremes are:</p>
 <ul>
-<li>Create a single container image with all the tools you require for your research or analysis workflow</li>
-<li>Create many container images each running a single command (or step) of the workflow and use them together</li>
+<li>create one large image with all tools for the full workflow</li>
+<li>create many small images, each for one command or workflow step</li>
 </ul>
-<p>Of course, many real applications will sit somewhere between these two extremes.</p>
-<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled" style="border-left: 4px solid #ffc107;">
+<p>Most real workflows use a middle ground between these extremes.</p>
+<hr>
+</section>
+<section id="positives-and-negatives" class="level2">
+<h2 class="anchored" data-anchor-id="positives-and-negatives">Positives and Negatives</h2>
+<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Positives and negatives
+Positives and Negatives
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>What are the advantages and disadvantages of the two approaches to container granularity for research workflows described above? Think about this and write a few bullet points for advantages and disadvantages for each approach in the course Etherpad.</p>
 </div>
 </div>
-<div class="solution-callout callout callout-style-default callout-note no-icon callout-titled" style="border-left: 4px solid #ffc107;">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<hr>
+</section>
+<section id="solution" class="level2">
+<h2 class="anchored" data-anchor-id="solution">Solution</h2>
+<div class="solution-callout callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
@@ -5055,11 +5105,11 @@ Solution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>This is not an exhaustive list but some of the advantages and disadvantages could be:</p>
 <section id="single-large-container-image" class="level3">
-<h3 class="anchored" data-anchor-id="single-large-container-image">Single large container image</h3>
+<h3 class="anchored" data-anchor-id="single-large-container-image">Single Large Container Image</h3>
 <ul>
 <li>Advantages:
 <ul>
@@ -5080,7 +5130,7 @@ Solution
 </ul>
 </section>
 <section id="multiple-smaller-container-images" class="level3">
-<h3 class="anchored" data-anchor-id="multiple-smaller-container-images">Multiple smaller container images</h3>
+<h3 class="anchored" data-anchor-id="multiple-smaller-container-images">Multiple Smaller Container Images</h3>
 <ul>
 <li>Advantages:
 <ul>
@@ -5100,13 +5150,17 @@ Solution
 </div>
 </div>
 </div>
-<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled" style="border-left: 4px solid #ffc107;">
+<hr>
+</section>
+<section id="container-workflow-challenges" class="level2">
+<h2 class="anchored" data-anchor-id="container-workflow-challenges">Container Workflow Challenges</h2>
+<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Next steps with containers
+Next Steps with Containers
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -5117,35 +5171,9 @@ Next steps with containers
 </ol>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Key Points
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>Container images allow us to encapsulate the computation (and data) we have used in our research.</li>
-<li>Using a service such as Docker Hub allows us to easily share computational work we have done.</li>
-<li>Using container images along with a DOI service such as Zenodo allows us to capture our work and enables reproducibility.</li>
-</ul>
-</div>
-</div>
-<table style="width: 100%; border: none;">
-<tbody><tr>
-<td style="text-align: left; width: 50%;">
-<a href="../episodes/08-docker-image-examples.html">← Previous</a>
-</td>
-<td style="text-align: right; width: 50%;">
- 
-</td>
-</tr>
-</tbody></table>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

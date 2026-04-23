@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Containers in Research Workflows: Reproducibility and Granularity – Introduction to Docker</title>
+<title>advanced-containers – Introduction to Docker</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -4904,148 +4904,122 @@ padding-top: 4px !important;
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#reproducibility" id="toc-reproducibility" class="nav-link active" data-scroll-target="#reproducibility">Reproducibility</a></li>
-  <li><a href="#sharing-images" id="toc-sharing-images" class="nav-link" data-scroll-target="#sharing-images">Sharing images</a></li>
-  <li><a href="#archiving-and-persistently-identifying-container-images-using-zenodo" id="toc-archiving-and-persistently-identifying-container-images-using-zenodo" class="nav-link" data-scroll-target="#archiving-and-persistently-identifying-container-images-using-zenodo">Archiving and persistently identifying container images using Zenodo</a></li>
-  <li><a href="#reproducibility-good-practice" id="toc-reproducibility-good-practice" class="nav-link" data-scroll-target="#reproducibility-good-practice">Reproducibility good practice</a></li>
-  <li><a href="#container-granularity" id="toc-container-granularity" class="nav-link" data-scroll-target="#container-granularity">Container Granularity</a></li>
+  <li><a href="#episode-7-creating-more-complex-container-images" id="toc-episode-7-creating-more-complex-container-images" class="nav-link active" data-scroll-target="#episode-7-creating-more-complex-container-images">Episode 7: Creating More Complex Container Images</a>
+  <ul class="collapse">
+  <li><a href="#working-with-external-files-and-mounts" id="toc-working-with-external-files-and-mounts" class="nav-link" data-scroll-target="#working-with-external-files-and-mounts">Working with External Files and Mounts</a></li>
+  <li><a href="#using-scripts-and-files-from-outside-the-container" id="toc-using-scripts-and-files-from-outside-the-container" class="nav-link" data-scroll-target="#using-scripts-and-files-from-outside-the-container">Using Scripts and Files from Outside the Container</a></li>
+  <li><a href="#running-containers-solution" id="toc-running-containers-solution" class="nav-link" data-scroll-target="#running-containers-solution">Running Containers Solution</a></li>
+  <li><a href="#no-such-file-or-directory" id="toc-no-such-file-or-directory" class="nav-link" data-scroll-target="#no-such-file-or-directory">No Such File or Directory</a></li>
+  <li><a href="#why-the-error-happens" id="toc-why-the-error-happens" class="nav-link" data-scroll-target="#why-the-error-happens">Why the Error Happens:</a></li>
+  <li><a href="#accessing-mounted-files-in-the-container" id="toc-accessing-mounted-files-in-the-container" class="nav-link" data-scroll-target="#accessing-mounted-files-in-the-container">Accessing Mounted Files in the Container</a></li>
+  <li><a href="#other-commonly-used-docker-run-flags" id="toc-other-commonly-used-docker-run-flags" class="nav-link" data-scroll-target="#other-commonly-used-docker-run-flags">Other Commonly Used Docker Run Flags</a></li>
+  <li><a href="#challenge" id="toc-challenge" class="nav-link" data-scroll-target="#challenge">Challenge</a></li>
+  <li><a href="#solution-1" id="toc-solution-1" class="nav-link" data-scroll-target="#solution-1">Solution</a></li>
+  <li><a href="#challenge-1" id="toc-challenge-1" class="nav-link" data-scroll-target="#challenge-1">Challenge</a></li>
+  <li><a href="#solution-3" id="toc-solution-3" class="nav-link" data-scroll-target="#solution-3">Solution</a></li>
+  <li><a href="#challenge-2" id="toc-challenge-2" class="nav-link" data-scroll-target="#challenge-2">Challenge</a></li>
+  <li><a href="#solution-5" id="toc-solution-5" class="nav-link" data-scroll-target="#solution-5">Solution</a></li>
+  <li><a href="#including-your-scripts-and-data-within-a-container-image" id="toc-including-your-scripts-and-data-within-a-container-image" class="nav-link" data-scroll-target="#including-your-scripts-and-data-within-a-container-image">Including Your Scripts and Data Within a Container Image</a></li>
+  <li><a href="#the-importance-of-command-order-in-a-dockerfile" id="toc-the-importance-of-command-order-in-a-dockerfile" class="nav-link" data-scroll-target="#the-importance-of-command-order-in-a-dockerfile">The Importance of Command Order in a Dockerfile</a></li>
+  <li><a href="#challenge-3" id="toc-challenge-3" class="nav-link" data-scroll-target="#challenge-3">Challenge</a></li>
+  <li><a href="#solution-7" id="toc-solution-7" class="nav-link" data-scroll-target="#solution-7">Solution</a></li>
+  <li><a href="#security-warning" id="toc-security-warning" class="nav-link" data-scroll-target="#security-warning">Security Warning</a></li>
+  <li><a href="#copying-alternatives" id="toc-copying-alternatives" class="nav-link" data-scroll-target="#copying-alternatives">Copying Alternatives</a></li>
+  <li><a href="#more-fancy-dockerfile-options" id="toc-more-fancy-dockerfile-options" class="nav-link" data-scroll-target="#more-fancy-dockerfile-options">More Fancy <code>Dockerfile</code> Options</a>
+  <ul class="collapse">
+  <li><a href="#make-the-sum.py-script-run-automatically" id="toc-make-the-sum.py-script-run-automatically" class="nav-link" data-scroll-target="#make-the-sum.py-script-run-automatically">Make the <code>sum.py</code> Script Run Automatically</a></li>
+  <li><a href="#make-the-sum.py-script-run-automatically-1" id="toc-make-the-sum.py-script-run-automatically-1" class="nav-link" data-scroll-target="#make-the-sum.py-script-run-automatically-1">Make the <code>sum.py</code> Script Run Automatically</a></li>
+  </ul></li>
+  <li><a href="#overriding-the-entrypoint" id="toc-overriding-the-entrypoint" class="nav-link" data-scroll-target="#overriding-the-entrypoint">Overriding the ENTRYPOINT</a>
+  <ul class="collapse">
+  <li><a href="#add-the-sum.py-script-to-the-path-so-you-can-run-it-directly" id="toc-add-the-sum.py-script-to-the-path-so-you-can-run-it-directly" class="nav-link" data-scroll-target="#add-the-sum.py-script-to-the-path-so-you-can-run-it-directly">Add the <code>sum.py</code> script to the <code>PATH</code> so you can run it directly:</a></li>
+  </ul></li>
+  <li><a href="#best-practices-for-writing-dockerfiles" id="toc-best-practices-for-writing-dockerfiles" class="nav-link" data-scroll-target="#best-practices-for-writing-dockerfiles">Best Practices for Writing Dockerfiles</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Containers in Research Workflows: Reproducibility and Granularity</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
 
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Overview
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><strong>Teaching:</strong> 20</li>
-<li><strong>Exercises:</strong> 5</li>
-<li><strong>Questions:</strong>
-<ul>
-<li>How can I use container images to make my research more reproducible?</li>
-<li>How do I incorporate containers into my research workflow?</li>
-</ul></li>
-<li><strong>Objectives:</strong>
-<ul>
-<li>Understand how container images can help make research more reproducible.</li>
-<li>Understand what practical steps I can take to improve the reproducibility of my research using containers.</li>
-</ul></li>
-</ul>
-</div>
-</div>
-<p>So far we have mostly covered the mechanics of using Docker with only passing reference to the reproducibility aspects. In this section, we discuss these aspects in more detail.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Work in progress…
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Note that reproducibility aspects of software and containers are an active area of research, discussion and development so are subject to many changes. We will present some ideas and approaches here but best practices will likely evolve in the near future.</p>
-</div>
-</div>
-<section id="reproducibility" class="level2">
-<h2 class="anchored" data-anchor-id="reproducibility">Reproducibility</h2>
-<p>By <em>reproducibility</em> here we mean the ability of someone else (or your future self) being able to reproduce what you did computationally at a particular time (be this in research, analysis or something else) as closely as possible, even if they do not have access to exactly the same hardware resources that you had when you did the original work.</p>
-<p>What makes this especially important? With research being increasingly digital in nature, more and more of our research outputs are a result of the use of software and data processing or analysis. With complex software stacks or groups of dependencies often being required to run research software, we need approaches to ensure that we can make it as easy as possible to recreate an environment in which a given research process was undertaken. There many reasons why this matters, one example being someone wanting to reproduce the results of a publication in order to verify them and then build on that research.</p>
-<p>Some examples of why containers are an attractive technology to help with reproducibility include:</p>
-<ul>
-<li>The same computational work can be run seamlessly on different operating systems (e.g. Windows, macOS, Linux).</li>
-<li>You can save the exact process that you used for your computational work (rather than relying on potentially incomplete notes).</li>
-<li>You can save the exact versions of software and their dependencies in the container image.</li>
-<li>You can provide access to legacy versions of software and underlying dependencies which may not be generally available any more.</li>
-<li>Depending on their size, you can also potentially store a copy of key data within the container image.</li>
-<li>You can archive and share a container image as well as associating a persistent identifier with it, to allow other researchers to reproduce and build on your work.</li>
-</ul>
-</section>
-<section id="sharing-images" class="level2">
-<h2 class="anchored" data-anchor-id="sharing-images">Sharing images</h2>
-<p>As we have already seen, the Docker Hub provides a platform for sharing container images publicly. Once you have uploaded a container image, you can point people to its public location and they can download and build upon it.</p>
-<p>This is fine for working collaboratively with container images on a day-to-day basis but the Docker Hub is not a good option for long-term archiving of container images in support of research and publications as:</p>
-<ul>
-<li>free accounts have a limit on how long a container image will be hosted if it is not updated</li>
-<li>it does not support adding persistent identifiers to container images</li>
-<li>it is easy to overwrite tagged container images with newer versions by mistake.</li>
-</ul>
-</section>
-<section id="archiving-and-persistently-identifying-container-images-using-zenodo" class="level2">
-<h2 class="anchored" data-anchor-id="archiving-and-persistently-identifying-container-images-using-zenodo">Archiving and persistently identifying container images using Zenodo</h2>
-<p>When you publish your work or make it publicly available in some way it is good practice to make container images that you used for computational work available in an immutable, persistent way and to have an identifier that allows people to cite and give you credit for the work you have done. <a href="https://zenodo.org/">Zenodo</a> is one service that provides this functionality.</p>
-<p>Zenodo supports the upload of <em>tar</em> archives and we can capture our Docker container images as tar archives using the <code>docker image save</code> command. For example, to export the container image we created earlier in this lesson:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image save alice/alpine-python:v1 <span class="at">-o</span> alpine-python.tar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>These tar container images can become quite large and Zenodo supports uploads up to 50GB so you may need to compress your archive to make it fit on Zenodo using a tool such as gzip (or zip):</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> alpine-python.tar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Once you have your archive, you can <a href="https://zenodo.org/deposit/">deposit it on Zenodo</a> and this will:</p>
-<ul>
-<li>Create a long-term archive snapshot of your Docker container image which people (including your future self) can download and reuse or reproduce your work.</li>
-<li>Create a persistent DOI (<em>Digital Object Identifier</em>) that you can cite in any publications or outputs to enable reproducibility and recognition of your work.</li>
-</ul>
-<p>In addition to the archive file itself, the deposit process will ask you to provide some basic metadata to classify the container image and the associated work.</p>
-<p>Note that Zenodo is not the only option for archiving and generating persistent DOIs for container images. There are other services out there – for example, some organizations may provide their own, equivalent, service.</p>
-</section>
-<section id="reproducibility-good-practice" class="level2">
-<h2 class="anchored" data-anchor-id="reproducibility-good-practice">Reproducibility good practice</h2>
-<ul>
-<li>Make use of container images to capture the computational environment required for your work.</li>
-<li>Decide on the appropriate granularity for the container images you will use for your computational work – this will be different for each project/area. Take note of accepted practice from contemporary work in the same area. What are the right building blocks for individual container images in your work?</li>
-<li>Document what you have done and why – this can be put in comments in the <code>Dockerfile</code> and the use of the container image described in associated documentation and/or publications. Make sure that references are made in both directions so that the container image and the documentation are appropriately linked.</li>
-<li>When you publish work (in whatever way) use an archiving and DOI service such as Zenodo to make sure your container image is captured as it was used for the work and that it is assigned a persistent DOI to allow it to be cited and referenced properly.</li>
-<li>Make use of tags when naming your container images, this ensures that if you update the image in future, previous versions can be retained within a container repository to be easily accessed, if this is required.</li>
-<li>A built and archived container image can ensure a persistently bundled set of software and dependecies. However, a <code>Dockerfile</code> provides a lightweight means of storing a container definition that can be used to re-create a container image at a later time. If you’re taking this approach, ensure that you specify software package and dependency versions within your <code>Dockerfile</code> rather than just specifying package names which will generally install the most up-to-date version of a package. This may be incompatible with other elements of your software stack. Also note that storing only a <code>Dockerfile</code> presents reproducibility challenges because required versions of packages may not be available indefinitely, potentially meaning that you’re unable to reproduce the required environment and, hence, the research results.</li>
-</ul>
-</section>
-<section id="container-granularity" class="level2">
-<h2 class="anchored" data-anchor-id="container-granularity">Container Granularity</h2>
-<p>As mentioned above, one of the decisions you may need to make when containerising your research workflows is what level of <em>granularity</em> you wish to employ. The two extremes of this decision could be characterized as:</p>
-<ul>
-<li>Create a single container image with all the tools you require for your research or analysis workflow</li>
-<li>Create many container images each running a single command (or step) of the workflow and use them together</li>
-</ul>
-<p>Of course, many real applications will sit somewhere between these two extremes.</p>
-<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled" style="border-left: 4px solid #ffc107;">
+<section id="episode-7-creating-more-complex-container-images" class="level1 nonincremental">
+<h1 class="nonincremental">Episode 7: Creating More Complex Container Images</h1>
+<div class="nonincremental callout callout-style-default callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Positives and negatives
+Questions
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>What are the advantages and disadvantages of the two approaches to container granularity for research workflows described above? Think about this and write a few bullet points for advantages and disadvantages for each approach in the course Etherpad.</p>
+<ul>
+<li>“How can I add local files (e.g. data files) into container images at build time?”</li>
+<li>How can I access files stored on the host system from within a running Docker container?</li>
+</ul>
 </div>
 </div>
-<div class="solution-callout callout callout-style-default callout-note no-icon callout-titled" style="border-left: 4px solid #ffc107;">
+<div class="nonincremental callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Explain how you can include files within Docker container images when you build them.</li>
+<li>Explain how you can access files on the Docker host from your Docker containers.</li>
+</ul>
+</div>
+</div>
+<hr>
+<section id="working-with-external-files-and-mounts" class="level2">
+<h2 class="anchored" data-anchor-id="working-with-external-files-and-mounts">Working with External Files and Mounts</h2>
+<p>This episode moves beyond basic container use.</p>
+<ul>
+<li>Use files from your host system.</li>
+<li>Copy files into images at build time.</li>
+<li>Run software and scripts with those files.</li>
+<li>Build more automated container behavior.</li>
+</ul>
+<p>The examples get progressively more advanced. Most day-to-day workflows only need the first 1-2 sections.</p>
+</section>
+<section id="using-scripts-and-files-from-outside-the-container" class="level2">
+<h2 class="anchored" data-anchor-id="using-scripts-and-files-from-outside-the-container">Using Scripts and Files from Outside the Container</h2>
+<p>In your shell, move to the <code>sum</code> folder and inspect its contents.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/Desktop/docker-intro/sum</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The folder contains:</p>
+<ul>
+<li>a <code>Dockerfile</code></li>
+<li>a Python script: <code>sum.py</code></li>
+</ul>
+<p>Next, try running <code>sum.py</code> with the <code>alpine-python</code> image.</p>
+<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Running Containers
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>What command would we use to run Python from the <code>alpine-python</code> container?</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="running-containers-solution" class="level2">
+<h2 class="anchored" data-anchor-id="running-containers-solution">Running Containers Solution</h2>
+<div class="solution-callout callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -5057,95 +5031,456 @@ Solution
 </div>
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>This is not an exhaustive list but some of the advantages and disadvantages could be:</p>
-<section id="single-large-container-image" class="level3">
-<h3 class="anchored" data-anchor-id="single-large-container-image">Single large container image</h3>
-<ul>
-<li>Advantages:
-<ul>
-<li>Simpler to document</li>
-<li>Full set of requirements packaged in one place</li>
-<li>Potentially easier to maintain (though could be opposite if working with large, distributed group)</li>
-</ul></li>
-<li>Disadvantages:
-<ul>
-<li>Could get very large in size, making it more difficult to distribute
-<ul>
-<li>Could use <a href="https://docs.docker.com/develop/develop-images/multistage-build">Docker multi-stage build</a> to reduce size</li>
-</ul></li>
-<li>May end up with same dependency issues within the container image from different software requirements</li>
-<li>Potentially more complex to test</li>
-<li>Less re-useable for different, but related, work</li>
-</ul></li>
-</ul>
+<p>We can run a container from the alpine-python container image using:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run alice/alpine-python</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>What happens? Since the <code>Dockerfile</code> that we built this container image from had a <code>CMD</code> entry that specified <code>[&quot;python3&quot;, &quot;--version&quot;]</code>, running the above command simply starts a container from the image, runs the <code>python3 --version</code> command and exits. You should have seen the installed version of Python printed to the terminal.</p>
+<p>Instead, if we want to run an interactive Python terminal, we can use <code>docker container run</code> to override the default run command embedded within the container image. So we could run:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run <span class="at">-it</span> alice/alpine-python python3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>-it</code> tells Docker to set up and interactive terminal connection to the running container, and then we’re telling Docker to run the <code>python3</code> command inside the container which gives us an interactive Python interpreter prompt. <em>(type <code>exit()</code> to exit!)</em></p>
+</div>
+</div>
+</div>
+<p>If we try running the container and Python script, what happens?</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run alice/alpine-python python3 sum.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="output"><code>python3: can&#39;t open file &#39;//sum.py&#39;: [Errno 2] No such file or directory</code></pre>
+<hr>
 </section>
-<section id="multiple-smaller-container-images" class="level3">
-<h3 class="anchored" data-anchor-id="multiple-smaller-container-images">Multiple smaller container images</h3>
-<ul>
-<li>Advantages:
-<ul>
-<li>Individual components can be re-used for different, but related, work</li>
-<li>Individual parts are smaller in size making them easier to distribute</li>
-<li>Avoid dependency issues between different pieces of software</li>
-<li>Easier to test</li>
-</ul></li>
-<li>Disadvantage:
-<ul>
-<li>More difficult to document</li>
-<li>Potentially more difficult to maintain (though could be easier if working with large, distributed group)</li>
-<li>May end up with dependency issues between component container images if they get out of sync</li>
-</ul></li>
-</ul>
-</section>
-</div>
-</div>
-</div>
-<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled" style="border-left: 4px solid #ffc107;">
+<section id="no-such-file-or-directory" class="level2">
+<h2 class="anchored" data-anchor-id="no-such-file-or-directory">No Such File or Directory</h2>
+<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Next steps with containers
+No Such File or Directory
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Now that we’re at the end of the lesson material, take a moment to reflect on what you’ve learned, how it applies to you, and what to do next.</p>
-<ol type="1">
-<li>In your own notes, write down or diagram your understanding of Docker containers and container images: concepts, commands, and how they work.</li>
-<li>In the workshop’s shared notes document, write down how you think you might use containers in your daily work. If there’s something you want to try doing with containers right away, what is a next step after this workshop to make that happen?</li>
-</ol>
+<p>What does the error message mean? Why might the Python inside the container not be able to find or open our script?</p>
 </div>
 </div>
+<hr>
+</section>
+<section id="why-the-error-happens" class="level2">
+<h2 class="anchored" data-anchor-id="why-the-error-happens">Why the Error Happens:</h2>
+<ul>
+<li>Container filesystems are isolated from the host.</li>
+<li>The container cannot see files on your computer unless you expose them.</li>
+<li><code>sum.py</code> is on the host, not inside the container.</li>
+</ul>
+<p><strong>Fix:</strong> create a <strong>mount</strong> from host to container.</p>
+<ul>
+<li><code>${PWD}</code> expands to your current host directory.</li>
+<li>mount option:</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">`</span><span class="ex">--mount</span> type=bind,source=<span class="va">${PWD}</span>,target=/temp<span class="kw">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Interpretation:</strong></p>
+<p>make my current working directory (on the host computer) – the source – <em>visible</em> within the container that is about to be started, and inside this container, name the directory <code>/temp</code> – the target.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Types of Mounts
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>This example uses a <code>bind</code> mount.</li>
+<li>Other mount types include <code>volume</code> and <code>tmpfs</code>.</li>
+<li>We do not cover them here, but Docker documents them in more detail.</li>
+</ul>
+</div>
+</div>
+<hr>
+</section>
+<section id="accessing-mounted-files-in-the-container" class="level2">
+<h2 class="anchored" data-anchor-id="accessing-mounted-files-in-the-container">Accessing Mounted Files in the Container</h2>
+<p>Let’s try running the command now:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run <span class="at">--mount</span> type=bind,source=<span class="va">${PWD}</span>,target=/temp alice/alpine-python python3 sum.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>But we get the same error!</p>
+<pre class="output"><code>python3: can&#39;t open file &#39;//sum.py&#39;: [Errno 2] No such file or directory</code></pre>
+<p>The missing detail: use the <strong>container path</strong> to the script.</p>
+<ul>
+<li><code>sum.py</code> is visible at <code>/temp/sum.py</code> inside the container.</li>
+<li>so run Python with that full path:</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run <span class="at">--mount</span> type=bind,source=<span class="va">${PWD}</span>,target=/temp alice/alpine-python python3 /temp/sum.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Files written in <code>/temp</code> from inside the container are written to your host directory and remain after the container exits.</p>
+<hr>
+</section>
+<section id="other-commonly-used-docker-run-flags" class="level2">
+<h2 class="anchored" data-anchor-id="other-commonly-used-docker-run-flags">Other Commonly Used Docker Run Flags</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Other Commonly Used Docker Run Flags
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Two useful <code>docker run</code> flags are <code>-w</code> and <code>-u</code>.</p>
+<p>The <code>--workdir</code>/<code>-w</code> flag sets the working directory a.k.a. runs the command being executed inside the directory specified. For example, the following code would run the <code>pwd</code> command in a container started from the latest ubuntu image in the <code>/home/alice</code> directory and print <code>/home/alice</code>. If the directory doesn’t exist in the image it will create it.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run <span class="at">-w</span> /home/alice/ ubuntu pwd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>--user</code>/<code>-u</code> flag lets you specify the username you would like to run the container as. This is helpful if you’d like to write files to a mounted folder and not write them as <code>root</code> but rather your own user identity and group. A common example of the <code>-u</code> flag is <code>--user $(id -u):$(id -g)</code> which will fetch the current user’s ID and group and run the container as that user.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="challenge" class="level2">
+<h2 class="anchored" data-anchor-id="challenge">Challenge</h2>
+<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Explore the Script
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>What happens if you use the <code>docker container run</code> command above and put numbers after the script name?</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="solution-1" class="level2">
+<h2 class="anchored" data-anchor-id="solution-1">Solution</h2>
+<div class="solution-callout callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>This script comes from <a href="https://wiki.python.org/moin/SimplePrograms">the Python Wiki</a> and is set to add all numbers that are passed to it as arguments.</p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="challenge-1" class="level2">
+<h2 class="anchored" data-anchor-id="challenge-1">Challenge</h2>
+<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Checking the Options
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Our Docker command has gotten much longer! Can you go through each piece of the Docker command above and explain what it does? How would you characterize the key components of a Docker command?</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="solution-3" class="level2">
+<h2 class="anchored" data-anchor-id="solution-3">Solution</h2>
+<div class="solution-callout callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Here’s a breakdown of each piece of the command above</p>
+<ul>
+<li><code>docker container run</code>: use Docker to run a container</li>
+<li><code>--mount type=bind,source=${PWD},target=/temp</code>: connect my current working directory (<code>${PWD}</code>) as a folder inside the container called <code>/temp</code></li>
+<li><code>alice/alpine-python</code>: name of the container image to use to run the container</li>
+<li><code>python3 /temp/sum.py</code>: what commands to run in the container</li>
+</ul>
+<p>More generally, every Docker command will have the form: <code>docker [action] [docker options] [docker container image] [command to run inside]</code></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="challenge-2" class="level2">
+<h2 class="anchored" data-anchor-id="challenge-2">Challenge</h2>
+<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interactive Jobs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Try using the directory mount option but run the container interactively. Can you find the folder that’s connected to your host computer? What’s inside?</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="solution-5" class="level2">
+<h2 class="anchored" data-anchor-id="solution-5">Solution</h2>
+<div class="solution-callout callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The docker command to run the container interactively is:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run <span class="at">--mount</span> type=bind,source=<span class="va">${PWD}</span>,target=/temp <span class="at">-it</span> alice/alpine-python sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once inside, you should be able to navigate to the <code>/temp</code> folder and see that’s contents are the same as the files on your host computer:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/#</span> cd /temp</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/#</span> ls</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>Mounts are useful when you want to run containerized software across many changing input files.</p>
+<p>If you want a fixed, archived snapshot, copy files into the image itself.</p>
+</section>
+<section id="including-your-scripts-and-data-within-a-container-image" class="level2">
+<h2 class="anchored" data-anchor-id="including-your-scripts-and-data-within-a-container-image">Including Your Scripts and Data Within a Container Image</h2>
+<ul>
+<li>useful for sharing a completed analysis;</li>
+<li>useful for creating an archived, fixed version.</li>
+</ul>
+<p>Assume <code>sum.py</code> is finalized and should be bundled in the image.</p>
+<p>In your shell, you should still be in the <code>sum</code> folder in the <code>docker-intro</code> folder.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/Users/yourname/Desktop/docker-intro/sum</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Add a <code>COPY</code> line to include <code>sum.py</code> in the image:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">COPY</span> sum.py /home</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This copies <code>sum.py</code> from host to image filesystem.</p>
+<p>Then build a new image:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image build <span class="at">-t</span> alice/alpine-sum .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+<section id="the-importance-of-command-order-in-a-dockerfile" class="level2">
+<h2 class="anchored" data-anchor-id="the-importance-of-command-order-in-a-dockerfile">The Importance of Command Order in a Dockerfile</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The Importance of Command Order in a Dockerfile
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When you run <code>docker image build</code> it executes the build in the order specified in the <code>Dockerfile</code>. This order is important for rebuilding and you typically will want to put your <code>RUN</code> commands before your <code>COPY</code> commands.</p>
+<p>Docker builds the layers of commands in order. This becomes important when you need to rebuild container images. If you change layers later in the <code>Dockerfile</code> and rebuild the container image, Docker doesn’t need to rebuild the earlier layers but will instead used a stored (called “cached”) version of those layers.</p>
+<p>For example, in an instance where you wanted to copy <code>multiply.py</code> into the container image instead of <code>sum.py</code>. If the <code>COPY</code> line came before the <code>RUN</code> line, it would need to rebuild the whole image. If the <code>COPY</code> line came second then it would use the cached <code>RUN</code> layer from the previous build and then only rebuild the <code>COPY</code> layer.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="challenge-3" class="level2">
+<h2 class="anchored" data-anchor-id="challenge-3">Challenge</h2>
+<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Did It Work?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Can you remember how to run a container interactively? Try that with this one. Once inside, try running the Python script.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="solution-7" class="level2">
+<h2 class="anchored" data-anchor-id="solution-7">Solution</h2>
+<div class="solution-callout callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>You can start the container interactively like so:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run <span class="at">-it</span> alice/alpine-sum sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You should be able to run the python command inside the container like this:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/#</span> python3 /home/sum.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p><code>COPY</code> is useful when you want to bundle scripts or data into an image you will share or archive.</p>
+<p>Use this guidance:</p>
+<ul>
+<li>Use <code>COPY</code> for stable scripts and data.</li>
+<li>Use bind mounts for files you edit often.</li>
+<li>Check image size with <code>docker image ls</code>; larger images are slower to download.</li>
+</ul>
+<hr>
+</section>
+<section id="security-warning" class="level2">
+<h2 class="anchored" data-anchor-id="security-warning">Security Warning</h2>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Security Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Login credentials including passwords, tokens, secure access tokens or other secrets must never be stored in a container. If secrets are stored, they are at high risk to be found and exploited when made public.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="copying-alternatives" class="level2">
+<h2 class="anchored" data-anchor-id="copying-alternatives">Copying Alternatives</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Copying Alternatives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Another trick for getting your own files into a container image is by using the <code>RUN</code> keyword and downloading the files from the internet. For example, if your code is in a GitHub repository, you could include this statement in your Dockerfile to download the latest version every time you build the container image:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="fu">git</span> clone https://github.com/alice/mycode</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Similarly, the <code>wget</code> command can be used to download any file publicly available on the internet:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="fu">wget</span> ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.10.0/ncbi-blast-2.10.0+-x64-linux.tar.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that the above <code>RUN</code> examples depend on commands (<code>git</code> and <code>wget</code> respectively) that must be available within your container: Linux distributions such as Alpine may require you to install such commands before using them within <code>RUN</code> statements.</p>
+</div>
+</div>
+</section>
+<section id="more-fancy-dockerfile-options" class="level2">
+<h2 class="anchored" data-anchor-id="more-fancy-dockerfile-options">More Fancy <code>Dockerfile</code> Options</h2>
+<p>You can make the image more automatic with <code>CMD</code> and <code>ENTRYPOINT</code> patterns.</p>
+<section id="make-the-sum.py-script-run-automatically" class="level3">
+<h3 class="anchored" data-anchor-id="make-the-sum.py-script-run-automatically">Make the <code>sum.py</code> Script Run Automatically</h3>
+<div class="sourceCode" id="cb21"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apk</span> add <span class="at">--update</span> python3 py3-pip python3-dev</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> sum.py /home</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the sum.py script as the default command</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">&quot;python3&quot;</span>, <span class="st">&quot;/home/sum.py&quot;</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Build and test it:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image build <span class="at">-t</span> alpine-sum:v1 .</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run alpine-sum:v1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Doesn’t work: Running with no arguments works (e.g. <code>sum = 0</code>). Passing arguments this way fails:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run alpine-sum:v1 10 11 12</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>results in</p>
+<pre class="output"><code>docker: Error response from daemon: OCI runtime create failed:
+container_linux.go:349: starting container process caused &quot;exec:
+\&quot;10\&quot;: executable file not found in $PATH&quot;: unknown.</code></pre>
+<p>Reason: <code>10 11 12</code> is interpreted as a replacement command, not arguments to the existing <code>CMD</code>.</p>
+<hr>
+</section>
+<section id="make-the-sum.py-script-run-automatically-1" class="level3">
+<h3 class="anchored" data-anchor-id="make-the-sum.py-script-run-automatically-1">Make the <code>sum.py</code> Script Run Automatically</h3>
+<p>To always run a base command and still accept runtime arguments, use <code>ENTRYPOINT</code> plus <code>CMD</code> defaults.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apk</span> add <span class="at">--update</span> python3 py3-pip python3-dev</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> sum.py /home</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the sum.py script as the default command and</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># allow people to enter arguments for it</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ENTRYPOINT</span> [<span class="st">&quot;python3&quot;</span>, <span class="st">&quot;/home/sum.py&quot;</span>]</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Give default arguments, in case none are supplied on</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co"># the command-line</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">&quot;10&quot;</span>, <span class="st">&quot;11&quot;</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Build and test it:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image build <span class="at">-t</span> alpine-sum:v2 .</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Most of the time you are interested in the sum of 10 and 11:</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run alpine-sum:v2</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Sometimes you have more challenging calculations to do:</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run alpine-sum:v2 12 13 14</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="overriding-the-entrypoint" class="level2">
+<h2 class="anchored" data-anchor-id="overriding-the-entrypoint">Overriding the ENTRYPOINT</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Overriding the ENTRYPOINT
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Sometimes you want to bypass the image’s <code>ENTRYPOINT</code>.</li>
+<li>For example, you may want an interactive shell instead of the default app.</li>
+</ul>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run <span class="at">-it</span> alpine-sum:v2 /bin/sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>will yield</p>
+<pre class="output"><code>Please supply integer arguments</code></pre>
+<p>Override the <code>ENTRYPOINT</code> like this:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run <span class="at">-it</span> <span class="at">--entrypoint</span> /bin/sh alpine-sum:v2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<hr>
+<section id="add-the-sum.py-script-to-the-path-so-you-can-run-it-directly" class="level3">
+<h3 class="anchored" data-anchor-id="add-the-sum.py-script-to-the-path-so-you-can-run-it-directly">Add the <code>sum.py</code> script to the <code>PATH</code> so you can run it directly:</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> alpine</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apk</span> add <span class="at">--update</span> python3 py3-pip python3-dev</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> sum.py /home</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># set script permissions</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="fu">chmod</span> +x /home/sum.py</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co"># add /home folder to the PATH</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ENV</span> PATH /home:$PATH</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Build and test it:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image build <span class="at">-t</span> alpine-sum:v3 .</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container run alpine-sum:v3 sum.py 1 2 3 4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="best-practices-for-writing-dockerfiles" class="level2">
+<h2 class="anchored" data-anchor-id="best-practices-for-writing-dockerfiles">Best Practices for Writing Dockerfiles</h2>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Key Points
+Best Practices for Writing Dockerfiles
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<ul>
-<li>Container images allow us to encapsulate the computation (and data) we have used in our research.</li>
-<li>Using a service such as Docker Hub allows us to easily share computational work we have done.</li>
-<li>Using container images along with a DOI service such as Zenodo allows us to capture our work and enables reproducibility.</li>
-</ul>
+<p>Take a look at Nüst et al.’s “<a href="https://doi.org/10.1371/journal.pcbi.1008316"><em>Ten simple rules for writing Dockerfiles for reproducible data science</em></a>” [1] for some great examples of best practices to use when writing Dockerfiles. The <a href="https://github.com/nuest/ten-simple-rules-dockerfiles">GitHub repository</a> associated with the paper also has a set of <a href="https://github.com/nuest/ten-simple-rules-dockerfiles/tree/master/examples">example <code>Dockerfile</code>s</a> demonstrating how the rules highlighted by the paper can be applied.</p>
+<p><small>[1] Nüst D, Sochat V, Marwick B, Eglen SJ, Head T, et al. (2020) Ten simple rules for writing Dockerfiles for reproducible data science. PLOS Computational Biology 16(11): e1008316. <a href="https://doi.org/10.1371/journal.pcbi.1008316">https://doi.org/10.1371/journal.pcbi.1008316</a></small></p>
 </div>
 </div>
-<table style="width: 100%; border: none;">
-<tbody><tr>
-<td style="text-align: left; width: 50%;">
-<a href="../episodes/08-docker-image-examples.html">← Previous</a>
-</td>
-<td style="text-align: right; width: 50%;">
- 
-</td>
-</tr>
-</tbody></table>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -1,0 +1,3199 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.42">
+
+  <meta name="author" content="Sanduni Rajapaksa">
+  <title>Introduction to Docker</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-a45ed08f75d36b3890041e707d626b2e.css">
+  <link rel="stylesheet" href="utils/custom.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Introduction to Docker</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Sanduni Rajapaksa 
+</div>
+</div>
+</div>
+
+</section>
+<section id="introduction-to-docker" class="slide level2 nonincremental">
+<h2>Introduction to Docker</h2>
+<h3 id="workshop-overview">Workshop Overview</h3>
+<ul>
+<li>Build a practical understanding of Docker containers and images.</li>
+<li>Learn to run, inspect, and manage containers from the command line.</li>
+<li>Create your own container images with Dockerfiles.</li>
+<li>Apply container workflows to research reproducibility.</li>
+</ul>
+<h3 id="why-this-workshop">Why This Workshop?</h3>
+<ul>
+<li>Portable environments across macOS, Linux, and Windows.</li>
+<li>Reduced setup friction and fewer dependency conflicts.</li>
+<li>Better collaboration and reproducibility for computational work.</li>
+</ul>
+</section>
+<section id="prerequisites" class="slide level2">
+<h2>Prerequisites</h2>
+<ul>
+<li>Basic familiarity with using a command shell.</li>
+<li>Ability to create and edit files with a text editor.</li>
+<li>Docker installed and running on your machine.</li>
+<li>A Docker Hub account for image pull/push exercises.</li>
+</ul>
+</section>
+<section id="workshop-structure" class="slide level2">
+<h2>Workshop Structure</h2>
+<ul>
+<li>Episode 1: Introducing Containers</li>
+<li>Episode 2: Introducing the Docker Command Line</li>
+<li>Episode 3: Exploring and Running Containers</li>
+<li>Episode 4: Cleaning Up Containers</li>
+<li>Episode 5: Finding Containers on Docker Hub</li>
+<li>Episode 6: Creating Your Own Container Images</li>
+<li>Episode 7: Creating More Complex Container Images</li>
+<li>Episode 8: Examples of Using Container Images in Practice</li>
+<li>Episode 9: Containers in Research Workflows: Reproducibility and Granularity</li>
+</ul>
+</section>
+<section>
+<section id="episode-1-introducing-containers" class="title-slide slide level1 nonincremental center">
+<h1>Episode 1: Introducing Containers</h1>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Questions</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>What are containers, and why might they be useful to me?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Objectives</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Show how software depending on other software leads to configuration management problems.</li>
+<li>Identify the problems that software installation can pose for research.</li>
+<li>Explain the advantages of containerization.</li>
+<li>Explain how using containers can solve software configuration problems</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="scientific-software-challenges" class="slide level2">
+<h2>Scientific Software Challenges</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>What’s Your Experience?</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Think about software frustrations in your research workflow.</li>
+<li>Compare with a neighbour and list common pain points.</li>
+<li>Focus on installation, versions, portability, and reproducibility.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="scientific-software-challenges-1" class="slide level2">
+<h2>Scientific Software Challenges</h2>
+<h3 id="common-symptoms">Common Symptoms:</h3>
+<ul>
+<li>software is unavailable on your preferred OS;</li>
+<li>installation pulls in many nested dependencies;</li>
+<li>only some version combinations work;</li>
+<li>colleagues get different results on different systems;</li>
+<li>reproducing an older setup becomes difficult.</li>
+</ul>
+<h3 id="why-this-happens">Why This Happens:</h3>
+<ul>
+<li>research software depends on many layers;</li>
+<li>one missing or incompatible piece can break the stack;</li>
+<li>this situation is often called <strong>dependency hell</strong>.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>What Is a Software <em>Dependency</em>?</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>A dependency is software that another tool needs in order to work.</li>
+<li>Example: an application may depend on a library to talk to a database.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="why-this-matters-for-research" class="slide level2">
+<h2>Why This Matters for Research</h2>
+<ul>
+<li>you may be unable to use a required tool at all;</li>
+<li>results become harder to reproduce with confidence;</li>
+<li>moving work to new systems or collaborators becomes difficult;</li>
+<li>others may be unable to validate or extend your work.</li>
+</ul>
+<p>Containers help by packaging software, dependencies, and access to resources in a more consistent, reproducible way.</p>
+</section>
+<section id="what-is-a-container" class="slide level2">
+<h2>What Is a Container?</h2>
+<p>Think of a container as a self-contained working environment inside your existing computer:</p>
+<ul>
+<li>isolated from your main software setup;</li>
+<li>cheaper and lighter than a separate machine;</li>
+<li>portable across systems with the same container engine.</li>
+</ul>
+<p>More concretely, Docker Inc use the following definition of a container:</p>
+<blockquote>
+<p>A container is a standard unit of software that packages up code and all its dependencies so the application runs reliably from one computing environment to another.</p>
+</blockquote>
+<p><a href="https://www.docker.com/resources/what-container/" class="uri">https://www.docker.com/resources/what-container/</a></p>
+<p>The shipping-container analogy is useful:</p>
+<ul>
+<li>containers keep related things together;</li>
+<li>they standardize transport and reuse;</li>
+<li>the same container can be run on any compatible host system.</li>
+</ul>
+</section>
+<section id="virtualization" class="slide level2">
+<h2>Virtualization</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Virtualization</strong></p>
+</div>
+<div class="callout-content">
+<p>Virtualization means running an isolated computing environment on a main (<strong>host</strong>) computer.</p>
+<ul>
+<li>Containers are an example of virtualization</li>
+<li><strong>Virtual machines (VMs)</strong> include a full operating system and are heavier.</li>
+<li><strong>Containers</strong> are lighter and usually share the host’s Linux kernel.</li>
+<li>Containers still provide an isolated filesystem and runtime for applications.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="what-is-docker" class="slide level2">
+<h2>What Is Docker?</h2>
+<p><a href="https://www.docker.com/">Docker</a> is a platform for building and running containers.</p>
+</section>
+<section id="container-images" class="slide level2">
+<h2>Container Images</h2>
+<p>Key distinction:</p>
+<ul>
+<li>a <strong>container image</strong> is the recipe or template;</li>
+<li>a <strong>container</strong> is the running instance created from that image;</li>
+<li>images persist, containers are usually transient.</li>
+</ul>
+<p>The cookie-cutter analogy works well: one cutter creates many cookies of the same shape.</p>
+
+<img data-src="../episodes/fig/containers-cookie-cutter.png" alt="An image comparing using a cookie cutter to the container workflow" class="r-stretch"></section>
+<section id="putting-the-pieces-together" class="slide level2">
+<h2>Putting the Pieces Together</h2>
+<p>Containers help because the environment becomes explicit, portable, and easier to recreate.</p>
+<h3 id="benefits">Benefits:</h3>
+<ul>
+<li><strong>documentation</strong> – there is a clear record of what software and software dependencies were used, from bottom to top.</li>
+<li><strong>portability</strong> – the container can be used on any computer that has Docker installed – it doesn’t matter whether the computer is Mac, Windows or Linux-based.</li>
+<li><strong>reproducibility</strong> – you can use the exact same software and environment on your computer and on other resources (like a large-scale computing cluster).</li>
+<li><strong>configurability</strong> – containers can be sized to take advantage of more resources (memory, CPU, etc.) on large systems (clusters) or less, depending on the circumstances.</li>
+</ul>
+</section>
+<section id="use-cases-for-containers" class="slide level2">
+<h2>Use Cases for Containers</h2>
+<ul>
+<li>Run a specific tool locally without a difficult install.</li>
+<li>Test software while avoiding dependency hell.</li>
+<li>Build an image from a <code>Dockerfile</code> for a defined research setup.</li>
+<li>Share that image with collaborators or on cloud and HPC systems.</li>
+<li>Archive images so you can rerun work with the same software later.</li>
+</ul>
+</section></section>
+<section>
+<section id="episode-2-introducing-the-docker-command-line" class="title-slide slide level1 nonincremental center">
+<h1>Episode 2: Introducing the Docker Command Line</h1>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Questions</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>How do I know Docker is installed and running?</li>
+<li>How do I interact with Docker?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Objectives</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Explain how to check that Docker is installed and is ready to use.</li>
+<li>Demonstrate some initial Docker command line interactions.</li>
+<li>Use the built-in help for Docker commands.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="docker-command-line" class="slide level2">
+<h2>Docker Command Line</h2>
+<p>Before using the CLI:</p>
+<ul>
+<li>start Docker Desktop or Docker Engine;</li>
+<li>on Linux, Docker may already be running;</li>
+<li>if your install added Docker to startup, no extra step may be needed.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>You May Need to Log In to Docker Hub</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Docker Desktop often prompts for Docker Hub login on startup.</li>
+<li>Use the app menu or system tray icon to sign in.</li>
+<li>You will not need Docker Hub immediately, but logging in early is convenient.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="getting-started-with-docker" class="slide level2">
+<h2>Getting Started with Docker</h2>
+<p>Open a shell and confirm the CLI is available:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a></a><span class="ex">docker</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a></a>Docker version 20.10.5, build 55c4c88</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>docker --version</code> confirms the command line client is installed. To check the running Docker service as well, try:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a></a><span class="ex">docker</span> container ls</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a></a>CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>docker system info</code> also works, but it produces much more output.</p>
+<p>However, if you instead get a message similar to the following</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a></a>Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>then you need to check that you have started the Docker Desktop, Docker Engine, or however else you worked through the setup instructions.</p>
+</section>
+<section id="getting-help" class="slide level2">
+<h2>Getting Help</h2>
+<p>Most CLI tools provide built-in help with <code>help</code>, <code>-h</code>, or <code>--help</code>. Docker follows the same pattern.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a></a><span class="ex">docker</span> <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Key things to notice in the help output:</p>
+<ul>
+<li>high-level management groups such as <code>container</code>, <code>image</code>, <code>network</code>, and <code>volume</code>;</li>
+<li>individual commands such as <code>run</code>, <code>pull</code>, <code>push</code>, <code>build</code>, and <code>inspect</code>;</li>
+<li>the hint: <code>Run 'docker COMMAND --help' for more information on a command.</code></li>
+</ul>
+<div class="helpscroll">
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a></a>Usage:  docker [OPTIONS] COMMAND</span>
+<span id="cb7-2"><a></a></span>
+<span id="cb7-3"><a></a>A self-sufficient runtime for containers</span>
+<span id="cb7-4"><a></a></span>
+<span id="cb7-5"><a></a>Options:</span>
+<span id="cb7-6"><a></a>      --config string      Location of client config files (default "/Users/vini/.docker")</span>
+<span id="cb7-7"><a></a>  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default context set with "docker context use")</span>
+<span id="cb7-8"><a></a>  -D, --debug              Enable debug mode</span>
+<span id="cb7-9"><a></a>  -H, --host list          Daemon socket(s) to connect to</span>
+<span id="cb7-10"><a></a>  -l, --log-level string   Set the logging level ("debug"|"info"|"warn"|"error"|"fatal") (default "info")</span>
+<span id="cb7-11"><a></a>      --tls                Use TLS; implied by --tlsverify</span>
+<span id="cb7-12"><a></a>      --tlscacert string   Trust certs signed only by this CA (default "/Users/vini/.docker/ca.pem")</span>
+<span id="cb7-13"><a></a>      --tlscert string     Path to TLS certificate file (default "/Users/vini/.docker/cert.pem")</span>
+<span id="cb7-14"><a></a>      --tlskey string      Path to TLS key file (default "/Users/vini/.docker/key.pem")</span>
+<span id="cb7-15"><a></a>      --tlsverify          Use TLS and verify the remote</span>
+<span id="cb7-16"><a></a>  -v, --version            Print version information and quit</span>
+<span id="cb7-17"><a></a></span>
+<span id="cb7-18"><a></a>Management Commands:</span>
+<span id="cb7-19"><a></a>  app*        Docker App (Docker Inc., v0.9.1-beta3)</span>
+<span id="cb7-20"><a></a>  builder     Manage builds</span>
+<span id="cb7-21"><a></a>  buildx*     Build with BuildKit (Docker Inc., v0.5.1-docker)</span>
+<span id="cb7-22"><a></a>  config      Manage Docker configs</span>
+<span id="cb7-23"><a></a>  container   Manage containers</span>
+<span id="cb7-24"><a></a>  context     Manage contexts</span>
+<span id="cb7-25"><a></a>  image       Manage images</span>
+<span id="cb7-26"><a></a>  manifest    Manage Docker image manifests and manifest lists</span>
+<span id="cb7-27"><a></a>  network     Manage networks</span>
+<span id="cb7-28"><a></a>  node        Manage Swarm nodes</span>
+<span id="cb7-29"><a></a>  plugin      Manage plugins</span>
+<span id="cb7-30"><a></a>  scan*       Docker Scan (Docker Inc., v0.6.0)</span>
+<span id="cb7-31"><a></a>  secret      Manage Docker secrets</span>
+<span id="cb7-32"><a></a>  service     Manage services</span>
+<span id="cb7-33"><a></a>  stack       Manage Docker stacks</span>
+<span id="cb7-34"><a></a>  swarm       Manage Swarm</span>
+<span id="cb7-35"><a></a>  system      Manage Docker</span>
+<span id="cb7-36"><a></a>  trust       Manage trust on Docker images</span>
+<span id="cb7-37"><a></a>  volume      Manage volumes</span>
+<span id="cb7-38"><a></a></span>
+<span id="cb7-39"><a></a>Commands:</span>
+<span id="cb7-40"><a></a>  attach      Attach local standard input, output, and error streams to a running container</span>
+<span id="cb7-41"><a></a>  build       Build an image from a Dockerfile</span>
+<span id="cb7-42"><a></a>  commit      Create a new image from a container's changes</span>
+<span id="cb7-43"><a></a>  cp          Copy files/folders between a container and the local filesystem</span>
+<span id="cb7-44"><a></a>  create      Create a new container</span>
+<span id="cb7-45"><a></a>  diff        Inspect changes to files or directories on a container's filesystem</span>
+<span id="cb7-46"><a></a>  events      Get real time events from the server</span>
+<span id="cb7-47"><a></a>  exec        Run a command in a running container</span>
+<span id="cb7-48"><a></a>  export      Export a container's filesystem as a tar archive</span>
+<span id="cb7-49"><a></a>  history     Show the history of an image</span>
+<span id="cb7-50"><a></a>  images      List images</span>
+<span id="cb7-51"><a></a>  import      Import the contents from a tarball to create a filesystem image</span>
+<span id="cb7-52"><a></a>  info        Display system-wide information</span>
+<span id="cb7-53"><a></a>  inspect     Return low-level information on Docker objects</span>
+<span id="cb7-54"><a></a>  kill        Kill one or more running containers</span>
+<span id="cb7-55"><a></a>  load        Load an image from a tar archive or STDIN</span>
+<span id="cb7-56"><a></a>  login       Log in to a Docker registry</span>
+<span id="cb7-57"><a></a>  logout      Log out from a Docker registry</span>
+<span id="cb7-58"><a></a>  logs        Fetch the logs of a container</span>
+<span id="cb7-59"><a></a>  pause       Pause all processes within one or more containers</span>
+<span id="cb7-60"><a></a>  port        List port mappings or a specific mapping for the container</span>
+<span id="cb7-61"><a></a>  ps          List containers</span>
+<span id="cb7-62"><a></a>  pull        Pull an image or a repository from a registry</span>
+<span id="cb7-63"><a></a>  push        Push an image or a repository to a registry</span>
+<span id="cb7-64"><a></a>  rename      Rename a container</span>
+<span id="cb7-65"><a></a>  restart     Restart one or more containers</span>
+<span id="cb7-66"><a></a>  rm          Remove one or more containers</span>
+<span id="cb7-67"><a></a>  rmi         Remove one or more images</span>
+<span id="cb7-68"><a></a>  run         Run a command in a new container</span>
+<span id="cb7-69"><a></a>  save        Save one or more images to a tar archive (streamed to STDOUT by default)</span>
+<span id="cb7-70"><a></a>  search      Search the Docker Hub for images</span>
+<span id="cb7-71"><a></a>  start       Start one or more stopped containers</span>
+<span id="cb7-72"><a></a>  stats       Display a live stream of container(s) resource usage statistics</span>
+<span id="cb7-73"><a></a>  stop        Stop one or more running containers</span>
+<span id="cb7-74"><a></a>  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE</span>
+<span id="cb7-75"><a></a>  top         Display the running processes of a container</span>
+<span id="cb7-76"><a></a>  unpause     Unpause all processes within one or more containers</span>
+<span id="cb7-77"><a></a>  update      Update configuration of one or more containers</span>
+<span id="cb7-78"><a></a>  version     Show the Docker version information</span>
+<span id="cb7-79"><a></a>  wait        Block until one or more containers stop, then print their exit codes</span>
+<span id="cb7-80"><a></a></span>
+<span id="cb7-81"><a></a>Run 'docker COMMAND --help' for more information on a command.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="container-help" class="slide level2">
+<h2><code>container</code> Help</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a></a><span class="ex">docker</span> container <span class="at">--help</span>  <span class="co"># or instead 'docker container'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="helpscroll">
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a></a>Usage:  docker container COMMAND</span>
+<span id="cb9-2"><a></a></span>
+<span id="cb9-3"><a></a>Manage containers</span>
+<span id="cb9-4"><a></a></span>
+<span id="cb9-5"><a></a>Commands:</span>
+<span id="cb9-6"><a></a>  attach      Attach local standard input, output, and error streams to a running container</span>
+<span id="cb9-7"><a></a>  commit      Create a new image from a container's changes</span>
+<span id="cb9-8"><a></a>  cp          Copy files/folders between a container and the local filesystem</span>
+<span id="cb9-9"><a></a>  create      Create a new container</span>
+<span id="cb9-10"><a></a>  diff        Inspect changes to files or directories on a container's filesystem</span>
+<span id="cb9-11"><a></a>  exec        Run a command in a running container</span>
+<span id="cb9-12"><a></a>  export      Export a container's filesystem as a tar archive</span>
+<span id="cb9-13"><a></a>  inspect     Display detailed information on one or more containers</span>
+<span id="cb9-14"><a></a>  kill        Kill one or more running containers</span>
+<span id="cb9-15"><a></a>  logs        Fetch the logs of a container</span>
+<span id="cb9-16"><a></a>  ls          List containers</span>
+<span id="cb9-17"><a></a>  pause       Pause all processes within one or more containers</span>
+<span id="cb9-18"><a></a>  port        List port mappings or a specific mapping for the container</span>
+<span id="cb9-19"><a></a>  prune       Remove all stopped containers</span>
+<span id="cb9-20"><a></a>  rename      Rename a container</span>
+<span id="cb9-21"><a></a>  restart     Restart one or more containers</span>
+<span id="cb9-22"><a></a>  rm          Remove one or more containers</span>
+<span id="cb9-23"><a></a>  run         Run a command in a new container</span>
+<span id="cb9-24"><a></a>  start       Start one or more stopped containers</span>
+<span id="cb9-25"><a></a>  stats       Display a live stream of container(s) resource usage statistics</span>
+<span id="cb9-26"><a></a>  stop        Stop one or more running containers</span>
+<span id="cb9-27"><a></a>  top         Display the running processes of a container</span>
+<span id="cb9-28"><a></a>  unpause     Unpause all processes within one or more containers</span>
+<span id="cb9-29"><a></a>  update      Update configuration of one or more containers</span>
+<span id="cb9-30"><a></a>  wait        Block until one or more containers stop, then print their exit codes</span>
+<span id="cb9-31"><a></a></span>
+<span id="cb9-32"><a></a>Run 'docker container COMMAND --help' for more information on a command.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="container-ls-help" class="slide level2">
+<h2><code>container ls</code> Help</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a></a><span class="ex">docker</span> container ls <span class="at">--help</span>  <span class="co"># this one actually requires the '--help' flag</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="helpscroll">
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1"><a></a>Usage:  docker container ls [OPTIONS]</span>
+<span id="cb11-2"><a></a></span>
+<span id="cb11-3"><a></a>List containers</span>
+<span id="cb11-4"><a></a></span>
+<span id="cb11-5"><a></a>Aliases:</span>
+<span id="cb11-6"><a></a>  ls, ps, list</span>
+<span id="cb11-7"><a></a></span>
+<span id="cb11-8"><a></a>Options:</span>
+<span id="cb11-9"><a></a>  -a, --all             Show all containers (default shows just running)</span>
+<span id="cb11-10"><a></a>  -f, --filter filter   Filter output based on conditions provided</span>
+<span id="cb11-11"><a></a>      --format string   Pretty-print containers using a Go template</span>
+<span id="cb11-12"><a></a>  -n, --last int        Show n last created containers (includes all states) (default -1)</span>
+<span id="cb11-13"><a></a>  -l, --latest          Show the latest created container (includes all states)</span>
+<span id="cb11-14"><a></a>      --no-trunc        Don't truncate output</span>
+<span id="cb11-15"><a></a>  -q, --quiet           Only display container IDs</span>
+<span id="cb11-16"><a></a>  -s, --size            Display total file sizes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="docker-command-line-interface-cli-syntax" class="slide level2">
+<h2>Docker Command Line Interface (CLI) Syntax</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Docker Command Line Interface (CLI) Syntax</strong></p>
+</div>
+<div class="callout-content">
+<p>This lesson uses the newer grouped Docker CLI syntax <a href="https://www.docker.com/blog/whats-new-in-docker-1-13/">introduced with the Docker Engine version 1.13</a>:</p>
+<ul>
+<li><code>docker [command] [subcommand] [options]</code></li>
+<li>common groups include <code>image</code> and <code>container</code></li>
+<li>this form is clearer than the older flat command style</li>
+</ul>
+<p>Comparing the help outputs shows that Docker supports both old and newer CLI forms.</p>
+<ul>
+<li>Older form: <code>docker run</code></li>
+<li>Newer grouped form: <code>docker container run</code></li>
+</ul>
+<p>The grouped form is more descriptive and is the one used in this workshop.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="challenge" class="slide level2">
+<h2>Challenge</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Exploring a Command</strong></p>
+</div>
+<div class="callout-content">
+<p>Run <code>docker --help</code> and pick a command from the list. Explore the help prompt for that command. Try to guess how a command would work by looking at the <code>Usage:</code> section of the prompt.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="solution" class="slide level2">
+<h2>Solution</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+<p>Suppose we pick the <code>docker image build</code> command:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a></a><span class="ex">docker</span> image build <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="helpscroll">
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a></a>Usage:  docker image build [OPTIONS] PATH | URL | -</span>
+<span id="cb13-2"><a></a></span>
+<span id="cb13-3"><a></a>Build an image from a Dockerfile</span>
+<span id="cb13-4"><a></a></span>
+<span id="cb13-5"><a></a>Options:</span>
+<span id="cb13-6"><a></a>     --add-host list           Add a custom host-to-IP mapping (host:ip)</span>
+<span id="cb13-7"><a></a>     --build-arg list          Set build-time variables</span>
+<span id="cb13-8"><a></a>     --cache-from strings      Images to consider as cache sources</span>
+<span id="cb13-9"><a></a>     --cgroup-parent string    Optional parent cgroup for the container</span>
+<span id="cb13-10"><a></a>     --compress                Compress the build context using gzip</span>
+<span id="cb13-11"><a></a>     --cpu-period int          Limit the CPU CFS (Completely Fair Scheduler) period</span>
+<span id="cb13-12"><a></a>     --cpu-quota int           Limit the CPU CFS (Completely Fair Scheduler) quota</span>
+<span id="cb13-13"><a></a> -c, --cpu-shares int          CPU shares (relative weight)</span>
+<span id="cb13-14"><a></a>     --cpuset-cpus string      CPUs in which to allow execution (0-3, 0,1)</span>
+<span id="cb13-15"><a></a>     --cpuset-mems string      MEMs in which to allow execution (0-3, 0,1)</span>
+<span id="cb13-16"><a></a>     --disable-content-trust   Skip image verification (default true)</span>
+<span id="cb13-17"><a></a> -f, --file string             Name of the Dockerfile (Default is 'PATH/Dockerfile')</span>
+<span id="cb13-18"><a></a>     --force-rm                Always remove intermediate containers</span>
+<span id="cb13-19"><a></a>     --iidfile string          Write the image ID to the file</span>
+<span id="cb13-20"><a></a>     --isolation string        Container isolation technology</span>
+<span id="cb13-21"><a></a>     --label list              Set metadata for an image</span>
+<span id="cb13-22"><a></a> -m, --memory bytes            Memory limit</span>
+<span id="cb13-23"><a></a>     --memory-swap bytes       Swap limit equal to memory plus swap: '-1' to enable unlimited swap</span>
+<span id="cb13-24"><a></a>     --network string          Set the networking mode for the RUN instructions during build (default "default")</span>
+<span id="cb13-25"><a></a>     --no-cache                Do not use cache when building the image</span>
+<span id="cb13-26"><a></a>     --pull                    Always attempt to pull a newer version of the image</span>
+<span id="cb13-27"><a></a> -q, --quiet                   Suppress the build output and print image ID on success</span>
+<span id="cb13-28"><a></a>     --rm                      Remove intermediate containers after a successful build (default true)</span>
+<span id="cb13-29"><a></a>     --security-opt strings    Security options</span>
+<span id="cb13-30"><a></a>     --shm-size bytes          Size of /dev/shm</span>
+<span id="cb13-31"><a></a> -t, --tag list                Name and optionally a tag in the 'name:tag' format</span>
+<span id="cb13-32"><a></a>     --target string           Set the target build stage to build.</span>
+<span id="cb13-33"><a></a>     --ulimit ulimit           Ulimit options (default [])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We could try to guess that the command could be run like this:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a></a><span class="ex">docker</span> image build .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a></a><span class="ex">docker</span> image build https://github.com/docker/rootfs.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Where <code>https://github.com/docker/rootfs.git</code> could be any relevant URL that supports a Docker image.</p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="episode-3-exploring-and-running-containers" class="title-slide slide level1 nonincremental center">
+<h1>Episode 3: Exploring and Running Containers</h1>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Questions</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>How do I interact with Docker containers and container images on my computer?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Objectives</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Use the correct command to see which Docker container images are on your computer.</li>
+<li>Be able to download new Docker container images.</li>
+<li>Demonstrate how to start an instance of a container from a container image.</li>
+<li>Describe at least two ways to execute commands inside a running Docker container.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="container-terminology" class="slide level2">
+<h2>Container Terminology</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Reminder of Terminology: Container Images and Containers</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>A <em>container image</em> is the reusable template.</li>
+<li>A <em>container</em> is a running instance created from that image.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="downloading-docker-images" class="slide level2">
+<h2>Downloading Docker Images</h2>
+<p>Start with a simple example image from Docker Hub: <code>hello-world</code>.</p>
+<p>Use <code>docker image</code> commands to work with container images on your machine. Check what images are already available (“ls” is short for “list”):</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a></a><span class="ex">docker</span> image ls</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>On a fresh Docker install, this list is usually empty.</p>
+<p>Pull the <code>hello-world</code> image from Docker Hub:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a></a><span class="ex">docker</span> image pull hello-world</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Expected output:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb18-1"><a></a>Using default tag: latest</span>
+<span id="cb18-2"><a></a>latest: Pulling from library/hello-world</span>
+<span id="cb18-3"><a></a>1b930d010525: Pull complete</span>
+<span id="cb18-4"><a></a>Digest: sha256:f9dfddf63636d84ef479d645ab5885156ae030f611a56f3a7ac7f2fdd86d7e4e</span>
+<span id="cb18-5"><a></a>Status: Downloaded newer image for hello-world:latest</span>
+<span id="cb18-6"><a></a>docker.io/library/hello-world:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Docker Hub</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><code>hello-world</code> comes from Docker Hub.</li>
+<li>Docker Hub is an online registry for sharing container images.</li>
+<li>We cover it in more detail later.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="exercise-check-on-your-images" class="slide level2">
+<h2>Exercise: Check on Your Images</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Exercise: Check on Your Images</strong></p>
+</div>
+<div class="callout-content">
+<p>What command would you use to see if the <code>hello-world</code> Docker container image had downloaded successfully and was on your computer? Give it a try before checking the solution.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="verifying-downloaded-images" class="slide level2">
+<h2>Verifying Downloaded Images</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+<p>To see if the <code>hello-world</code> container image is now on your computer, run:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a></a><span class="ex">docker</span> image ls</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>The downloaded <code>hello-world</code> image is not saved in your current folder.</li>
+<li>Running <code>ls</code> will not show container images.</li>
+<li>Docker stores images in its own internal storage location.</li>
+<li>Use <code>docker image</code> commands to list and manage images on your computer.</li>
+</ul>
+</section>
+<section id="running-the-hello-world-container" class="slide level2">
+<h2>Running the <code>hello-world</code> Container</h2>
+<p>Use <code>docker container run</code> to create and run a container from an image.</p>
+<ul>
+<li>Syntax: <code>docker container run IMAGE_NAME</code></li>
+<li>Your current working directory does not matter for this example.</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a></a><span class="ex">docker</span> container run hello-world</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb21-1"><a></a>Hello from Docker!</span>
+<span id="cb21-2"><a></a>This message shows that your installation appears to be working correctly.</span>
+<span id="cb21-3"><a></a></span>
+<span id="cb21-4"><a></a>To generate this message, Docker took the following steps:</span>
+<span id="cb21-5"><a></a> 1. The Docker client contacted the Docker daemon.</span>
+<span id="cb21-6"><a></a> 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.</span>
+<span id="cb21-7"><a></a>    (amd64)</span>
+<span id="cb21-8"><a></a> 3. The Docker daemon created a new container from that image which runs the</span>
+<span id="cb21-9"><a></a>    executable that produces the output you are currently reading.</span>
+<span id="cb21-10"><a></a> 4. The Docker daemon streamed that output to the Docker client, which sent it</span>
+<span id="cb21-11"><a></a>    to your terminal.</span>
+<span id="cb21-12"><a></a></span>
+<span id="cb21-13"><a></a>To try something more ambitious, you can run an Ubuntu container with:</span>
+<span id="cb21-14"><a></a> `docker run -it ubuntu bash`</span>
+<span id="cb21-15"><a></a></span>
+<span id="cb21-16"><a></a>Share images, automate workflows, and more with a free Docker ID:</span>
+<span id="cb21-17"><a></a> https://hub.docker.com/</span>
+<span id="cb21-18"><a></a></span>
+<span id="cb21-19"><a></a>For more examples and ideas, visit:</span>
+<span id="cb21-20"><a></a> https://docs.docker.com/get-started/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="running-the-hello-world-container-1" class="slide level2 scrollable">
+<h2>Running the <code>hello-world</code> Container</h2>
+<p><code>docker container run</code> does three things:</p>
+<ol type="1">
+<li>Starts a <strong>running container</strong> from the chosen image. Think of this as the “alive” or “inflated” version of the container.</li>
+<li>Executes the image’s <strong>default command</strong>. This could be as simple as printing a message (as above) or running a whole analysis pipeline!</li>
+<li>Once the default action is complete, the container <strong>stops running (or exits)</strong>. The container image is still there, but nothing is actively running.</li>
+</ol>
+<p>For <code>hello-world</code>, the default command prints this diagnostic message and exits.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Using <code>docker container run</code> to Get the Image</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>You can skip <code>docker image pull</code>.</li>
+<li>If the image is missing, <code>docker container run</code> will pull it automatically and then run it.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="running-a-container-with-a-chosen-command" class="slide level2">
+<h2>Running a Container with a Chosen Command</h2>
+<p>Want to do more than the default container action?</p>
+<ul>
+<li>Use a different image to explore more <code>docker container run</code> patterns.</li>
+<li>The previous output suggested <code>ubuntu</code>.</li>
+<li>Here we use <code>alpine</code> instead because it downloads faster.</li>
+</ul>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Run the Alpine Docker Container</strong></p>
+</div>
+<div class="callout-content">
+<p>Try downloading the <code>alpine</code> container image and using it to run a container. You can do it in two steps, or one. What are they?</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="run-the-alpine-docker-container-1" class="slide level2">
+<h2>Run the Alpine Docker Container</h2>
+<p>What happened when you ran the Alpine Docker container?</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a></a><span class="ex">docker</span> container run alpine</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>What to expect:</p>
+<ul>
+<li>First run: Docker may pull <code>alpine</code> if it is not already local.</li>
+<li>Later runs: you may see little or no output.</li>
+<li>Reason: <code>alpine</code> is minimal and usually expects you to provide a command.</li>
+</ul>
+<p>Try running an explicit command:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a></a><span class="ex">docker</span> container run alpine cat /etc/os-release</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You should see Alpine OS details from <code>/etc/os-release</code> (version and related metadata).</p>
+</section>
+<section id="challenge-1" class="slide level2">
+<h2>Challenge</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Hello World, Part 2</strong></p>
+</div>
+<div class="callout-content">
+<p>Can you run a copy of the <code>alpine</code> container and make it print a “hello world” message?</p>
+<p>Give it a try before checking the solution.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="solution-3" class="slide level2">
+<h2>Solution</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+<p>Use the same command as above, but with the <code>echo</code> command to print a message.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a></a><span class="ex">docker</span> container run alpine echo <span class="st">'Hello World'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>We can provide commands at the end of the <code>docker container run</code> command and they will execute inside the running container.</p>
+</section>
+<section id="running-containers-interactively" class="slide level2">
+<h2>Running Containers Interactively</h2>
+<p>To run interactively,</p>
+<ul>
+<li>add the interactive flags <code>-i</code> and <code>-t</code> (usually combined as <code>-it</code>)</li>
+<li>provide a shell (<code>bash</code>, <code>sh</code>, etc.) as the command</li>
+<li>For <code>alpine</code>, use <code>sh</code> because <code>bash</code> is not included.</li>
+</ul>
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a></a><span class="ex">docker</span> container run <span class="at">-it</span> alpine sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Technically…</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><code>-i</code> keeps standard input open.</li>
+<li><code>-t</code> allocates a text terminal (pseudo-TTY).</li>
+<li>In practice, <code>-it</code> is the usual combination for interactive shells.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="running-containers-interactively-1" class="slide level2">
+<h2>Running Containers Interactively</h2>
+<p>Your prompt should change to look like this:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a></a><span class="ex">/</span> <span class="co">#</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You’re now inside the running container! Try these commands:</p>
+<ul>
+<li><p><code>pwd</code></p></li>
+<li><p><code>ls</code></p></li>
+<li><p><code>whoami</code></p></li>
+<li><p><code>echo $PATH</code></p></li>
+<li><p><code>cat /etc/os-release</code></p></li>
+<li><p>These commands run inside the container, not on your host computer.</p></li>
+<li><p>The output describes the container environment.</p></li>
+<li><p>When finished, exit the container with <code>exit</code>.</p></li>
+</ul>
+<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a></a><span class="ex">/</span> <span class="co"># exit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="challenge-2" class="slide level2">
+<h2>Challenge</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Practice Makes Perfect</strong></p>
+</div>
+<div class="callout-content">
+<p>Can you find out the version of Ubuntu installed on the <code>ubuntu</code> container image? (Hint: You can use the same command as used to find the version of alpine.)</p>
+<p>Can you also find the <code>apt-get</code> program? What does it do? (Hint: try passing <code>--help</code> to almost any command will give you more information.)</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="solution-5" class="slide level2">
+<h2>Solution</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution 1 – Interactive</strong></p>
+</div>
+<div class="callout-content">
+<p>Run an interactive ubuntu container – you can use <code>docker image pull</code> first, or just run it with this command:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a></a><span class="ex">docker</span> container run <span class="at">-it</span> ubuntu sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>OR you can get the bash shell instead</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a></a><span class="ex">docker</span> container run <span class="at">-it</span> ubuntu bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then try, running these commands</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a></a><span class="ex">/#</span> cat /etc/os-release</span>
+<span id="cb30-2"><a></a><span class="ex">/#</span> apt-get <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Exit when you’re done.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a></a><span class="ex">/#</span> exit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution 2 – Run Commands</strong></p>
+</div>
+<div class="callout-content">
+<p>Run a ubuntu container, first with a command to read out the Linux version:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a></a><span class="ex">docker</span> container run ubuntu cat /etc/os-release</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then run a container with a command to print out the apt-get help:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a></a><span class="ex">docker</span> container run ubuntu apt-get <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Even More Options</strong></p>
+</div>
+<div class="callout-content">
+<p><code>docker container run</code> supports many options beyond <code>-it</code>. Here are two common ones:</p>
+<ul>
+<li><code>--rm</code>: remove the container automatically when it stops.
+<ul>
+<li>Cleans up stopped containers.</li>
+<li>Does not remove pulled images.</li>
+</ul></li>
+<li><code>--name=</code>: assign a custom container name.
+<ul>
+<li>Easier to identify and reuse specific containers.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="episode-4-cleaning-up-containers" class="title-slide slide level1 nonincremental center">
+<h1>Episode 4: Cleaning Up Containers</h1>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Questions</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>How do I interact with a Docker container on my computer?</li>
+<li>How do I manage my containers and container images?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Objectives</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Explain how to list running and completed containers.</li>
+<li>Know how to list and remove container images.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="removing-images" class="slide level2">
+<h2>Removing Images</h2>
+<p>Containers and images can accumulate and consume disk space over time.</p>
+<p>To remove an image, identify it first, usually by <strong>Image ID</strong>:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a></a><span class="ex">docker</span> image ls</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb35-1"><a></a>REPOSITORY       TAG         IMAGE ID       CREATED          SIZE</span>
+<span id="cb35-2"><a></a>hello-world      latest      fce289e99eb9   15 months ago    1.84kB</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Remove by image ID:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a></a><span class="ex">docker</span> image rm fce289e99eb9</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Or remove by image name:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a></a><span class="ex">docker</span> image rm hello-world</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You may see this error:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb38-1"><a></a>Error response from daemon: conflict: unable to remove repository reference "hello-world" (must force) - </span>
+<span id="cb38-2"><a></a>container e7d3b76b00f4 is using its referenced image fce289e99eb9</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Why this happens:</p>
+<ul>
+<li>A container (running or stopped) is still linked to that image.</li>
+<li>Remove relevant containers first, then remove the image.</li>
+</ul>
+</section>
+<section id="what-containers-are-running" class="slide level2">
+<h2>What Containers Are Running?</h2>
+<p>Use <code>docker container</code> commands to inspect container state.</p>
+<p>List currently running containers:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a></a><span class="ex">docker</span> container ls</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb40-1"><a></a>CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>No rows means no containers are currently running.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong><code>docker ps</code></strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><code>docker ps</code> is equivalent to <code>docker container ls</code>.</li>
+<li>The name comes from the Unix <code>ps</code> command which describes running processes.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="what-containers-have-run-recently" class="slide level2">
+<h2>What Containers Have Run Recently?</h2>
+<p>To include stopped containers, add <code>--all</code> (or <code>-a</code>):</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a></a><span class="ex">docker</span> container ls <span class="at">--all</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb42-1"><a></a>CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                     PORTS               NAMES</span>
+<span id="cb42-2"><a></a>9c698655416a        hello-world         "/hello"            2 minutes ago       Exited (0) 2 minutes ago                       zen_dubinsky</span>
+<span id="cb42-3"><a></a>6dd822cf6ca9        hello-world         "/hello"            3 minutes ago       Exited (0) 3 minutes ago                       eager_engelbart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Keeping It Clean</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Docker keeps stopped containers unless you remove them.</li>
+<li>Add <code>--rm</code> to delete the container automatically when it exits.</li>
+<li>Do not use <code>--rm</code> if you need to inspect or reconnect to that container later.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="how-do-i-remove-an-exited-container" class="slide level2">
+<h2>How Do I Remove an Exited Container?</h2>
+<p>Delete one exited container by ID:</p>
+<ul>
+<li>Replace with the container ID you want to remove.</li>
+<li>Docker echoes the ID on success.</li>
+</ul>
+<div class="sourceCode" id="cb43"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a></a><span class="ex">docker</span> container rm 9c698655416a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb44-1"><a></a>9c698655416a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Use <code>docker container prune</code> to delete <strong>all</strong> stopped containers.</p>
+<ul>
+<li>It does not take a container ID.</li>
+<li>Deletion is permanent.</li>
+<li>Avoid this command if you may need to reconnect to stopped containers.</li>
+<li>Docker asks for confirmation and then lists removed container IDs.</li>
+</ul>
+<div class="sourceCode" id="cb45"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a></a><span class="ex">docker</span> container prune</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb46-1"><a></a>WARNING! This will remove all stopped containers.</span>
+<span id="cb46-2"><a></a>Are you sure you want to continue? [y/N] y</span>
+<span id="cb46-3"><a></a>Deleted Containers:</span>
+<span id="cb46-4"><a></a>9c698655416a848278d16bb1352b97e72b7ea85884bff8f106877afe0210acfc</span>
+<span id="cb46-5"><a></a>6dd822cf6ca92f3040eaecbd26ad2af63595f30bb7e7a20eacf4554f6ccc9b2b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="removing-images-for-real-this-time" class="slide level2">
+<h2>Removing Images, for Real This Time</h2>
+<p>After removing dependent containers, retry image removal:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a></a><span class="ex">docker</span> image rm hello-world</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb48-1"><a></a>Untagged: hello-world:latest</span>
+<span id="cb48-2"><a></a>Untagged: hello-world@sha256:5f179596a7335398b805f036f7e8561b6f0e32cd30a32f5e19d17a3cda6cc33d</span>
+<span id="cb48-3"><a></a>Deleted: sha256:fce289e99eb9bca977dae136fbe2a82b6b7d4c372474c9235adc1741675f587e</span>
+<span id="cb48-4"><a></a>Deleted: sha256:af0b15c8625bb1938f1d7b17081031f649fd14e6b233688eea3c5483994a66a3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Why multiple lines appear:</p>
+<ul>
+<li>Docker images are made of layered filesystems.</li>
+<li>Removing one image may untag and/or delete several underlying layers.</li>
+<li>Shared layers are kept until no image depends on them.</li>
+</ul>
+<p>Finally, confirm <code>hello-world</code> is gone from <code>docker image ls</code>.</p>
+</section></section>
+<section>
+<section id="episode-5-finding-containers-on-docker-hub" class="title-slide slide level1 nonincremental center">
+<h1>Episode 5: Finding Containers on Docker Hub</h1>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Questions</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>What is the Docker Hub, and why is it useful?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Objectives</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Understand the importance of container registries such as Docker Hub, quay.io, etc.</li>
+<li>Explore the Docker Hub webpage for a popular Docker container image.</li>
+<li>Find the list of tags for a particular Docker container image.</li>
+<li>Identify the three components of a container image’s identifier.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="introducing-the-docker-hub" class="slide level2">
+<h2>Introducing the Docker Hub</h2>
+<p>Docker Hub is an online registry of container images.</p>
+<ul>
+<li>Many images are public.</li>
+<li>Many are maintained by software developers.</li>
+<li>Some are official/endorsed images with stronger trust signals.</li>
+<li>Trusted images are more likely to be maintained, stable, and secure.</li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Docker Can Be Used without Connecting to Docker Hub</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Docker Hub is convenient, but not required.</li>
+<li>Some organizations use private or offline container infrastructure instead.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="exploring-an-example-docker-hub-page" class="slide level2">
+<h2>Exploring an Example Docker Hub Page</h2>
+<p>Use the official Python image page as an example: <a href="https://hub.docker.com/_/python">https://hub.docker.com/_/python</a></p>
+<p>What to look for on a Docker Hub page:</p>
+<ul>
+<li><p>Top-left: image name, short description, popularity, endorsements.</p></li>
+<li><p>Top-right: pull command.</p></li>
+<li><p>Main body sections typically include:</p>
+<ul>
+<li>Which tags (i.e., container image versions) are supported;</li>
+<li>Summary information about where to get help, which computer architectures are supported, etc.;</li>
+<li>A longer description of the container image;</li>
+<li>Examples of how to use the container image; and</li>
+<li>The license that applies.</li>
+</ul></li>
+</ul>
+<p>The “How to use this image” section is usually the best starting point.</p>
+</section>
+<section id="exploring-container-image-versions" class="slide level2">
+<h2>Exploring Container Image Versions</h2>
+<p>A single Docker Hub repository can provide many image versions.</p>
+<ul>
+<li>Versions are represented by <strong>tags</strong>.</li>
+<li>Use <code>:</code> to specify a tag:</li>
+</ul>
+<div class="sourceCode" id="cb49"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb49-1"><a></a>CONTAINER_IMAGE_NAME:TAG</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To download Python 3.8 container image:</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a></a><span class="ex">docker</span> image pull python:3.8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To download Python 3.6 container image:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a></a><span class="ex">docker</span> image pull python:3.6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If no tag is provided, Docker uses the default tag - <code>latest</code>.</p>
+</section>
+<section id="images-from-others" class="slide level2">
+<h2>Images from Others</h2>
+<p>Not all images are maintained by Docker.</p>
+<ul>
+<li>Many are published by individuals or organizations.</li>
+<li>Your own uploaded images follow this same model.</li>
+<li>Examples include <a href="https://hub.docker.com/u/continuumio">ContinuumIO</a> (who develop the Anaconda Python environment) and <a href="https://hub.docker.com/u/rocker">rocker</a> (group that builds community R container images).</li>
+</ul>
+<p>Common naming pattern for owner-managed images:</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb52-1"><a></a>OWNER/CONTAINER_IMAGE_NAME:TAG</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Repositories</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>A Docker Hub page represents a <strong>repository</strong>.</li>
+<li>A <strong>tag</strong> selects a specific version from that repository.</li>
+</ul>
+<p>So a more precise naming pattern is:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb53-1"><a></a>OWNER/REPOSITORY:TAG</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="challenge-3" class="slide level2">
+<h2>Challenge</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>What’s in a Name?</strong></p>
+</div>
+<div class="callout-content">
+<p>How would I download the Docker container image produced by the <code>rocker</code> group that has version 3.6.1 of R and the tidyverse installed?</p>
+<p>Note: the container image described in this exercise is large and won’t be used later in this lesson, so you don’t actually need to pull the container image – constructing the correct <code>docker pull</code> command is sufficient.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="finding-container-images" class="slide level2">
+<h2>Finding Container Images</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+<p>First, search for <code>rocker</code> in Docker Hub. Then look for their <code>tidyverse</code> container image. You can look at the list of tags, or just guess that the tag is <code>3.6.1</code>. Altogether, that means that the name of the container image we want to download is:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a></a><span class="ex">docker</span> image pull rocker/tidyverse:3.6.1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="finding-container-images-on-docker-hub" class="slide level2">
+<h2>Finding Container Images on Docker Hub</h2>
+<p>Docker Hub offers many image choices.</p>
+<ul>
+<li>Each image can provide a ready-to-use software environment.</li>
+<li>Find images via Docker Hub search or software project pages.</li>
+<li>Evaluate image quality before use.</li>
+</ul>
+<p>Useful trust indicators:</p>
+<ul>
+<li>The container image is updated regularly.</li>
+<li>The container image associated with a well established company, community, or other group that is well-known.</li>
+<li>There is a Dockerfile or other listing of what has been installed to the container image.</li>
+<li>The container image page has documentation on how to use the container image.</li>
+</ul>
+<p>Avoid images that are stale, poorly documented, or from unclear sources.</p>
+<ul>
+<li>They are harder to trust.</li>
+<li>They reduce reproducibility and reliability for research workflows.</li>
+</ul>
+</section>
+<section id="challenge-4" class="slide level2">
+<h2>Challenge</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>What Container Image Is Right for You?</strong></p>
+</div>
+<div class="callout-content">
+<p>Find a Docker container image that’s relevant to you. Take into account the suggestions above of what to look for as you evaluate options. If you’re unsuccessful in your search, or don’t know what to look for, you can use the R or Python container image we’ve already seen.</p>
+<p>Once you find a container image, use the skills from the previous episode to download the container image and explore it.</p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="episode-6-creating-your-own-container-images" class="title-slide slide level1 nonincremental center">
+<h1>Episode 6: Creating Your Own Container Images</h1>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Questions</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>How can I make my own Docker container images?</li>
+<li>How do I document the ‘recipe’ for a Docker container image?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Objectives</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>“Explain the purpose of a <code>Dockerfile</code> and show some simple examples.”</li>
+<li>“Demonstrate how to build a Docker container image from a <code>Dockerfile</code>.”</li>
+<li>Compare the steps of creating a container image interactively versus a <code>Dockerfile</code>.</li>
+<li>Create an installation strategy for a container image.</li>
+<li>“Demonstrate how to upload (‘push’) your container images to the Docker Hub.”</li>
+<li>Describe the significance of the Docker Hub naming scheme.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="why-create-your-own-container-images" class="slide level2">
+<h2>Why Create Your Own Container Images</h2>
+<p>There are lots of reasons why you might want to create your <strong>own</strong> Docker container image.</p>
+<ul>
+<li>You can’t find a container image with all the tools you need on Docker Hub.</li>
+<li>You want to have a container image to “archive” all the specific software versions you ran for a project.</li>
+<li>You want to share your workflow with someone else.</li>
+</ul>
+</section>
+<section id="interactive-installation" class="slide level2">
+<h2>Interactive Installation</h2>
+<p>Before building a reproducible image, test installation steps interactively.</p>
+<ul>
+<li>Start an interactive container from <code>alpine</code>:</li>
+</ul>
+<div class="sourceCode" id="cb55"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a></a><span class="ex">docker</span> container run <span class="at">-it</span> alpine sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>alpine</code> is minimal, so tools like <code>python3</code> are not preinstalled.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a></a><span class="ex">/#</span> python3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb57-1"><a></a>sh: python3: not found</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Install Python using Alpine’s package manager (<code>apk</code>):</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a></a><span class="ex">/#</span> apk add <span class="at">--update</span> python3 py3-pip python3-dev</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Verify the install:</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb59-1"><a></a><span class="ex">/#</span> python3 <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="challenge-5" class="slide level2">
+<h2>Challenge</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Searching for Help</strong></p>
+</div>
+<div class="callout-content">
+<p>Can you find instructions for installing R on Alpine Linux? Do they work?</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="installing-r-on-alpine" class="slide level2">
+<h2>Installing R on Alpine</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+<p>A quick search should hopefully show that the way to install R on Alpine Linux is:</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a></a><span class="ex">/#</span> apk add R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>When you exit, these interactive changes are not captured as a reproducible image.</p>
+<ul>
+<li>There are commands that will “snapshot” the changes. Snapshot-style workflows are possible, but hard to reproduce.</li>
+<li>Better approach: encode steps in a <code>Dockerfile</code> to create a container image.</li>
+</ul>
+<p>If you haven’t already, exit out of the interactively running container.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb61-1"><a></a><span class="ex">/#</span> exit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="put-installation-instructions-in-a-dockerfile" class="slide level2">
+<h2>Put Installation Instructions in a <code>Dockerfile</code></h2>
+<p>A <code>Dockerfile</code> is a plain-text recipe for building container images.</p>
+<p>Inspect the starter <code>Dockerfile</code>:</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a></a><span class="bu">cd</span> ~/Desktop/docker-intro/basic</span>
+<span id="cb62-2"><a></a><span class="fu">cat</span> Dockerfile</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb63-1"><a></a>FROM &lt;EXISTING IMAGE&gt;</span>
+<span id="cb63-2"><a></a>RUN &lt;INSTALL CMDS FROM SHELL&gt;</span>
+<span id="cb63-3"><a></a>CMD &lt;CMD TO RUN BY DEFAULT&gt;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>What each instruction means:</p>
+<ul>
+<li><p><code>FROM</code>: which container image we’re starting with. It is the “base” container image we are going to start from.</p></li>
+<li><p><code>RUN</code>: installation commands we want to run. These are the same commands that we used interactively above.</p></li>
+<li><p><code>CMD</code>: the default command we want a container based on this container image to run, if no other command is provided.</p>
+<ul>
+<li>It is recommended to provide <code>CMD</code> in <em>exec-form</em> (see the <a href="https://docs.docker.com/engine/reference/builder/#cmd"><code>CMD</code> section</a> of the Dockerfile documentation for more details).</li>
+<li>It is written as a list which contains the executable to run as its first element, optionally followed by any arguments as subsequent elements.</li>
+<li>The list is enclosed in square brackets (<code>[]</code>) and its elements are double-quoted (<code>"</code>) strings which are separated by commas.</li>
+<li>For example, <code>CMD ["ls", "-lF", "--color", "/etc"]</code> would translate to <code>ls -lF --color /etc</code>.</li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong><em>Shell-Form</em> and <em>Exec-Form</em> for CMD</strong></p>
+</div>
+<div class="callout-content">
+<p>Another way to specify the parameter for the <a href="https://docs.docker.com/engine/reference/builder/#cmd"><code>CMD</code> instruction</a> is the <em>shell-form</em>. Here you type the command as you would call it from the command line. Docker then silently runs this command in the image’s standard shell. <code>CMD cat /etc/passwd</code> is equivalent to <code>CMD ["/bin/sh", "-c", "cat /etc/passwd"]</code>. We recommend to prefer the more explicit <em>exec-form</em> because we will be able to create more flexible container image command options and make sure complex commands are unambiguous in this format.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="challenge-6" class="slide level2">
+<h2>Challenge</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Exercise: Take a Guess</strong></p>
+</div>
+<div class="callout-content">
+<p>Do you have any ideas about what we should use to fill in the sample Dockerfile to replicate the installation we did above?</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="solution-8" class="slide level2">
+<h2>Solution</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution:</strong></p>
+</div>
+<div class="callout-content">
+<p>Based on our experience above, edit the <code>Dockerfile</code> (in your text editor of choice) to look like this:</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb64-1"><a></a><span class="kw">FROM</span> alpine</span>
+<span id="cb64-2"><a></a><span class="kw">RUN</span> <span class="ex">apk</span> add <span class="at">--update</span> python3 py3-pip python3-dev</span>
+<span id="cb64-3"><a></a><span class="kw">CMD</span> [<span class="st">"python3"</span>, <span class="st">"--version"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>This Dockerfile does three things:</p>
+<ul>
+<li>starts from Alpine Linux;</li>
+<li>installs Python 3, pip package management tool, and Python header files;</li>
+<li>sets default runtime command to print the Python 3 version.</li>
+</ul>
+</section>
+<section id="create-a-new-docker-image" class="slide level2">
+<h2>Create a New Docker Image</h2>
+<p>At this point, you only have a <code>Dockerfile</code>. Use <code>docker image build</code> to turn it into an image.</p>
+<p><code>docker image build</code> needs two key inputs:</p>
+<ul>
+<li>Dockerfile location (build context)</li>
+<li>output image name (typically <code>USERNAME/CONTAINER_IMAGE_NAME</code>)</li>
+</ul>
+<p>Typical command format:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb65-1"><a></a><span class="ex">docker</span> image build <span class="at">-t</span> USERNAME/CONTAINER_IMAGE_NAME .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>-t</code> sets the output image name. Final <code>.</code> means: use current directory as build context.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb66-1"><a></a><span class="ex">docker</span> image build <span class="at">-t</span> alice/alpine-python .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="build-context" class="slide level2">
+<h2>Build Context</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Build Context</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>The final argument to <code>docker image build</code> is a directory, not the Dockerfile itself.</li>
+<li>That directory is the <strong>build context</strong>.</li>
+<li>Docker expects the Dockerfile and any copied files to be available there.</li>
+<li>Keep the build context small so Docker only loads what you actually need.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="challenge-7" class="slide level2 scrollable">
+<h2>Challenge</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Exercise: Review!</strong></p>
+</div>
+<div class="callout-content">
+<ol type="1">
+<li><p>Think back to earlier. What command can you run to check if your container image was created successfully? (Hint: what command shows the container images on your computer?)</p></li>
+<li><p>We didn’t specify a tag for our container image name. What tag did Docker automatically use?</p></li>
+<li><p>What command will run a container based on the container image you’ve created? What should happen by default if you run such a container? Can you make it do something different, like print “hello world”?</p></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="solution-10" class="slide level2 scrollable">
+<h2>Solution</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+<ol type="1">
+<li><p>To see your new image, run <code>docker image ls</code>. You should see the name of your new container image under the “REPOSITORY” heading.</p></li>
+<li><p>In the output of <code>docker image ls</code>, you can see that Docker has automatically used the <code>latest</code> tag for our new container image.</p></li>
+<li><p>We want to use <code>docker container run</code> to run a container based on a container image.</p></li>
+</ol>
+<p>The following command should run a container and print out our default message, the version of Python:</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb67-1"><a></a><span class="ex">docker</span> container run alice/alpine-python</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To run a container based on our container image and print out “Hello world” instead:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb68-1"><a></a><span class="ex">docker</span> container run alice/alpine-python echo <span class="st">"Hello World"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>This is a major milestone:</p>
+<ul>
+<li>you combined a Linux base image with your own setup;</li>
+<li>the same container can run consistently across macOS, Windows, Linux, and cloud systems.</li>
+</ul>
+</section>
+<section id="boring-but-important-notes-about-installation" class="slide level2">
+<h2>Boring but Important Notes About Installation</h2>
+<p>Installation strategy matters. Use these guidelines:</p>
+<ul>
+<li><strong>Start from the right base image</strong>: use official Python/R images where possible.</li>
+<li><strong>Keep images lean</strong>: install only what you need.</li>
+<li><strong>Use distro-appropriate package tools</strong>: Alpine <code>apk</code>, Ubuntu <code>apt/apt-get</code>, CentOS <code>yum</code>, etc.</li>
+<li><strong>Reuse familiar installers</strong>: tools like <code>pip</code> or <code>install.packages()</code> can still be useful inside containers (if the basic scripting language is installed).</li>
+<li><strong>Follow upstream docs</strong>: README/install guides often provide the best Linux setup path.</li>
+</ul>
+<p>A practical installation workflow:</p>
+<ul>
+<li>Make a list of what you want to install.</li>
+<li>Look for pre-existing container images.</li>
+<li>Read through instructions for software you’ll need to install.</li>
+<li>Try installing everything interactively in your base container – take notes!</li>
+<li>From your interactive installation, create a <code>Dockerfile</code> and then try to build the container image from that.</li>
+</ul>
+</section>
+<section id="share-your-new-container-image-on-docker-hub" class="slide level2">
+<h2>Share Your New Container Image on Docker Hub</h2>
+<p>To publish publicly, push your image to Docker Hub.</p>
+<ul>
+<li>If the name follows the Docker Hub pattern, use <code>docker image push</code>:</li>
+</ul>
+<div class="sourceCode" id="cb69"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb69-1"><a></a><span class="ex">docker</span> image push alice/alpine-python</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Use your full image name.</p>
+<p>After pushing, confirm on <a href="https://hub.docker.com">https://hub.docker.com</a> that the image appears in your account.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Logging In</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>You must be logged in before pushing to Docker Hub.</li>
+<li>If <code>docker image push</code> fails, run <code>docker login</code> first.</li>
+<li>Then retry the push command.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="whats-in-a-name-again" class="slide level2">
+<h2>What’s in a Name? (Again)</h2>
+<p>Locally, you can name images however you like. For sharing, use Docker Hub naming format:</p>
+<ul>
+<li><code>USERNAME/CONTAINER_IMAGE_NAME:TAG</code></li>
+</ul>
+<p>For example, imagine someone named Alice has been working on a workflow container image and called it <code>workflow-test</code> on her own computer. She now wants to share it in her <code>alice</code> Docker Hub account with the name <code>workflow-complete</code> and a tag of <code>v1</code>.</p>
+<p>Use <code>docker image tag</code> to rename/re-tag images for publishing.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb70-1"><a></a><span class="ex">docker</span> image tag workflow-test alice/workflow-complete:v1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then push the tagged image:</p>
+<ul>
+<li><code>docker image push alice/workflow-complete:v1</code></li>
+</ul>
+</section></section>
+<section>
+<section id="episode-7-creating-more-complex-container-images" class="title-slide slide level1 nonincremental center">
+<h1>Episode 7: Creating More Complex Container Images</h1>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Questions</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>“How can I add local files (e.g.&nbsp;data files) into container images at build time?”</li>
+<li>How can I access files stored on the host system from within a running Docker container?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Objectives</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Explain how you can include files within Docker container images when you build them.</li>
+<li>Explain how you can access files on the Docker host from your Docker containers.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="working-with-external-files-and-mounts" class="slide level2">
+<h2>Working with External Files and Mounts</h2>
+<p>This episode moves beyond basic container use.</p>
+<ul>
+<li>Use files from your host system.</li>
+<li>Copy files into images at build time.</li>
+<li>Run software and scripts with those files.</li>
+<li>Build more automated container behavior.</li>
+</ul>
+<p>The examples get progressively more advanced. Most day-to-day workflows only need the first 1-2 sections.</p>
+</section>
+<section id="using-scripts-and-files-from-outside-the-container" class="slide level2">
+<h2>Using Scripts and Files from Outside the Container</h2>
+<p>In your shell, move to the <code>sum</code> folder and inspect its contents.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb71-1"><a></a><span class="bu">cd</span> ~/Desktop/docker-intro/sum</span>
+<span id="cb71-2"><a></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The folder contains:</p>
+<ul>
+<li>a <code>Dockerfile</code></li>
+<li>a Python script: <code>sum.py</code></li>
+</ul>
+<p>Next, try running <code>sum.py</code> with the <code>alpine-python</code> image.</p>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Running Containers</strong></p>
+</div>
+<div class="callout-content">
+<p>What command would we use to run Python from the <code>alpine-python</code> container?</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="running-containers-solution" class="slide level2">
+<h2>Running Containers Solution</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+<p>We can run a container from the alpine-python container image using:</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb72-1"><a></a><span class="ex">docker</span> container run alice/alpine-python</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>What happens? Since the <code>Dockerfile</code> that we built this container image from had a <code>CMD</code> entry that specified <code>["python3", "--version"]</code>, running the above command simply starts a container from the image, runs the <code>python3 --version</code> command and exits. You should have seen the installed version of Python printed to the terminal.</p>
+<p>Instead, if we want to run an interactive Python terminal, we can use <code>docker container run</code> to override the default run command embedded within the container image. So we could run:</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb73-1"><a></a><span class="ex">docker</span> container run <span class="at">-it</span> alice/alpine-python python3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>-it</code> tells Docker to set up and interactive terminal connection to the running container, and then we’re telling Docker to run the <code>python3</code> command inside the container which gives us an interactive Python interpreter prompt. <em>(type <code>exit()</code> to exit!)</em></p>
+</div>
+</div>
+</div>
+</div>
+<p>If we try running the container and Python script, what happens?</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb74-1"><a></a><span class="ex">docker</span> container run alice/alpine-python python3 sum.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb75-1"><a></a>python3: can't open file '//sum.py': [Errno 2] No such file or directory</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="no-such-file-or-directory" class="slide level2">
+<h2>No Such File or Directory</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>No Such File or Directory</strong></p>
+</div>
+<div class="callout-content">
+<p>What does the error message mean? Why might the Python inside the container not be able to find or open our script?</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="why-the-error-happens" class="slide level2">
+<h2>Why the Error Happens:</h2>
+<ul>
+<li>Container filesystems are isolated from the host.</li>
+<li>The container cannot see files on your computer unless you expose them.</li>
+<li><code>sum.py</code> is on the host, not inside the container.</li>
+</ul>
+<p><strong>Fix:</strong> create a <strong>mount</strong> from host to container.</p>
+<ul>
+<li><code>${PWD}</code> expands to your current host directory.</li>
+<li>mount option:</li>
+</ul>
+<div class="sourceCode" id="cb76"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb76-1"><a></a><span class="kw">`</span><span class="ex">--mount</span> type=bind,source=<span class="va">${PWD}</span>,target=/temp<span class="kw">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Interpretation:</strong></p>
+<p>make my current working directory (on the host computer) – the source – <em>visible</em> within the container that is about to be started, and inside this container, name the directory <code>/temp</code> – the target.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Types of Mounts</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>This example uses a <code>bind</code> mount.</li>
+<li>Other mount types include <code>volume</code> and <code>tmpfs</code>.</li>
+<li>We do not cover them here, but Docker documents them in more detail.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="accessing-mounted-files-in-the-container" class="slide level2">
+<h2>Accessing Mounted Files in the Container</h2>
+<p>Let’s try running the command now:</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb77-1"><a></a><span class="ex">docker</span> container run <span class="at">--mount</span> type=bind,source=<span class="va">${PWD}</span>,target=/temp alice/alpine-python python3 sum.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>But we get the same error!</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb78-1"><a></a>python3: can't open file '//sum.py': [Errno 2] No such file or directory</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The missing detail: use the <strong>container path</strong> to the script.</p>
+<ul>
+<li><code>sum.py</code> is visible at <code>/temp/sum.py</code> inside the container.</li>
+<li>so run Python with that full path:</li>
+</ul>
+<div class="sourceCode" id="cb79"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb79-1"><a></a><span class="ex">docker</span> container run <span class="at">--mount</span> type=bind,source=<span class="va">${PWD}</span>,target=/temp alice/alpine-python python3 /temp/sum.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Files written in <code>/temp</code> from inside the container are written to your host directory and remain after the container exits.</p>
+</section>
+<section id="other-commonly-used-docker-run-flags" class="slide level2">
+<h2>Other Commonly Used Docker Run Flags</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Other Commonly Used Docker Run Flags</strong></p>
+</div>
+<div class="callout-content">
+<p>Two useful <code>docker run</code> flags are <code>-w</code> and <code>-u</code>.</p>
+<p>The <code>--workdir</code>/<code>-w</code> flag sets the working directory a.k.a. runs the command being executed inside the directory specified. For example, the following code would run the <code>pwd</code> command in a container started from the latest ubuntu image in the <code>/home/alice</code> directory and print <code>/home/alice</code>. If the directory doesn’t exist in the image it will create it.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb80-1"><a></a><span class="ex">docker</span> container run <span class="at">-w</span> /home/alice/ ubuntu pwd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>--user</code>/<code>-u</code> flag lets you specify the username you would like to run the container as. This is helpful if you’d like to write files to a mounted folder and not write them as <code>root</code> but rather your own user identity and group. A common example of the <code>-u</code> flag is <code>--user $(id -u):$(id -g)</code> which will fetch the current user’s ID and group and run the container as that user.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="challenge-8" class="slide level2">
+<h2>Challenge</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Explore the Script</strong></p>
+</div>
+<div class="callout-content">
+<p>What happens if you use the <code>docker container run</code> command above and put numbers after the script name?</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="solution-13" class="slide level2">
+<h2>Solution</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+<p>This script comes from <a href="https://wiki.python.org/moin/SimplePrograms">the Python Wiki</a> and is set to add all numbers that are passed to it as arguments.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="challenge-9" class="slide level2">
+<h2>Challenge</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Checking the Options</strong></p>
+</div>
+<div class="callout-content">
+<p>Our Docker command has gotten much longer! Can you go through each piece of the Docker command above and explain what it does? How would you characterize the key components of a Docker command?</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="solution-15" class="slide level2">
+<h2>Solution</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+<p>Here’s a breakdown of each piece of the command above</p>
+<ul>
+<li><code>docker container run</code>: use Docker to run a container</li>
+<li><code>--mount type=bind,source=${PWD},target=/temp</code>: connect my current working directory (<code>${PWD}</code>) as a folder inside the container called <code>/temp</code></li>
+<li><code>alice/alpine-python</code>: name of the container image to use to run the container</li>
+<li><code>python3 /temp/sum.py</code>: what commands to run in the container</li>
+</ul>
+<p>More generally, every Docker command will have the form: <code>docker [action] [docker options] [docker container image] [command to run inside]</code></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="challenge-10" class="slide level2">
+<h2>Challenge</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Interactive Jobs</strong></p>
+</div>
+<div class="callout-content">
+<p>Try using the directory mount option but run the container interactively. Can you find the folder that’s connected to your host computer? What’s inside?</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="solution-17" class="slide level2">
+<h2>Solution</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+<p>The docker command to run the container interactively is:</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb81-1"><a></a><span class="ex">docker</span> container run <span class="at">--mount</span> type=bind,source=<span class="va">${PWD}</span>,target=/temp <span class="at">-it</span> alice/alpine-python sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once inside, you should be able to navigate to the <code>/temp</code> folder and see that’s contents are the same as the files on your host computer:</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb82-1"><a></a><span class="ex">/#</span> cd /temp</span>
+<span id="cb82-2"><a></a><span class="ex">/#</span> ls</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>Mounts are useful when you want to run containerized software across many changing input files.</p>
+<p>If you want a fixed, archived snapshot, copy files into the image itself.</p>
+</section>
+<section id="including-your-scripts-and-data-within-a-container-image" class="slide level2">
+<h2>Including Your Scripts and Data Within a Container Image</h2>
+<ul>
+<li>useful for sharing a completed analysis;</li>
+<li>useful for creating an archived, fixed version.</li>
+</ul>
+<p>Assume <code>sum.py</code> is finalized and should be bundled in the image.</p>
+<p>In your shell, you should still be in the <code>sum</code> folder in the <code>docker-intro</code> folder.</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb83-1"><a></a><span class="bu">pwd</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb84-1"><a></a><span class="ex">/Users/yourname/Desktop/docker-intro/sum</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Add a <code>COPY</code> line to include <code>sum.py</code> in the image:</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb85-1"><a></a><span class="ex">COPY</span> sum.py /home</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This copies <code>sum.py</code> from host to image filesystem.</p>
+<p>Then build a new image:</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb86-1"><a></a><span class="ex">docker</span> image build <span class="at">-t</span> alice/alpine-sum .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="the-importance-of-command-order-in-a-dockerfile" class="slide level2">
+<h2>The Importance of Command Order in a Dockerfile</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>The Importance of Command Order in a Dockerfile</strong></p>
+</div>
+<div class="callout-content">
+<p>When you run <code>docker image build</code> it executes the build in the order specified in the <code>Dockerfile</code>. This order is important for rebuilding and you typically will want to put your <code>RUN</code> commands before your <code>COPY</code> commands.</p>
+<p>Docker builds the layers of commands in order. This becomes important when you need to rebuild container images. If you change layers later in the <code>Dockerfile</code> and rebuild the container image, Docker doesn’t need to rebuild the earlier layers but will instead used a stored (called “cached”) version of those layers.</p>
+<p>For example, in an instance where you wanted to copy <code>multiply.py</code> into the container image instead of <code>sum.py</code>. If the <code>COPY</code> line came before the <code>RUN</code> line, it would need to rebuild the whole image. If the <code>COPY</code> line came second then it would use the cached <code>RUN</code> layer from the previous build and then only rebuild the <code>COPY</code> layer.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="challenge-11" class="slide level2">
+<h2>Challenge</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Did It Work?</strong></p>
+</div>
+<div class="callout-content">
+<p>Can you remember how to run a container interactively? Try that with this one. Once inside, try running the Python script.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="solution-19" class="slide level2">
+<h2>Solution</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+<p>You can start the container interactively like so:</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb87-1"><a></a><span class="ex">docker</span> container run <span class="at">-it</span> alice/alpine-sum sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You should be able to run the python command inside the container like this:</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb88-1"><a></a><span class="ex">/#</span> python3 /home/sum.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p><code>COPY</code> is useful when you want to bundle scripts or data into an image you will share or archive.</p>
+<p>Use this guidance:</p>
+<ul>
+<li>Use <code>COPY</code> for stable scripts and data.</li>
+<li>Use bind mounts for files you edit often.</li>
+<li>Check image size with <code>docker image ls</code>; larger images are slower to download.</li>
+</ul>
+</section>
+<section id="security-warning" class="slide level2">
+<h2>Security Warning</h2>
+<div class="callout callout-caution callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Security Warning</strong></p>
+</div>
+<div class="callout-content">
+<p>Login credentials including passwords, tokens, secure access tokens or other secrets must never be stored in a container. If secrets are stored, they are at high risk to be found and exploited when made public.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="copying-alternatives" class="slide level2">
+<h2>Copying Alternatives</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Copying Alternatives</strong></p>
+</div>
+<div class="callout-content">
+<p>Another trick for getting your own files into a container image is by using the <code>RUN</code> keyword and downloading the files from the internet. For example, if your code is in a GitHub repository, you could include this statement in your Dockerfile to download the latest version every time you build the container image:</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb89-1"><a></a><span class="kw">RUN</span> <span class="fu">git</span> clone https://github.com/alice/mycode</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Similarly, the <code>wget</code> command can be used to download any file publicly available on the internet:</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb90-1"><a></a><span class="kw">RUN</span> <span class="fu">wget</span> ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.10.0/ncbi-blast-2.10.0+-x64-linux.tar.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that the above <code>RUN</code> examples depend on commands (<code>git</code> and <code>wget</code> respectively) that must be available within your container: Linux distributions such as Alpine may require you to install such commands before using them within <code>RUN</code> statements.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="more-fancy-dockerfile-options" class="slide level2">
+<h2>More Fancy <code>Dockerfile</code> Options</h2>
+<p>You can make the image more automatic with <code>CMD</code> and <code>ENTRYPOINT</code> patterns.</p>
+<h3 id="make-the-sum.py-script-run-automatically">Make the <code>sum.py</code> Script Run Automatically</h3>
+<div class="sourceCode" id="cb91"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb91-1"><a></a><span class="kw">FROM</span> alpine</span>
+<span id="cb91-2"><a></a><span class="kw">RUN</span> <span class="ex">apk</span> add <span class="at">--update</span> python3 py3-pip python3-dev</span>
+<span id="cb91-3"><a></a><span class="kw">COPY</span> sum.py /home</span>
+<span id="cb91-4"><a></a></span>
+<span id="cb91-5"><a></a><span class="co"># Run the sum.py script as the default command</span></span>
+<span id="cb91-6"><a></a><span class="kw">CMD</span> [<span class="st">"python3"</span>, <span class="st">"/home/sum.py"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Build and test it:</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb92-1"><a></a><span class="ex">docker</span> image build <span class="at">-t</span> alpine-sum:v1 .</span>
+<span id="cb92-2"><a></a><span class="ex">docker</span> container run alpine-sum:v1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Doesn’t work: Running with no arguments works (e.g.&nbsp;<code>sum = 0</code>). Passing arguments this way fails:</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb93-1"><a></a><span class="ex">docker</span> container run alpine-sum:v1 10 11 12</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>results in</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb94-1"><a></a>docker: Error response from daemon: OCI runtime create failed:</span>
+<span id="cb94-2"><a></a>container_linux.go:349: starting container process caused "exec:</span>
+<span id="cb94-3"><a></a>\"10\": executable file not found in $PATH": unknown.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Reason: <code>10 11 12</code> is interpreted as a replacement command, not arguments to the existing <code>CMD</code>.</p>
+</section>
+<section class="slide level2">
+
+<h3 id="make-the-sum.py-script-run-automatically-1">Make the <code>sum.py</code> Script Run Automatically</h3>
+<p>To always run a base command and still accept runtime arguments, use <code>ENTRYPOINT</code> plus <code>CMD</code> defaults.</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb95-1"><a></a><span class="kw">FROM</span> alpine</span>
+<span id="cb95-2"><a></a></span>
+<span id="cb95-3"><a></a><span class="kw">RUN</span> <span class="ex">apk</span> add <span class="at">--update</span> python3 py3-pip python3-dev</span>
+<span id="cb95-4"><a></a><span class="kw">COPY</span> sum.py /home</span>
+<span id="cb95-5"><a></a></span>
+<span id="cb95-6"><a></a><span class="co"># Run the sum.py script as the default command and</span></span>
+<span id="cb95-7"><a></a><span class="co"># allow people to enter arguments for it</span></span>
+<span id="cb95-8"><a></a><span class="kw">ENTRYPOINT</span> [<span class="st">"python3"</span>, <span class="st">"/home/sum.py"</span>]</span>
+<span id="cb95-9"><a></a></span>
+<span id="cb95-10"><a></a><span class="co"># Give default arguments, in case none are supplied on</span></span>
+<span id="cb95-11"><a></a><span class="co"># the command-line</span></span>
+<span id="cb95-12"><a></a><span class="kw">CMD</span> [<span class="st">"10"</span>, <span class="st">"11"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Build and test it:</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb96-1"><a></a><span class="ex">docker</span> image build <span class="at">-t</span> alpine-sum:v2 .</span>
+<span id="cb96-2"><a></a><span class="co"># Most of the time you are interested in the sum of 10 and 11:</span></span>
+<span id="cb96-3"><a></a><span class="ex">docker</span> container run alpine-sum:v2</span>
+<span id="cb96-4"><a></a><span class="co"># Sometimes you have more challenging calculations to do:</span></span>
+<span id="cb96-5"><a></a><span class="ex">docker</span> container run alpine-sum:v2 12 13 14</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="overriding-the-entrypoint" class="slide level2">
+<h2>Overriding the ENTRYPOINT</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Overriding the ENTRYPOINT</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Sometimes you want to bypass the image’s <code>ENTRYPOINT</code>.</li>
+<li>For example, you may want an interactive shell instead of the default app.</li>
+</ul>
+<div class="sourceCode" id="cb97"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb97-1"><a></a><span class="ex">docker</span> container run <span class="at">-it</span> alpine-sum:v2 /bin/sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>will yield</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb98-1"><a></a>Please supply integer arguments</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Override the <code>ENTRYPOINT</code> like this:</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb99-1"><a></a><span class="ex">docker</span> container run <span class="at">-it</span> <span class="at">--entrypoint</span> /bin/sh alpine-sum:v2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+<h3 id="add-the-sum.py-script-to-the-path-so-you-can-run-it-directly">Add the <code>sum.py</code> script to the <code>PATH</code> so you can run it directly:</h3>
+<div class="sourceCode" id="cb100"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb100-1"><a></a><span class="kw">FROM</span> alpine</span>
+<span id="cb100-2"><a></a></span>
+<span id="cb100-3"><a></a><span class="kw">RUN</span> <span class="ex">apk</span> add <span class="at">--update</span> python3 py3-pip python3-dev</span>
+<span id="cb100-4"><a></a></span>
+<span id="cb100-5"><a></a><span class="kw">COPY</span> sum.py /home</span>
+<span id="cb100-6"><a></a><span class="co"># set script permissions</span></span>
+<span id="cb100-7"><a></a><span class="kw">RUN</span> <span class="fu">chmod</span> +x /home/sum.py</span>
+<span id="cb100-8"><a></a><span class="co"># add /home folder to the PATH</span></span>
+<span id="cb100-9"><a></a><span class="kw">ENV</span> PATH /home:$PATH</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Build and test it:</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb101-1"><a></a><span class="ex">docker</span> image build <span class="at">-t</span> alpine-sum:v3 .</span>
+<span id="cb101-2"><a></a><span class="ex">docker</span> container run alpine-sum:v3 sum.py 1 2 3 4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="best-practices-for-writing-dockerfiles" class="slide level2">
+<h2>Best Practices for Writing Dockerfiles</h2>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Best Practices for Writing Dockerfiles</strong></p>
+</div>
+<div class="callout-content">
+<p>Take a look at Nüst et al.’s “<a href="https://doi.org/10.1371/journal.pcbi.1008316"><em>Ten simple rules for writing Dockerfiles for reproducible data science</em></a>” [1] for some great examples of best practices to use when writing Dockerfiles. The <a href="https://github.com/nuest/ten-simple-rules-dockerfiles">GitHub repository</a> associated with the paper also has a set of <a href="https://github.com/nuest/ten-simple-rules-dockerfiles/tree/master/examples">example <code>Dockerfile</code>s</a> demonstrating how the rules highlighted by the paper can be applied.</p>
+<p><small>[1] Nüst D, Sochat V, Marwick B, Eglen SJ, Head T, et al.&nbsp;(2020) Ten simple rules for writing Dockerfiles for reproducible data science. PLOS Computational Biology 16(11): e1008316. <a href="https://doi.org/10.1371/journal.pcbi.1008316">https://doi.org/10.1371/journal.pcbi.1008316</a></small></p>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="episode-8-examples-of-using-container-images-in-practice" class="title-slide slide level1 nonincremental center">
+<h1>Episode 8: Examples of Using Container Images in Practice</h1>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Questions</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>How can I use Docker for my own work?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Objectives</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Use existing container images and Docker in a research project.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="practical-workflow-examples" class="slide level2">
+<h2>Practical Workflow Examples</h2>
+<p>Practical workflow examples:</p>
+<ul>
+<li>Example 1: automate website deployment with GitHub Actions.</li>
+<li>Example 2: move container-based workflows onto HPC systems.</li>
+</ul>
+</section>
+<section id="repo-structure-on-main-branch" class="slide level2">
+<h2>Repo Structure on Main Branch</h2>
+<p>Containers can power cloud CI/CD workflows.</p>
+<ul>
+<li>automate repetitive tasks;</li>
+<li>keep build environments consistent;</li>
+<li>deploy simple project websites automatically.</li>
+</ul>
+<h3 id="github-actions">GitHub Actions</h3>
+<p>GitHub Actions automates repetitive project tasks:</p>
+<ul>
+<li>Testing if your software works correctly (Continuous Integration)</li>
+<li>Building components for distribution to your users (Continuous Deployment)</li>
+<li>Building documentation</li>
+</ul>
+<p>Why run this in the cloud?</p>
+<ul>
+<li>Your software works on your computer, but you forgot to mention this one crucial package that is required for correct operation.</li>
+<li>Your software used to work, but since the last update something broke.</li>
+<li>Someone else contributed to your package but didn’t run the same version of the document converter: the documentation looks different now.</li>
+</ul>
+<p>CI/CD helps by using a consistent, controlled environment.</p>
+<ul>
+<li>GitHub Actions is configured with YAML workflow files.</li>
+<li>Jobs run behind the scenes in container-based environments.</li>
+<li>The example here uses a containerized Pandoc workflow to publish a simple site.</li>
+</ul>
+<h3 id="building-content-for-deployment-via-github-pages-with-pandoc">Building Content for Deployment via GitHub Pages with Pandoc</h3>
+<p>Goal: publish a simple GitHub Pages site from <code>README.md</code>.</p>
+<ul>
+<li>the README stays the single source of truth;</li>
+<li>Pandoc converts it to HTML;</li>
+<li>GitHub Actions rebuilds and republishes the page automatically.</li>
+</ul>
+<p>Pandoc performs the Markdown-to-HTML conversion.</p>
+</section>
+<section id="why-pandoc" class="slide level2">
+<h2>Why Pandoc?</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Why Pandoc?</strong></p>
+</div>
+<div class="callout-content">
+<p>Pandoc is useful here because it supports:</p>
+<ul>
+<li>Supports citations (from BibTeX or CSL database)</li>
+<li>Rendered equations (using MathJax, optionally numbered)</li>
+<li>Code highlighting</li>
+<li>Highly customizable</li>
+</ul>
+</div>
+</div>
+</div>
+<p>Workflow:</p>
+<ul>
+<li>start with a repository containing <code>README.md</code> on <code>main</code>;</li>
+<li>convert it to <code>index.html</code> using Pandoc;</li>
+<li>publish the built files to <code>gh-pages</code>.</li>
+</ul>
+</section>
+<section id="github-actions-example-repository" class="slide level2">
+<h2>GitHub Actions: Example Repository</h2>
+<p>Example repository: <a href="https://github.com/jhidding/readme-pages">jhidding/readme-pages</a></p>
+
+<img data-src="../episodes/fig/github-main-branch.png" style="width:90.0%" alt="A GitHub project with a README" class="r-stretch"></section>
+<section id="rendered-github-pages-output" class="slide level2">
+<h2>Rendered GitHub Pages Output</h2>
+<p>Pandoc converts the README into a simple static site.</p>
+
+<img data-src="../episodes/fig/github-io-pages.png" style="width:90.0%" alt="Rendered GitHub Pages" class="r-stretch"></section>
+<section id="gh-pages-branch-contents" class="slide level2">
+<h2><code>gh-pages</code> Branch Contents</h2>
+<p>The <code>gh-pages</code> branch holds the published site.</p>
+
+<img data-src="../episodes/fig/github-gh-pages-branch.png" style="width:90.0%" alt="gh-pages branch of the project" class="r-stretch"></section>
+<section id="why-only-index.html-and-.nojekyll" class="slide level2">
+<h2>Why Only <code>index.html</code> and <code>.nojekyll</code>?</h2>
+<p>Only <code>index.html</code> and <code>.nojekyll</code> are needed.</p>
+<ul>
+<li><code>.nojekyll</code> tells GitHub Pages to skip Jekyll processing.</li>
+<li>Pages then serves the branch content directly.</li>
+</ul>
+</section>
+<section id="create-a-github-project" class="slide level2">
+<h2>Create a GitHub Project</h2>
+<p>Create a GitHub project with a short <code>README.md</code>:</p>
+<ul>
+<li>Log in to GitHub.</li>
+<li>Create a new repository.</li>
+<li>Clone it locally (GitHub shows the exact command).</li>
+</ul>
+<div class="sourceCode" id="cb102"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb102-1"><a></a><span class="fu">git</span> clone <span class="op">&lt;</span>your-repo-url<span class="op">&gt;</span></span>
+<span id="cb102-2"><a></a><span class="bu">cd</span> <span class="op">&lt;</span>repo-name<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="verify-generated-html-output" class="slide level2">
+<h2>Verify Generated HTML Output</h2>
+<p>Check the Pandoc container first:</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb103-1"><a></a><span class="ex">docker</span> container run pandoc/core <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Convert <code>README.md</code> inside the container:</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb104-1"><a></a><span class="ex">docker</span> container run <span class="at">--mount</span> type=bind,source=<span class="va">${PWD}</span>,target=/tmp pandoc/core /tmp/README.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb105-1"><a></a>&lt;h1 id="readme-pages"&gt;readme-pages&lt;/h1&gt;</span>
+<span id="cb105-2"><a></a>&lt;p&gt;Example for generating GitHub.io pages from Readme with Pandoc.&lt;/p&gt;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The mount exposes your repository as <code>/tmp</code> inside the container, so Pandoc can read and write files on your machine.</p>
+<p>To create a complete HTML document:</p>
+<ul>
+<li>Add <code>--standalone</code> flag for full document structure</li>
+<li>Redirect output to save as <code>index.html</code> in <code>build/</code> directory</li>
+</ul>
+<div class="sourceCode" id="cb106"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb106-1"><a></a><span class="fu">mkdir</span> <span class="at">-p</span> build</span>
+<span id="cb106-2"><a></a><span class="ex">docker</span> container run <span class="at">--mount</span> type=bind,source=<span class="va">${PWD}</span>,target=/tmp pandoc/core /tmp/README.md <span class="at">--standalone</span> <span class="at">--output</span><span class="op">=</span>/tmp/build/index.html</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb107-1"><a></a>[WARNING] This document format requires a nonempty &lt;title&gt; element.</span>
+<span id="cb107-2"><a></a>  Defaulting to 'README' as the title.</span>
+<span id="cb107-3"><a></a>  To specify a title, use 'title' in metadata or --metadata title="...".</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To suppress the warning, add this header to <code>README.md</code> (Or pass <code>--metadata title="..."</code> on the command line):</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb108-1"><a></a><span class="pp">---</span></span>
+<span id="cb108-2"><a></a><span class="fu">title</span><span class="kw">:</span><span class="at"> Hello, Pandoc</span></span>
+<span id="cb108-3"><a></a><span class="pp">---</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="using-pandoc-to-create-a-website" class="slide level2">
+<h2>Using Pandoc to Create a Website</h2>
+<p>Check the output with:</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb109-1"><a></a><span class="fu">cat</span> build/index.html</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode numberSource output number-lines code-with-copy"><code class="sourceCode"><span id="cb110-1"><a></a>&lt;!DOCTYPE html&gt;</span>
+<span id="cb110-2"><a></a>&lt;html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang=""&gt;</span>
+<span id="cb110-3"><a></a>&lt;head&gt;</span>
+<span id="cb110-4"><a></a>  &lt;meta charset="utf-8" /&gt;</span>
+<span id="cb110-5"><a></a>... etc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once the local flow works, automate it with GitHub Actions.</p>
+</section>
+<section id="create-the-workflow-and-trigger" class="slide level2">
+<h2>Create the Workflow and Trigger</h2>
+<p>GitHub Actions can rebuild and publish on each commit.</p>
+<p>In GitHub, navigate to your project and create a new workflow:</p>
+<ul>
+<li>Click <strong>Actions</strong> tab</li>
+<li>Skip workflow templates<br>
+</li>
+<li>Select <strong>set up a workflow yourself</strong></li>
+<li>Configure in YAML format</li>
+</ul>
+<p>Start with the workflow name:</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb111-1"><a></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy pages</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Define trigger conditions, for example push to <code>main</code>:</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb112-1"><a></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb112-2"><a></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb112-3"><a></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span></span>
+<span id="cb112-4"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> main</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="define-build-job-steps" class="slide level2">
+<h2>Define Build Job Steps</h2>
+<p>Then define the job steps.</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb113-1"><a></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb113-2"><a></a><span class="co">  # a free machine-readable name for this job</span></span>
+<span id="cb113-3"><a></a><span class="at">  </span><span class="fu">deploy</span><span class="kw">:</span></span>
+<span id="cb113-4"><a></a><span class="co">    # Set permissions for this specific job to enable it to write to the gh-pages branch</span></span>
+<span id="cb113-5"><a></a><span class="at">    </span><span class="fu">permissions</span><span class="kw">:</span></span>
+<span id="cb113-6"><a></a><span class="at">      </span><span class="fu">contents</span><span class="kw">:</span><span class="at"> write</span></span>
+<span id="cb113-7"><a></a><span class="co">    # specify the base operating system</span></span>
+<span id="cb113-8"><a></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb113-9"><a></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb113-10"><a></a><span class="co">      # fetch the contents of the repository</span></span>
+<span id="cb113-11"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checkout repo content</span></span>
+<span id="cb113-12"><a></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb113-13"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Prepare build environment</span></span>
+<span id="cb113-14"><a></a><span class="fu">        run</span><span class="kw">: </span><span class="ch">|</span><span class="co">   # multiple Bash commands follow</span></span>
+<span id="cb113-15"><a></a>          mkdir -p build</span>
+<span id="cb113-16"><a></a>          touch build/.nojekyll</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="add-pandoc-and-deploy-steps" class="slide level2">
+<h2>Add Pandoc and Deploy Steps</h2>
+<p>Add the containerized Pandoc step:</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb114-1"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Run pandoc</span></span>
+<span id="cb114-2"><a></a><span class="co">        # Always specify a version!</span></span>
+<span id="cb114-3"><a></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> docker://pandoc/core:2.12</span></span>
+<span id="cb114-4"><a></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb114-5"><a></a><span class="fu">          args</span><span class="kw">: </span><span class="ch">&gt;-</span><span class="co">  # multi-line argument</span></span>
+<span id="cb114-6"><a></a>            --standalone</span>
+<span id="cb114-7"><a></a>            --output=build/index.html</span>
+<span id="cb114-8"><a></a>            README.md</span>
+<span id="cb114-9"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Deploy on github pages</span></span>
+<span id="cb114-10"><a></a><span class="co">        # Use a third-party plugin to upload the content</span></span>
+<span id="cb114-11"><a></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> JamesIves/github-pages-deploy-action@4.1.0</span></span>
+<span id="cb114-12"><a></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb114-13"><a></a><span class="at">          </span><span class="fu">branch</span><span class="kw">:</span><span class="at"> gh-pages</span></span>
+<span id="cb114-14"><a></a><span class="at">          </span><span class="fu">folder</span><span class="kw">:</span><span class="at"> build</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Key differences in GitHub Actions:</p>
+<ul>
+<li>No <code>--mount</code> flag needed; files placed automatically in correct location</li>
+<li>Last step uploads <code>build</code> directory to <code>gh-pages</code> branch</li>
+</ul>
+<p><strong>Enable GitHub Pages:</strong></p>
+<ul>
+<li>In repository <strong>Settings</strong>, scroll to <strong>GitHub Pages</strong></li>
+<li>Select root folder of <code>gh-pages</code> branch</li>
+<li>Deploy completes in seconds</li>
+</ul>
+</section>
+<section id="using-containers-on-an-hpc-cluster" class="slide level2">
+<h2>Using Containers on an HPC Cluster</h2>
+<p>Containers are also useful on shared research infrastructure:</p>
+<ul>
+<li>build and test locally;</li>
+<li>run at scale on a cluster later;</li>
+<li>keep the software environment consistent across both places.</li>
+</ul>
+<p><strong>One catch:</strong> many HPC systems do not allow Docker itself for security reasons. Instead, they often use Singularity, Apptainer, or Shifter, which can still consume Docker-built images.</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Future Workshop: Apptainer Deep Dive</strong></p>
+</div>
+<div class="callout-content">
+<p>Detailed Apptainer usage will be covered in the next workshop.</p>
+</div>
+</div>
+</div>
+<p>Apptainer is similar to Docker, but typically uses <code>.sif</code> image files and is often better suited to shared HPC systems.</p>
+<h3 id="apptainer-vs-singularity">Apptainer vs Singularity</h3>
+<ul>
+<li>Apptainer is the actively maintained continuation used on many modern HPC systems.</li>
+<li>Singularity appears in many existing tutorials and cluster docs.</li>
+<li>In practice, commands are very similar, so older Singularity references are still useful.</li>
+</ul>
+</section>
+<section id="apptainer-command-line-interface" class="slide level2">
+<h2>Apptainer Command Line Interface</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Apptainer Command Line Interface</strong></p>
+</div>
+<div class="callout-content">
+<p>Like we did with Docker, try to work out what commands Apptainer has. Which one do you think is the equivalent of <code>docker run</code>?</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="solution-21" class="slide level2">
+<h2>Solution</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p><code>apptainer run</code> behaves similarly to <code>docker run</code>, but as we will see, the arguments are somewhat different.</p>
+</div>
+</div>
+</div>
+</div>
+<h3 id="running-docker-images-with-apptainer">Running Docker Images with Apptainer</h3>
+<p>Apptainer uses its own image format, so Docker images are typically pulled/converted first:</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb115-1"><a></a><span class="ex">apptainer</span> pull docker://alice/alpine-python</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This creates <code>alpine_python.sif</code> in your working directory. Run it with:</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb116-1"><a></a><span class="ex">apptainer</span> run alpine_python.sif</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<h3 id="apptainer-exec">Apptainer Exec</h3>
+<p>To run a custom command, use <code>apptainer exec</code>:</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb117-1"><a></a><span class="ex">apptainer</span> exec alpine_python.sif python <span class="at">-c</span> <span class="st">'print(1 + 1)'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section></section>
+<section>
+<section id="episode-9-containers-in-research-workflows-reproducibility-and-granularity" class="title-slide slide level1 nonincremental center">
+<h1>Episode 9: Containers in Research Workflows: Reproducibility and Granularity</h1>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Questions</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>How can I use container images to make my research more reproducible?</li>
+<li>How do I incorporate containers into my research workflow?</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Objectives</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Understand how container images can help make research more reproducible.</li>
+<li>Understand what practical steps I can take to improve the reproducibility of my research using containers.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="bringing-it-together-the-reproducibility-focus" class="slide level2">
+<h2>Bringing It Together: The Reproducibility Focus</h2>
+<p>So far, we focused mostly on Docker mechanics. This section focuses on reproducibility in research workflows.</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Work in Progress…</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Reproducibility practices for containers are still evolving.</li>
+<li>The principles here are useful now, but best practice will continue to change.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="reproducibility" class="slide level2">
+<h2>Reproducibility</h2>
+<p>Reproducibility means:</p>
+<ul>
+<li>someone else (or future you) can rerun your computational work later</li>
+<li>results are as close as possible to the original</li>
+<li>exact same hardware is not required</li>
+</ul>
+<p>Why this matters:</p>
+<ul>
+<li>research outputs increasingly depend on software</li>
+<li>software stacks are complex and dependency-heavy</li>
+<li>others need to verify and build on published work</li>
+</ul>
+</section>
+<section id="why-containers-help-reproducibility" class="slide level2">
+<h2>Why Containers Help Reproducibility</h2>
+<p>Containers are useful because they let you:</p>
+<ul>
+<li>run the same workflow across Windows, macOS, and Linux</li>
+<li>capture the exact software versions and dependencies</li>
+<li>preserve older software environments for legacy workflows</li>
+<li>optionally bundle key reference data with the environment</li>
+<li>archive a reusable snapshot that others can inspect and rerun</li>
+</ul>
+</section>
+<section id="sharing-images" class="slide level2">
+<h2>Sharing Images</h2>
+<p>Docker Hub is useful for day-to-day sharing and collaboration.</p>
+<p>But it is not ideal for long-term research archiving because:</p>
+<ul>
+<li>free accounts have a limit on how long a container image will be hosted if it is not updated</li>
+<li>it does not support adding persistent identifiers to container images</li>
+<li>it is easy to overwrite tagged container images with newer versions by mistake.</li>
+</ul>
+</section>
+<section id="archiving-and-persistently-identifying-container-images-using-zenodo" class="slide level2">
+<h2>Archiving and Persistently Identifying Container Images Using Zenodo</h2>
+<p>For publications, archive images in an immutable, citable form. <a href="https://zenodo.org/">Zenodo</a> is one option.</p>
+<p>Zenodo accepts tar archives. Export an image with <code>docker image save</code>:</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb118-1"><a></a><span class="ex">docker</span> image save alice/alpine-python:v1 <span class="at">-o</span> alpine-python.tar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If needed, compress before upload:</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb119-1"><a></a><span class="fu">gzip</span> alpine-python.tar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note: Zenodo has upload size limits (for example, 50 GB per upload at the time of writing), so compression (gzip/zip) may be required.</p>
+</section>
+<section id="why-archive-with-zenodo" class="slide level2">
+<h2>Why Archive with Zenodo?</h2>
+<p>After creating the archive, <a href="https://zenodo.org/deposit/">deposit it on Zenodo</a> to:</p>
+<ul>
+<li>create a long-term archive snapshot that others can download and reuse</li>
+<li>mint a persistent DOI (<em>Digital Object Identifier</em>) for citation in publications</li>
+<li>support attribution and credit for your computational work</li>
+</ul>
+<p>You will also provide metadata about the image and related work.</p>
+<p>Zenodo is one option; some institutions provide equivalent archive/DOI services.</p>
+</section>
+<section id="reproducibility-good-practice" class="slide level2">
+<h2>Reproducibility Good Practice</h2>
+<ul>
+<li>use images to capture the computational environment for your work</li>
+<li>choose container granularity based on your workflow and domain norms</li>
+<li>document what you did and why in both image docs and project docs</li>
+<li>when publishing, archive the exact image and cite its DOI</li>
+<li>use tags so older image versions remain accessible</li>
+</ul>
+</section>
+<section id="reproducibility-good-practice-important-caveat" class="slide level2">
+<h2>Reproducibility Good Practice (Important Caveat)</h2>
+<ul>
+<li>a built and archived image gives a durable software snapshot</li>
+<li>a Dockerfile is lightweight and useful for rebuilding later</li>
+<li>if you only keep a Dockerfile, pin versions explicitly</li>
+<li>unpinned dependencies can change and break reproducibility over time</li>
+</ul>
+</section>
+<section id="container-granularity" class="slide level2">
+<h2>Container Granularity</h2>
+<p>An important design choice is container <strong>granularity</strong>.</p>
+<p>Two extremes are:</p>
+<ul>
+<li>create one large image with all tools for the full workflow</li>
+<li>create many small images, each for one command or workflow step</li>
+</ul>
+<p>Most real workflows use a middle ground between these extremes.</p>
+</section>
+<section id="positives-and-negatives" class="slide level2">
+<h2>Positives and Negatives</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Positives and Negatives</strong></p>
+</div>
+<div class="callout-content">
+<p>What are the advantages and disadvantages of the two approaches to container granularity for research workflows described above? Think about this and write a few bullet points for advantages and disadvantages for each approach in the course Etherpad.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="solution-22" class="slide level2">
+<h2>Solution</h2>
+<div class="solution-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+<p>This is not an exhaustive list but some of the advantages and disadvantages could be:</p>
+<h3 id="single-large-container-image">Single Large Container Image</h3>
+<ul>
+<li>Advantages:
+<ul>
+<li>Simpler to document</li>
+<li>Full set of requirements packaged in one place</li>
+<li>Potentially easier to maintain (though could be opposite if working with large, distributed group)</li>
+</ul></li>
+<li>Disadvantages:
+<ul>
+<li>Could get very large in size, making it more difficult to distribute
+<ul>
+<li>Could use <a href="https://docs.docker.com/develop/develop-images/multistage-build">Docker multi-stage build</a> to reduce size</li>
+</ul></li>
+<li>May end up with same dependency issues within the container image from different software requirements</li>
+<li>Potentially more complex to test</li>
+<li>Less re-useable for different, but related, work</li>
+</ul></li>
+</ul>
+<h3 id="multiple-smaller-container-images">Multiple Smaller Container Images</h3>
+<ul>
+<li>Advantages:
+<ul>
+<li>Individual components can be re-used for different, but related, work</li>
+<li>Individual parts are smaller in size making them easier to distribute</li>
+<li>Avoid dependency issues between different pieces of software</li>
+<li>Easier to test</li>
+</ul></li>
+<li>Disadvantage:
+<ul>
+<li>More difficult to document</li>
+<li>Potentially more difficult to maintain (though could be easier if working with large, distributed group)</li>
+<li>May end up with dependency issues between component container images if they get out of sync</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="container-workflow-challenges" class="slide level2 scrollable">
+<h2>Container Workflow Challenges</h2>
+<div class="challenge-callout">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Next Steps with Containers</strong></p>
+</div>
+<div class="callout-content">
+<p>Now that we’re at the end of the lesson material, take a moment to reflect on what you’ve learned, how it applies to you, and what to do next.</p>
+<ol type="1">
+<li>In your own notes, write down or diagram your understanding of Docker containers and container images: concepts, commands, and how they work.</li>
+<li>In the workshop’s shared notes document, write down how you think you might use containers in your daily work. If there’s something you want to try doing with containers right away, what is a next step after this workshop to make that happen?</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="thank-you" class="slide level2">
+<h2>Thank You</h2>
+<p>Questions and discussion.</p>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': true,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: true,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1440,
+
+        height: 810,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp("https:\/\/PMacDaSci\.github\.io\/docker-intro\/");
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

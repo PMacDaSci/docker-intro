@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Containers in Research Workflows: Reproducibility and Granularity – Introduction to Docker</title>
+<title>meet-docker – Introduction to Docker</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -4904,149 +4904,305 @@ padding-top: 4px !important;
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#reproducibility" id="toc-reproducibility" class="nav-link active" data-scroll-target="#reproducibility">Reproducibility</a></li>
-  <li><a href="#sharing-images" id="toc-sharing-images" class="nav-link" data-scroll-target="#sharing-images">Sharing images</a></li>
-  <li><a href="#archiving-and-persistently-identifying-container-images-using-zenodo" id="toc-archiving-and-persistently-identifying-container-images-using-zenodo" class="nav-link" data-scroll-target="#archiving-and-persistently-identifying-container-images-using-zenodo">Archiving and persistently identifying container images using Zenodo</a></li>
-  <li><a href="#reproducibility-good-practice" id="toc-reproducibility-good-practice" class="nav-link" data-scroll-target="#reproducibility-good-practice">Reproducibility good practice</a></li>
-  <li><a href="#container-granularity" id="toc-container-granularity" class="nav-link" data-scroll-target="#container-granularity">Container Granularity</a></li>
+  <li><a href="#episode-2-introducing-the-docker-command-line" id="toc-episode-2-introducing-the-docker-command-line" class="nav-link active" data-scroll-target="#episode-2-introducing-the-docker-command-line">Episode 2: Introducing the Docker Command Line</a>
+  <ul class="collapse">
+  <li><a href="#docker-command-line" id="toc-docker-command-line" class="nav-link" data-scroll-target="#docker-command-line">Docker Command Line</a></li>
+  <li><a href="#getting-started-with-docker" id="toc-getting-started-with-docker" class="nav-link" data-scroll-target="#getting-started-with-docker">Getting Started with Docker</a></li>
+  <li><a href="#getting-help" id="toc-getting-help" class="nav-link" data-scroll-target="#getting-help">Getting Help</a></li>
+  <li><a href="#container-help" id="toc-container-help" class="nav-link" data-scroll-target="#container-help"><code>container</code> Help</a></li>
+  <li><a href="#container-ls-help" id="toc-container-ls-help" class="nav-link" data-scroll-target="#container-ls-help"><code>container ls</code> Help</a></li>
+  <li><a href="#docker-command-line-interface-cli-syntax" id="toc-docker-command-line-interface-cli-syntax" class="nav-link" data-scroll-target="#docker-command-line-interface-cli-syntax">Docker Command Line Interface (CLI) Syntax</a></li>
+  <li><a href="#challenge" id="toc-challenge" class="nav-link" data-scroll-target="#challenge">Challenge</a></li>
+  <li><a href="#solution" id="toc-solution" class="nav-link" data-scroll-target="#solution">Solution</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Containers in Research Workflows: Reproducibility and Granularity</h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
-<div class="quarto-title-meta">
 
-    
-  
-    
-  </div>
-  
-
-
-</header>
-
-
-<div class="callout callout-style-default callout-tip callout-titled">
+<section id="episode-2-introducing-the-docker-command-line" class="level1 nonincremental">
+<h1 class="nonincremental">Episode 2: Introducing the Docker Command Line</h1>
+<div class="nonincremental callout callout-style-default callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Overview
+Questions
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><strong>Teaching:</strong> 20</li>
-<li><strong>Exercises:</strong> 5</li>
-<li><strong>Questions:</strong>
-<ul>
-<li>How can I use container images to make my research more reproducible?</li>
-<li>How do I incorporate containers into my research workflow?</li>
-</ul></li>
-<li><strong>Objectives:</strong>
-<ul>
-<li>Understand how container images can help make research more reproducible.</li>
-<li>Understand what practical steps I can take to improve the reproducibility of my research using containers.</li>
-</ul></li>
+<li>How do I know Docker is installed and running?</li>
+<li>How do I interact with Docker?</li>
 </ul>
 </div>
 </div>
-<p>So far we have mostly covered the mechanics of using Docker with only passing reference to the reproducibility aspects. In this section, we discuss these aspects in more detail.</p>
+<div class="nonincremental callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Explain how to check that Docker is installed and is ready to use.</li>
+<li>Demonstrate some initial Docker command line interactions.</li>
+<li>Use the built-in help for Docker commands.</li>
+</ul>
+</div>
+</div>
+<hr>
+<section id="docker-command-line" class="level2">
+<h2 class="anchored" data-anchor-id="docker-command-line">Docker Command Line</h2>
+<p>Before using the CLI:</p>
+<ul>
+<li>start Docker Desktop or Docker Engine;</li>
+<li>on Linux, Docker may already be running;</li>
+<li>if your install added Docker to startup, no extra step may be needed.</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Work in progress…
+You May Need to Log In to Docker Hub
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Note that reproducibility aspects of software and containers are an active area of research, discussion and development so are subject to many changes. We will present some ideas and approaches here but best practices will likely evolve in the near future.</p>
+<ul>
+<li>Docker Desktop often prompts for Docker Hub login on startup.</li>
+<li>Use the app menu or system tray icon to sign in.</li>
+<li>You will not need Docker Hub immediately, but logging in early is convenient.</li>
+</ul>
 </div>
 </div>
-<section id="reproducibility" class="level2">
-<h2 class="anchored" data-anchor-id="reproducibility">Reproducibility</h2>
-<p>By <em>reproducibility</em> here we mean the ability of someone else (or your future self) being able to reproduce what you did computationally at a particular time (be this in research, analysis or something else) as closely as possible, even if they do not have access to exactly the same hardware resources that you had when you did the original work.</p>
-<p>What makes this especially important? With research being increasingly digital in nature, more and more of our research outputs are a result of the use of software and data processing or analysis. With complex software stacks or groups of dependencies often being required to run research software, we need approaches to ensure that we can make it as easy as possible to recreate an environment in which a given research process was undertaken. There many reasons why this matters, one example being someone wanting to reproduce the results of a publication in order to verify them and then build on that research.</p>
-<p>Some examples of why containers are an attractive technology to help with reproducibility include:</p>
-<ul>
-<li>The same computational work can be run seamlessly on different operating systems (e.g. Windows, macOS, Linux).</li>
-<li>You can save the exact process that you used for your computational work (rather than relying on potentially incomplete notes).</li>
-<li>You can save the exact versions of software and their dependencies in the container image.</li>
-<li>You can provide access to legacy versions of software and underlying dependencies which may not be generally available any more.</li>
-<li>Depending on their size, you can also potentially store a copy of key data within the container image.</li>
-<li>You can archive and share a container image as well as associating a persistent identifier with it, to allow other researchers to reproduce and build on your work.</li>
-</ul>
 </section>
-<section id="sharing-images" class="level2">
-<h2 class="anchored" data-anchor-id="sharing-images">Sharing images</h2>
-<p>As we have already seen, the Docker Hub provides a platform for sharing container images publicly. Once you have uploaded a container image, you can point people to its public location and they can download and build upon it.</p>
-<p>This is fine for working collaboratively with container images on a day-to-day basis but the Docker Hub is not a good option for long-term archiving of container images in support of research and publications as:</p>
-<ul>
-<li>free accounts have a limit on how long a container image will be hosted if it is not updated</li>
-<li>it does not support adding persistent identifiers to container images</li>
-<li>it is easy to overwrite tagged container images with newer versions by mistake.</li>
-</ul>
+<section id="getting-started-with-docker" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started-with-docker">Getting Started with Docker</h2>
+<p>Open a shell and confirm the CLI is available:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="output"><code>Docker version 20.10.5, build 55c4c88</code></pre>
+<p><code>docker --version</code> confirms the command line client is installed. To check the running Docker service as well, try:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container ls</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="output"><code>CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES</code></pre>
+<p><code>docker system info</code> also works, but it produces much more output.</p>
+<p>However, if you instead get a message similar to the following</p>
+<pre class="output"><code>Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?</code></pre>
+<p>then you need to check that you have started the Docker Desktop, Docker Engine, or however else you worked through the setup instructions.</p>
 </section>
-<section id="archiving-and-persistently-identifying-container-images-using-zenodo" class="level2">
-<h2 class="anchored" data-anchor-id="archiving-and-persistently-identifying-container-images-using-zenodo">Archiving and persistently identifying container images using Zenodo</h2>
-<p>When you publish your work or make it publicly available in some way it is good practice to make container images that you used for computational work available in an immutable, persistent way and to have an identifier that allows people to cite and give you credit for the work you have done. <a href="https://zenodo.org/">Zenodo</a> is one service that provides this functionality.</p>
-<p>Zenodo supports the upload of <em>tar</em> archives and we can capture our Docker container images as tar archives using the <code>docker image save</code> command. For example, to export the container image we created earlier in this lesson:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image save alice/alpine-python:v1 <span class="at">-o</span> alpine-python.tar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>These tar container images can become quite large and Zenodo supports uploads up to 50GB so you may need to compress your archive to make it fit on Zenodo using a tool such as gzip (or zip):</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> alpine-python.tar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Once you have your archive, you can <a href="https://zenodo.org/deposit/">deposit it on Zenodo</a> and this will:</p>
+<section id="getting-help" class="level2">
+<h2 class="anchored" data-anchor-id="getting-help">Getting Help</h2>
+<p>Most CLI tools provide built-in help with <code>help</code>, <code>-h</code>, or <code>--help</code>. Docker follows the same pattern.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Key things to notice in the help output:</p>
 <ul>
-<li>Create a long-term archive snapshot of your Docker container image which people (including your future self) can download and reuse or reproduce your work.</li>
-<li>Create a persistent DOI (<em>Digital Object Identifier</em>) that you can cite in any publications or outputs to enable reproducibility and recognition of your work.</li>
+<li>high-level management groups such as <code>container</code>, <code>image</code>, <code>network</code>, and <code>volume</code>;</li>
+<li>individual commands such as <code>run</code>, <code>pull</code>, <code>push</code>, <code>build</code>, and <code>inspect</code>;</li>
+<li>the hint: <code>Run &#39;docker COMMAND --help&#39; for more information on a command.</code></li>
 </ul>
-<p>In addition to the archive file itself, the deposit process will ask you to provide some basic metadata to classify the container image and the associated work.</p>
-<p>Note that Zenodo is not the only option for archiving and generating persistent DOIs for container images. There are other services out there – for example, some organizations may provide their own, equivalent, service.</p>
+<div class="helpscroll">
+<pre class="output"><code>Usage:  docker [OPTIONS] COMMAND
+
+A self-sufficient runtime for containers
+
+Options:
+      --config string      Location of client config files (default &quot;/Users/vini/.docker&quot;)
+  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default context set with &quot;docker context use&quot;)
+  -D, --debug              Enable debug mode
+  -H, --host list          Daemon socket(s) to connect to
+  -l, --log-level string   Set the logging level (&quot;debug&quot;|&quot;info&quot;|&quot;warn&quot;|&quot;error&quot;|&quot;fatal&quot;) (default &quot;info&quot;)
+      --tls                Use TLS; implied by --tlsverify
+      --tlscacert string   Trust certs signed only by this CA (default &quot;/Users/vini/.docker/ca.pem&quot;)
+      --tlscert string     Path to TLS certificate file (default &quot;/Users/vini/.docker/cert.pem&quot;)
+      --tlskey string      Path to TLS key file (default &quot;/Users/vini/.docker/key.pem&quot;)
+      --tlsverify          Use TLS and verify the remote
+  -v, --version            Print version information and quit
+
+Management Commands:
+  app*        Docker App (Docker Inc., v0.9.1-beta3)
+  builder     Manage builds
+  buildx*     Build with BuildKit (Docker Inc., v0.5.1-docker)
+  config      Manage Docker configs
+  container   Manage containers
+  context     Manage contexts
+  image       Manage images
+  manifest    Manage Docker image manifests and manifest lists
+  network     Manage networks
+  node        Manage Swarm nodes
+  plugin      Manage plugins
+  scan*       Docker Scan (Docker Inc., v0.6.0)
+  secret      Manage Docker secrets
+  service     Manage services
+  stack       Manage Docker stacks
+  swarm       Manage Swarm
+  system      Manage Docker
+  trust       Manage trust on Docker images
+  volume      Manage volumes
+
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  build       Build an image from a Dockerfile
+  commit      Create a new image from a container&#39;s changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container&#39;s filesystem
+  events      Get real time events from the server
+  exec        Run a command in a running container
+  export      Export a container&#39;s filesystem as a tar archive
+  history     Show the history of an image
+  images      List images
+  import      Import the contents from a tarball to create a filesystem image
+  info        Display system-wide information
+  inspect     Return low-level information on Docker objects
+  kill        Kill one or more running containers
+  load        Load an image from a tar archive or STDIN
+  login       Log in to a Docker registry
+  logout      Log out from a Docker registry
+  logs        Fetch the logs of a container
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  ps          List containers
+  pull        Pull an image or a repository from a registry
+  push        Push an image or a repository to a registry
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  rmi         Remove one or more images
+  run         Run a command in a new container
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  search      Search the Docker Hub for images
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  version     Show the Docker version information
+  wait        Block until one or more containers stop, then print their exit codes
+
+Run &#39;docker COMMAND --help&#39; for more information on a command.</code></pre>
+</div>
 </section>
-<section id="reproducibility-good-practice" class="level2">
-<h2 class="anchored" data-anchor-id="reproducibility-good-practice">Reproducibility good practice</h2>
-<ul>
-<li>Make use of container images to capture the computational environment required for your work.</li>
-<li>Decide on the appropriate granularity for the container images you will use for your computational work – this will be different for each project/area. Take note of accepted practice from contemporary work in the same area. What are the right building blocks for individual container images in your work?</li>
-<li>Document what you have done and why – this can be put in comments in the <code>Dockerfile</code> and the use of the container image described in associated documentation and/or publications. Make sure that references are made in both directions so that the container image and the documentation are appropriately linked.</li>
-<li>When you publish work (in whatever way) use an archiving and DOI service such as Zenodo to make sure your container image is captured as it was used for the work and that it is assigned a persistent DOI to allow it to be cited and referenced properly.</li>
-<li>Make use of tags when naming your container images, this ensures that if you update the image in future, previous versions can be retained within a container repository to be easily accessed, if this is required.</li>
-<li>A built and archived container image can ensure a persistently bundled set of software and dependecies. However, a <code>Dockerfile</code> provides a lightweight means of storing a container definition that can be used to re-create a container image at a later time. If you’re taking this approach, ensure that you specify software package and dependency versions within your <code>Dockerfile</code> rather than just specifying package names which will generally install the most up-to-date version of a package. This may be incompatible with other elements of your software stack. Also note that storing only a <code>Dockerfile</code> presents reproducibility challenges because required versions of packages may not be available indefinitely, potentially meaning that you’re unable to reproduce the required environment and, hence, the research results.</li>
-</ul>
+<section id="container-help" class="level2">
+<h2 class="anchored" data-anchor-id="container-help"><code>container</code> Help</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container <span class="at">--help</span>  <span class="co"># or instead &#39;docker container&#39;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="helpscroll">
+<pre class="output"><code>Usage:  docker container COMMAND
+
+Manage containers
+
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  commit      Create a new image from a container&#39;s changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container&#39;s filesystem
+  exec        Run a command in a running container
+  export      Export a container&#39;s filesystem as a tar archive
+  inspect     Display detailed information on one or more containers
+  kill        Kill one or more running containers
+  logs        Fetch the logs of a container
+  ls          List containers
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  prune       Remove all stopped containers
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  run         Run a command in a new container
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  wait        Block until one or more containers stop, then print their exit codes
+
+Run &#39;docker container COMMAND --help&#39; for more information on a command.</code></pre>
+</div>
 </section>
-<section id="container-granularity" class="level2">
-<h2 class="anchored" data-anchor-id="container-granularity">Container Granularity</h2>
-<p>As mentioned above, one of the decisions you may need to make when containerising your research workflows is what level of <em>granularity</em> you wish to employ. The two extremes of this decision could be characterized as:</p>
+<section id="container-ls-help" class="level2">
+<h2 class="anchored" data-anchor-id="container-ls-help"><code>container ls</code> Help</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> container ls <span class="at">--help</span>  <span class="co"># this one actually requires the &#39;--help&#39; flag</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="helpscroll">
+<pre class="output"><code>Usage:  docker container ls [OPTIONS]
+
+List containers
+
+Aliases:
+  ls, ps, list
+
+Options:
+  -a, --all             Show all containers (default shows just running)
+  -f, --filter filter   Filter output based on conditions provided
+      --format string   Pretty-print containers using a Go template
+  -n, --last int        Show n last created containers (includes all states) (default -1)
+  -l, --latest          Show the latest created container (includes all states)
+      --no-trunc        Don&#39;t truncate output
+  -q, --quiet           Only display container IDs
+  -s, --size            Display total file sizes</code></pre>
+</div>
+<hr>
+</section>
+<section id="docker-command-line-interface-cli-syntax" class="level2">
+<h2 class="anchored" data-anchor-id="docker-command-line-interface-cli-syntax">Docker Command Line Interface (CLI) Syntax</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Docker Command Line Interface (CLI) Syntax
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This lesson uses the newer grouped Docker CLI syntax <a href="https://www.docker.com/blog/whats-new-in-docker-1-13/">introduced with the Docker Engine version 1.13</a>:</p>
 <ul>
-<li>Create a single container image with all the tools you require for your research or analysis workflow</li>
-<li>Create many container images each running a single command (or step) of the workflow and use them together</li>
+<li><code>docker [command] [subcommand] [options]</code></li>
+<li>common groups include <code>image</code> and <code>container</code></li>
+<li>this form is clearer than the older flat command style</li>
 </ul>
-<p>Of course, many real applications will sit somewhere between these two extremes.</p>
-<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled" style="border-left: 4px solid #ffc107;">
+<p>Comparing the help outputs shows that Docker supports both old and newer CLI forms.</p>
+<ul>
+<li>Older form: <code>docker run</code></li>
+<li>Newer grouped form: <code>docker container run</code></li>
+</ul>
+<p>The grouped form is more descriptive and is the one used in this workshop.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="challenge" class="level2">
+<h2 class="anchored" data-anchor-id="challenge">Challenge</h2>
+<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Positives and negatives
+Exploring a Command
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>What are the advantages and disadvantages of the two approaches to container granularity for research workflows described above? Think about this and write a few bullet points for advantages and disadvantages for each approach in the course Etherpad.</p>
+<p>Run <code>docker --help</code> and pick a command from the list. Explore the help prompt for that command. Try to guess how a command would work by looking at the <code>Usage:</code> section of the prompt.</p>
 </div>
 </div>
-<div class="solution-callout callout callout-style-default callout-note no-icon callout-titled" style="border-left: 4px solid #ffc107;">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<hr>
+</section>
+<section id="solution" class="level2">
+<h2 class="anchored" data-anchor-id="solution">Solution</h2>
+<div class="solution-callout callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
@@ -5055,97 +5211,55 @@ Solution
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>This is not an exhaustive list but some of the advantages and disadvantages could be:</p>
-<section id="single-large-container-image" class="level3">
-<h3 class="anchored" data-anchor-id="single-large-container-image">Single large container image</h3>
-<ul>
-<li>Advantages:
-<ul>
-<li>Simpler to document</li>
-<li>Full set of requirements packaged in one place</li>
-<li>Potentially easier to maintain (though could be opposite if working with large, distributed group)</li>
-</ul></li>
-<li>Disadvantages:
-<ul>
-<li>Could get very large in size, making it more difficult to distribute
-<ul>
-<li>Could use <a href="https://docs.docker.com/develop/develop-images/multistage-build">Docker multi-stage build</a> to reduce size</li>
-</ul></li>
-<li>May end up with same dependency issues within the container image from different software requirements</li>
-<li>Potentially more complex to test</li>
-<li>Less re-useable for different, but related, work</li>
-</ul></li>
-</ul>
-</section>
-<section id="multiple-smaller-container-images" class="level3">
-<h3 class="anchored" data-anchor-id="multiple-smaller-container-images">Multiple smaller container images</h3>
-<ul>
-<li>Advantages:
-<ul>
-<li>Individual components can be re-used for different, but related, work</li>
-<li>Individual parts are smaller in size making them easier to distribute</li>
-<li>Avoid dependency issues between different pieces of software</li>
-<li>Easier to test</li>
-</ul></li>
-<li>Disadvantage:
-<ul>
-<li>More difficult to document</li>
-<li>Potentially more difficult to maintain (though could be easier if working with large, distributed group)</li>
-<li>May end up with dependency issues between component container images if they get out of sync</li>
-</ul></li>
-</ul>
-</section>
+<p>Suppose we pick the <code>docker image build</code> command:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image build <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="helpscroll">
+<pre class="output"><code>Usage:  docker image build [OPTIONS] PATH | URL | -
+
+Build an image from a Dockerfile
+
+Options:
+     --add-host list           Add a custom host-to-IP mapping (host:ip)
+     --build-arg list          Set build-time variables
+     --cache-from strings      Images to consider as cache sources
+     --cgroup-parent string    Optional parent cgroup for the container
+     --compress                Compress the build context using gzip
+     --cpu-period int          Limit the CPU CFS (Completely Fair Scheduler) period
+     --cpu-quota int           Limit the CPU CFS (Completely Fair Scheduler) quota
+ -c, --cpu-shares int          CPU shares (relative weight)
+     --cpuset-cpus string      CPUs in which to allow execution (0-3, 0,1)
+     --cpuset-mems string      MEMs in which to allow execution (0-3, 0,1)
+     --disable-content-trust   Skip image verification (default true)
+ -f, --file string             Name of the Dockerfile (Default is &#39;PATH/Dockerfile&#39;)
+     --force-rm                Always remove intermediate containers
+     --iidfile string          Write the image ID to the file
+     --isolation string        Container isolation technology
+     --label list              Set metadata for an image
+ -m, --memory bytes            Memory limit
+     --memory-swap bytes       Swap limit equal to memory plus swap: &#39;-1&#39; to enable unlimited swap
+     --network string          Set the networking mode for the RUN instructions during build (default &quot;default&quot;)
+     --no-cache                Do not use cache when building the image
+     --pull                    Always attempt to pull a newer version of the image
+ -q, --quiet                   Suppress the build output and print image ID on success
+     --rm                      Remove intermediate containers after a successful build (default true)
+     --security-opt strings    Security options
+     --shm-size bytes          Size of /dev/shm
+ -t, --tag list                Name and optionally a tag in the &#39;name:tag&#39; format
+     --target string           Set the target build stage to build.
+     --ulimit ulimit           Ulimit options (default [])</code></pre>
+</div>
+<p>We could try to guess that the command could be run like this:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image build .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image build https://github.com/docker/rootfs.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Where <code>https://github.com/docker/rootfs.git</code> could be any relevant URL that supports a Docker image.</p>
 </div>
 </div>
 </div>
-<div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled" style="border-left: 4px solid #ffc107;">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Next steps with containers
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Now that we’re at the end of the lesson material, take a moment to reflect on what you’ve learned, how it applies to you, and what to do next.</p>
-<ol type="1">
-<li>In your own notes, write down or diagram your understanding of Docker containers and container images: concepts, commands, and how they work.</li>
-<li>In the workshop’s shared notes document, write down how you think you might use containers in your daily work. If there’s something you want to try doing with containers right away, what is a next step after this workshop to make that happen?</li>
-</ol>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Key Points
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>Container images allow us to encapsulate the computation (and data) we have used in our research.</li>
-<li>Using a service such as Docker Hub allows us to easily share computational work we have done.</li>
-<li>Using container images along with a DOI service such as Zenodo allows us to capture our work and enables reproducibility.</li>
-</ul>
-</div>
-</div>
-<table style="width: 100%; border: none;">
-<tbody><tr>
-<td style="text-align: left; width: 50%;">
-<a href="../episodes/08-docker-image-examples.html">← Previous</a>
-</td>
-<td style="text-align: right; width: 50%;">
- 
-</td>
-</tr>
-</tbody></table>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

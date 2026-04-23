@@ -4996,7 +4996,7 @@ Docker can be used without connecting to the Docker Hub
 <section id="exploring-container-image-versions" class="level2">
 <h2 class="anchored" data-anchor-id="exploring-container-image-versions">Exploring Container Image Versions</h2>
 <p>A single Docker Hub page can have many different versions of container images, based on the version of the software inside. These versions are indicated by “tags”. When referring to the specific version of a container image by its tag, you use a colon, <code>:</code>, like this:</p>
-<pre><code>CONTAINER_IMAGE_NAME:TAG</code></pre>
+<pre class="text"><code>CONTAINER_IMAGE_NAME:TAG</code></pre>
 <p>So if I wanted to download the <code>python</code> container image, with Python 3.8, I would use this name:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> image pull python:3.8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>But if I wanted to download a Python 3.6 container image, I would use this name:</p>
@@ -5004,7 +5004,7 @@ Docker can be used without connecting to the Docker Hub
 <p>The default tag (which is used if you don’t specify one) is called <code>latest</code>.</p>
 <p>So far, we’ve only seen container images that are maintained by the Docker team. However, it’s equally common to use container images that have been produced by individual owners or organizations. Container images that you create and upload to Docker Hub would fall into this category, as would the container images maintained by organizations like <a href="https://hub.docker.com/u/continuumio">ContinuumIO</a> (the folks who develop the Anaconda Python environment) or community groups like <a href="https://hub.docker.com/u/rocker">rocker</a>, a group that builds community R container images.</p>
 <p>The name for these group- or individually-managed container images have this format:</p>
-<pre><code>OWNER/CONTAINER_IMAGE_NAME:TAG</code></pre>
+<pre class="text"><code>OWNER/CONTAINER_IMAGE_NAME:TAG</code></pre>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -5016,7 +5016,7 @@ Repositories
 </div>
 <div class="callout-body-container callout-body">
 <p>The technical name for the contents of a Docker Hub page is a “repository.” The tag indicates the specific version of the container image that you’d like to use from a particular repository. So a slightly more accurate version of the above example is:</p>
-<pre><code>OWNER/REPOSITORY:TAG</code></pre>
+<pre class="text"><code>OWNER/REPOSITORY:TAG</code></pre>
 </div>
 </div>
 <div class="challenge-callout callout callout-style-default callout-note no-icon callout-titled" style="border-left: 4px solid #ffc107;">
