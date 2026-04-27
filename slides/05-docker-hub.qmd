@@ -30,7 +30,7 @@ Docker Hub is an online registry of container images.
 
 ::: {.callout-note}
 
-## Docker Can Be Used Without Connecting to Docker Hub
+## Docker Can Be Used without Connecting to Docker Hub
 
 - Docker Hub is convenient, but not required.
 - Some organizations use private or offline container infrastructure instead.
