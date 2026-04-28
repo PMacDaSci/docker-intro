@@ -372,8 +372,232 @@ Then push the tagged image:
 
 - `docker image push alice/workflow-complete:v1`
 
+---
 
+## Automate Image Publishing with GitHub Actions
 
- 
+GitHub Actions can build a Docker image and publish it to Docker Hub automatically whenever you push to your repository.
 
+Typical workflow:
+
+1. Create or clone a GitHub repository
+2. Add a `Dockerfile`
+3. Add Docker Hub credentials as GitHub secrets
+4. Add a workflow file
+5. Push to `main` to trigger the build
+
+---
+
+## Step 1: Create or Clone a Repository
+
+Clone an existing repository:
+
+```bash
+git clone https://github.com/Sanduni-P/publish-docker-images.git
+cd publish-docker-images
+```
+
+Or create a new repository locally:
+
+```bash
+mkdir publish-docker-images
+cd publish-docker-images
+git init
+```
+
+If you create a new repository locally, also create an empty repository on GitHub.
+You will push your files there later, and that is where you will add the Actions secrets.
+
+---
+
+## Step 2: Add a `Dockerfile`
+
+Add a `Dockerfile` in the repository root.
+
+```dockerfile
+FROM alpine
+RUN apk add --update python3 py3-pip python3-dev
+CMD ["python3", "--version"]
+```
+
+This is the image definition that GitHub Actions will build and publish.
+
+---
+
+## Step 3: Create a Docker Hub Access Token
+
+First, log in to Docker Hub in your browser.
+
+Then create a personal access token:
+
+- open your profile settings;
+- go to Personal access tokens;
+- create a new token such as `github-actions`;
+- give it Read and Write permissions;
+- copy the token and store it safely.
+
+We use a token instead of a password so the workflow can authenticate securely.
+
+---
+
+## Step 4: Add GitHub Repository Secrets
+
+In your GitHub repository:
+
+- open **Settings**;
+- go to **Secrets and variables** -> **Actions** -> **New repository secret**;
+- add `DOCKERHUB_USERNAME`;
+- add `DOCKERHUB_TOKEN`.
+
+These secrets are available to the workflow at runtime and keep credentials out of the repository.
+
+---
+
+## Step 5: Add the Workflow File
+
+Create `.github/workflows/docker-publish.yml`.
+
+This file is written in YAML.
+
+- `name` gives the workflow a label in GitHub;
+- `on` says when the workflow should run;
+- `jobs` defines the work to perform;
+- `steps` lists the actions executed in order.
+
+---
+
+## Workflow Example
+
+```yaml
+name: Publish Docker image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: your-dockerhub-username/your-image-name
+          tags: |
+            type=raw,value=latest
+            type=sha
+
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Generate artifact attestation
+        uses: actions/attest@v4
+        with:
+          subject-name: index.docker.io/your-dockerhub-username/your-image-name
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
+```
+
+---
+
+## What This Workflow Does
+
+- Starts a fresh Ubuntu runner on GitHub.
+- Checks out your repository.
+- Logs in to Docker Hub using the stored secrets.
+- Generates tags and labels for the image.
+- Builds the image from your `Dockerfile`.
+- Pushes the image to Docker Hub.
+- Creates an attestation recording where the image came from.
+
+Update `your-dockerhub-username` and `your-image-name` before using it.
+
+---
+
+## Step 6: Commit and Push
+
+If you cloned an existing repository:
+
+```bash
+git add .
+git commit -m "Add Dockerfile and GitHub Actions workflow"
+git push origin main
+```
+
+If you created a new local repository:
+
+```bash
+git add .
+git commit -m "Add Dockerfile and GitHub Actions workflow"
+git branch -M main
+git remote add origin <your-github-repository-url>
+git push -u origin main
+```
+
+Pushing to `main` triggers the workflow.
+
+---
+
+## Step 7: Check the Workflow Run
+
+On GitHub:
+
+- open the repository;
+- go to the **Actions** tab;
+- open the latest workflow run;
+- confirm that the build and push steps completed successfully.
+
+If it succeeds, your image should now be available on Docker Hub.
+
+---
+
+## Challenge
+
+::: {.callout-note .challenge-callout icon="false" }
+
+## Run Image Created from GitHub Actions
+
+Can you run the container image that was just published?
+
+:::
+
+---
+
+## Solution
+
+::: {.callout-note .solution-callout icon="false" collapse="true"}
+
+## Solution
+
+Replace `your-dockerhub-username/your-image-name` with your Docker Hub ysername and the image name you just used:
+
+```bash
+docker container run your-dockerhub-username/your-image-name
+```
+
+:::
 

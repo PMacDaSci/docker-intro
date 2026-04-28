@@ -355,6 +355,173 @@ docker image tag workflow-test alice/workflow-complete:v1
 She could then push the re-named container image to Docker Hub,
 using `docker image push alice/workflow-complete:v1`
 
+## GitHub Actions
+
+This section shows you how to create a GitHub Actions workflow that builds a Docker image and then publishes it to Docker Hub. A workflow is a YAML file stored in your repository that tells GitHub what to run and when to run it. With a single workflow, you can publish images to a single registry like Docker Hub or GitHub Packages, or even to multiple registries (see [Publishing Docker Images](https://docs.github.com/en/actions/tutorials/publish-packages/publish-docker-images#publishing-images-to-docker-hub)).
+
+
+1. **Clone an existing repository or create a new one**
+   
+   To clone an existing repository:
+   
+   ```bash
+   git clone https://github.com/Sanduni-P/publish-docker-images.git
+   cd publish-docker-images
+   ```
+   
+   Or create a new repository locally:
+   
+   ```bash
+   mkdir publish-docker-images
+  cd publish-docker-images
+   git init
+   ```
+
+  If you create a new repository locally, you will also need an empty repository on GitHub. You will push your files there later, and that GitHub repository is where you will add the Actions secrets.
+
+2. **Create a `Dockerfile`**
+   
+   Add a `Dockerfile` in the repository root or view the `Dockerfile` in the cloned repository:
+   
+   ```dockerfile
+   FROM alpine
+   RUN apk add --update python3 py3-pip python3-dev
+   CMD ["python3", "--version"]
+   ```
+
+3. **Log in to Docker Hub**
+   
+   Open [https://hub.docker.com](https://hub.docker.com) in a browser and sign in with your Docker Hub account. If you do not have an account yet, create one first.
+
+4. **Create a Docker Hub access token**
+   
+   In Docker Hub:
+   
+   - Select your profile icon.
+   - Open **Account Settings**.
+   - Go to **Personal access tokens**.
+   - Select **Generate new token**.
+   - Give the token a name such as `github-actions`.
+   - Set the required permissions (Read & Write), then create the token.
+   - Copy the token immediately and store it safely.
+
+5. **Add GitHub repository secrets**
+   
+   In your GitHub repository:
+   
+   - Open **Settings**.
+   - Go to **Secrets and variables** → **Actions**.
+   - Create a secret named `DOCKERHUB_USERNAME` containing your Docker Hub username.
+   - Create a secret named `DOCKERHUB_TOKEN` containing the access token you just created.
+
+   These secrets let the workflow log in to Docker Hub without hard-coding your credentials into the repository.
+
+6. **Create a GitHub Actions workflow**
+   
+   Create the folder `.github/workflows/` and add a file named `docker-publish.yml` as follows.
+
+   This YAML file defines the workflow. The `name` field gives the workflow a label in GitHub, `on` says when it should run, `jobs` groups the work to be done, and `steps` lists the commands or reusable actions that GitHub runs in order.
+
+   Make sure to update `your-dockerhub-username` and `your-image-name` below.
+   
+   ```yaml
+   name: Publish Docker image
+
+  on:
+    push:
+      branches:
+        - main
+
+  jobs:
+    push_to_registry:
+      name: Push Docker image to Docker Hub
+      runs-on: ubuntu-latest
+      permissions:
+        packages: write
+        contents: read
+        attestations: write
+        id-token: write
+      steps:
+        - name: Check out the repo
+          uses: actions/checkout@v4
+
+        - name: Log in to Docker Hub
+          uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+        - name: Extract metadata (tags, labels) for Docker
+          id: meta
+          uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+          with:
+            images: your-dockerhub-username/your-image-name
+            tags: |
+              type=raw,value=latest
+              type=sha
+
+        - name: Build and push Docker image
+          id: push
+          uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+          with:
+            context: .
+            file: ./Dockerfile
+            push: true
+            tags: ${{ steps.meta.outputs.tags }}
+            labels: ${{ steps.meta.outputs.labels }}
+
+        - name: Generate artifact attestation
+          uses: actions/attest@v4
+          with:
+            subject-name: index.docker.io/your-dockerhub-username/your-image-name
+            subject-digest: ${{ steps.push.outputs.digest }}
+            push-to-registry: true
+   ```
+
+   In this workflow, GitHub starts a fresh Ubuntu runner, checks out your repository, logs in to Docker Hub using the secrets you created, generates image tags and labels, builds the image from your `Dockerfile`, and then pushes the image to Docker Hub. The final attestation step records provenance information about the published image.
+
+7. **Commit and push the files**
+
+  If you cloned an existing repository, you can usually commit and push with:
+   
+   ```bash
+   git add .
+   git commit -m "Add Dockerfile and GitHub Actions workflow"
+  git push origin main
+  ```
+
+  If you created a new local repository, connect it to GitHub first and then push:
+
+  ```bash
+  git add .
+  git commit -m "Add Dockerfile and GitHub Actions workflow"
+   git branch -M main
+   git remote add origin <your-github-repository-url>
+   git push -u origin main
+   ```
+
+8. **Check the workflow run**
+   
+   Open the repository on GitHub, then go to the **Actions** tab. The workflow should build the image and push it to Docker Hub automatically after the push to `main`.
+
+::: {.callout-note .challenge-callout icon="false" style="border-left: 4px solid #ffc107;"}
+
+## Run Image Created from GitHub Actions
+
+Can you run the container we just created?
+
+:::
+
+::: {.callout-note .solution-callout icon="false" style="border-left: 4px solid #ffc107;" collapse="true"}
+
+## Solution
+
+
+```bash
+docker container run your-dockerhub-username/your-image-name
+```
+
+:::
 
 {{< include ../_includes/footer.qmd >}}
 
